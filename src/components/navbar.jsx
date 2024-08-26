@@ -94,7 +94,7 @@ const MyNavbar = () => {
                                 : "rgb(80, 112, 131)",
                         })}
                     >
-                        data
+                        data1
                     </NavLink>
                 </div>
 
