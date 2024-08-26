@@ -53,7 +53,7 @@ function LoginModal(props) {
 
   const saveApikey = (apikey_value) => {
     setApikey(apikey_value)
-    console.log("48 apikey set na: "+ apikey + " " + apikey_value)
+    // console.log("48 apikey set na: "+ apikey + " " + apikey_value)
     window.localStorage.setItem('apikey', apikey_value)
   }
 
@@ -67,7 +67,7 @@ function LoginModal(props) {
     const handleShow = () => setShow(true)
 
     const handleClose = () => {
-      console.log('60: LoginModal -> handle close : username: ' + username + " apikey: " + apikey)
+      //console.log('60: LoginModal -> handle close : username: ' + username + " apikey: " + apikey)
       // props.callBackNavBarFromLogin(username, apikey)
       setShow(false)
     }
@@ -77,9 +77,9 @@ function LoginModal(props) {
     
       postData.append ('usernameLogin', username);
       postData.append('password', password);
-      console.log('71: apikey ')
+      // console.log('71: apikey ')
 
-      console.log(apikey)
+      // console.log(apikey)
       postData.append('apikey', apikey);
     
       if (password.length<1) 
@@ -98,9 +98,9 @@ function LoginModal(props) {
         try {
           const response = await fetch(fetchURL, requestOptions);
           const data = await response.json();
-          console.log('101: data received')
-          console.log(data)
-          console.log('103: data.username: ' , data.username +  ' data.apikey: ' + data.apikey + '{data.logged_in}')
+          // console.log('101: data received')
+          // console.log(data)
+          // console.log('103: data.username: ' , data.username +  ' data.apikey: ' + data.apikey + '{data.logged_in}')
           saveUsername(data.username)
           setUsernameOrg(data.username)
           setLoggedIn(data.logged_in)
@@ -110,7 +110,7 @@ function LoginModal(props) {
             setAvatarName(data.avatar) // the name of the avatar image
             // console.log('130: logged in OK: apikey: ' + data.apikey + ' - resultmess: ' + data.result_message)
             setLoginStyle('loginOkStyle')
-            //handleClose()
+            // handleClose()
             setloginMessageClassName('messageOkay small_italic')
             setMessage(data.result_message)
 
@@ -142,7 +142,7 @@ function LoginModal(props) {
       <Button variant="dark" size="small" sx={{ p: 2 }} onClick={handleShow}>
         <FaEdit size={25} className = {loginStyle} />
           {usernameOrg}
-          {console.log('143: avatarUrl: '+ avatarUrlPath + avatarName)}
+          {/* {console.log('143: avatarUrl: '+ avatarUrlPath + avatarName)} */}
          <img className='picto' src = {avatarUrlPath + avatarName}/>
          {loggedIn?"":message}
       </Button>
@@ -192,10 +192,12 @@ function LoginModal(props) {
                   <td> apikey: <br></br><span className='x-small grey'> niet wijzigbaar</span></td>
                   <td>
                     <span className='small'>{apikey} </span>
-                    {console.log("186: formulier ")}
-                    {console.log(apikey)}
-                    {console.log(localStorage.getItem('apikey'))}
-                  </td>
+                    {/* 
+                      {console.log("186: formulier ")}
+                      {console.log(apikey)}
+                      {console.log(localStorage.getItem('apikey'))}
+                    */} 
+                    </td>
                 </tr>
                
                 <tr>
@@ -213,7 +215,8 @@ function LoginModal(props) {
              
                 <tr>
                   <td colSpan={2} className= {loginMessageClassName} >
-                    {message_details}
+                    {message=="apikey verlopen"? <Button>{message} verleng apikey</Button>
+                    : message_details}
                   </td>
                 </tr>
              

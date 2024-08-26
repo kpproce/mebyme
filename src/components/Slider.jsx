@@ -22,7 +22,7 @@ import {FaRegEyeSlash} from "react-icons/fa";
 
 const Slider = (props) => { 
 
-  console.log('15: slider aangeroepen')
+  // console.log('15: slider aangeroepen')
 
   const fetchURL =   basic_API_url() + "php/mebyme.php"
 
@@ -38,8 +38,8 @@ const Slider = (props) => {
   })
 
   const [sliderEndDate_asTxt, setSliderEndDate_asTxt] = useState(() => {
-      // return dateToTxt (new Date())
-      return "2024-06-26" 
+      return dateToTxt (new Date())
+      //return "2024-06-26" 
   })
   const [period, setPeriod] = useState(8) // standaard een week + extra dag voor vorige of volgende periode
 
@@ -109,8 +109,8 @@ const Slider = (props) => {
     { 
     let monthRow = []
     datesRow.forEach(() => monthRow.push("") )
-    console.log('229:  datesRow')
-    console.log(monthRow)
+    // console.log('229:  datesRow')
+    // console.log(monthRow)
     
     const eindDatum   = new Date(sliderEndDate_asTxt)  // de laatste datum
     const startDatum  = new Date (get_changedDate_asTxt(sliderEndDate_asTxt, ((period*-1)+1)))
@@ -119,8 +119,8 @@ const Slider = (props) => {
     const aantalDagen_eersteMaand = numDays(startDatum.getFullYear(), startDatum.getMonth())
     const aantalDagen = 1 +  (eindDatum.getTime() - startDatum.getTime())/(1000 * 60 * 60 * 24)
     
-    console.log('240: startDag: ' + startDag + ' aantalDagen_eersteMaand: ' + aantalDagen_eersteMaand)
-    console.log(monthRow)
+    // console.log('240: startDag: ' + startDag + ' aantalDagen_eersteMaand: ' + aantalDagen_eersteMaand)
+    // console.log(monthRow)
     if (startDag == aantalDagen_eersteMaand-1 ) {
       monthRow[0]               = maandNamenKort[startDatum.getMonth() + 1]
       monthRow[ aantalDagen-3]  = maandNamenKort[eindDatum.getMonth() + 1]
@@ -134,11 +134,11 @@ const Slider = (props) => {
       monthRow[ Math.floor((aantalDagen-2)/2)] = maandNamenKort[startDatum.getMonth() + 1]
     }
     
-    console.log('137: startDag: ' + startDag + ' eindDag: ' + eindDag )
-    console.log('1e maand: ' + startDatum.getMonth() +  ' aantalDagen_eersteMaand: ' + aantalDagen_eersteMaand + ' aantalDagen: ' + aantalDagen) 
+    // console.log('137: startDag: ' + startDag + ' eindDag: ' + eindDag )
+    // console.log('1e maand: ' + startDatum.getMonth() +  ' aantalDagen_eersteMaand: ' + aantalDagen_eersteMaand + ' aantalDagen: ' + aantalDagen) 
 
-    console.log('140: monthRow:')
-    console.log(monthRow)
+    // console.log('140: monthRow:')
+    // console.log(monthRow)
 
     // create een array 
 
@@ -181,8 +181,8 @@ const Slider = (props) => {
   function createSliderWeek(hghData, teTonenAspecten) {
     // in: HghData per aspect     
  
-    console.log('151: hghData in createsliderWeek' )
-    console.log(hghData)
+    // console.log('184: hghData in createsliderWeek' )
+    // console.log(hghData)
     if (hghData) {
     
       // *********************************************************
@@ -214,8 +214,8 @@ const Slider = (props) => {
       // doorloop alle aspecten uit de hghData:
 
       hghData.forEach( hghRow => {
-        console.log('184:')
-        console.log(hghData)
+        // console.log('184:')
+        // console.log(hghData)
         let loopRowIndex = 0  
         
         let hghData_alleDagen = [] // lege dataRow
@@ -244,8 +244,8 @@ const Slider = (props) => {
           }
         })
 
-        console.log('216: hghRow ' )
-        console.log(JSON.stringify(hghRow))
+        // console.log('216: hghRow ' )
+        // console.log(JSON.stringify(hghRow))
         hghData_alleDagen_alleAspecten.push({
           'aspect'      : hghRow.data[0].aspect , 
           'aspect_type' : 'unknown',
@@ -259,8 +259,8 @@ const Slider = (props) => {
       //    in hghData_alleDagen_alleAspecten, zo niet voeg lege array toe va dat aspect
       // **********************************************************************************
 
-      console.log('182: hghData_alleDagen_alleAspecten')
-      console.log(hghData_alleDagen_alleAspecten)
+      // console.log('182: hghData_alleDagen_alleAspecten')
+      // console.log(hghData_alleDagen_alleAspecten)
 
       teTonenAspecten.forEach((teTonenAspect, teTonenAspectIndex) => {
         // is dit aspect al opgnomen??
@@ -268,10 +268,10 @@ const Slider = (props) => {
         if (teTonenAspect.bijInvoerTonen==='ja') {    //  Moet je dit aspect tonen?        
           if (!hghData_alleDagen_alleAspecten.find((zoekAspect) => zoekAspect.aspect === teTonenAspect.aspect)) {
             //  Is dit aspect NOG NIET opgenomen in hghData_alleDagen_alleAspecten, de huisige slider
-            console.log(teTonenAspect.aspect + " nog opnemen") 
+            // console.log(teTonenAspect.aspect + " nog opnemen") 
 
             // breid de slider uit met een nieuwe regel met dit aspect
-            console.log(' 193: datesRow' )
+            // console.log(' 193: datesRow' )
             datesRow.forEach(date => {
               let dataObject = {
                 'datum'       : date, 
@@ -299,15 +299,15 @@ const Slider = (props) => {
         // zoek aspect_type op in de array en wijzig deze. 
         aspectData.aspect_type = teTonenAspecten.find((zoekAspect) => zoekAspect.aspect === aspectData.aspect).aspect_type
       })
-      console.log('381: ')
-      console.log(hghData_alleDagen_alleAspecten)
+      // console.log('381: ')
+      // console.log(hghData_alleDagen_alleAspecten)
       setSliderData1 (hghData_alleDagen_alleAspecten)  
     } 
   }   
 
   const changeSliderDate = (deltaDays) => {
-    console.log('391: sliderEndDate_asTxt: ' + sliderEndDate_asTxt +  ' deltaDays: '+ deltaDays)
-    console.log(get_changedDate_asTxt(sliderEndDate_asTxt, deltaDays))
+    // console.log('391: sliderEndDate_asTxt: ' + sliderEndDate_asTxt +  ' deltaDays: '+ deltaDays)
+    // console.log(get_changedDate_asTxt(sliderEndDate_asTxt, deltaDays))
     setSliderEndDate_asTxt(get_changedDate_asTxt(sliderEndDate_asTxt, (deltaDays*1)))
  }
   
@@ -363,18 +363,16 @@ const Slider = (props) => {
 
   const callBackSetWaardeEnOpmerking = useCallback((aspect, datum, oudeWaarde, nieuweWaarde, oudeOpmerking, nieuweOpmerking) => {
     // alert(aspect + '  op ' + datum + ' aangepast van: ' + oudeWaarde + ' --> ' + nieuweWaarde) 
-    console.log ('325 type: ' + typeof(sliderData1))
-    console.log (JSON.stringify(sliderData1))
+    // console.log ('325 type: ' + typeof(sliderData1))
+    // console.log (JSON.stringify(sliderData1))
     if (oudeWaarde===nieuweWaarde) {
     
-      console.log ('callBackSetOpmerking: Opmerking NIET veranderd' + oudeOpmerking + ' --> ' + nieuweOpmerking)
+       console.log ('callBackSetOpmerking: Opmerking NIET veranderd' + oudeOpmerking + ' --> ' + nieuweOpmerking)
     } else {
       setHasToReloadData(true) 
       console.log ('callBackSetOpmerkingOpmerking aangeroepen: opmerking WEL veranderd veranderd' + oudeOpmerking + ' --> ' + nieuweOpmerking)
     }
   },[])
-
-
 
   const callBack_changeSliderVisibility = useCallback((visibilityChanged) => {
     console.log ('307: callBack_changeSliderVisibility aangeroepen met visibilityChanged = ' + visibilityChanged)

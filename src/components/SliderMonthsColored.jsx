@@ -15,7 +15,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 const SliderMonthsColored = (props) => { 
 
-  console.log('15: slider aangeroepen')
+  // console.log('15: SliderMonthsColored aangeroepen')
 
   // const fetchURL = "http://localhost/mebyme/php/mebyme.php"
   const fetchURL = "https://www.kimproce.nl/mebyme_php/mebyme.php"

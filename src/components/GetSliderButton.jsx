@@ -56,14 +56,14 @@ const GetSliderButton = (props) => {
       let available_icon1 =  "" + props.available_icons.filter(available_icon => available_icon.substring(0, available_icon.indexOf(".")) === icon);
         // (dataRow, dataRowIndex) => 
       let image_url_src = imageUrl() + 'mebyme_icons/' + available_icon1
-        console.log('69a:  icon: ' + icon  + ' available_icon: -' + available_icon1 +  '- lengte: ' + available_icon1.length)
-        console.log('69a1: lengte: ' + available_icon1.length)
+        // console.log('69a:  icon: ' + icon  + ' available_icon: -' + available_icon1 +  '- lengte: ' + available_icon1.length)
+        // console.log('69a1: lengte: ' + available_icon1.length)
       if (available_icon1.length > 3) {
-        console.log('69c:  length > 3' ) 
-        console.log('69b:  icon: ' + icon  + 'icon full path: ' + image_url_src)     
+        // console.log('69c:  length > 3' ) 
+        // console.log('69b:  icon: ' + icon  + 'icon full path: ' + image_url_src)     
         return <img src={image_url_src} height='20px' width='20px'></img>;
       } else {
-        console.log('69b:  icon: ' + icon  + ' basis ')
+        // console.log('69b:  icon: ' + icon  + ' basis ')
 
         if (aspect_type === 'welzijn') {
           switch (waarde) {
@@ -83,7 +83,7 @@ const GetSliderButton = (props) => {
         }
         if (aspect_type === 'gedaan') {
           image_url_src = imageUrl() + 'mebyme_icons/' + "gedaan.png"
-          console.log('93:  icon: ' + icon  + 'icon full path: ' + image_url_src)     
+          // console.log('93:  icon: ' + icon  + 'icon full path: ' + image_url_src)     
 
          return <img src={image_url_src} height='20px' width='20px'></img>;    
 
