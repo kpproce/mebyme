@@ -1,0 +1,153 @@
+#root {
+  max-width: 1280px;
+  margin-left: 0 !important; 
+  padding: 0rem;
+  text-align: center;
+}
+
+.myNavbar {
+  margin-bottom: 50px !important; 
+}
+
+body {
+    align-content: flex-start;
+    /* background-color: #08343d; */
+  } 
+
+.logo {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms;
+}
+
+.logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+}
+
+.logo.react:hover {
+  filter: drop-shadow(0 0 2em #61dafbaa);
+}
+
+.picto {
+  height: 100%;
+  max-height: 5vh;
+  width: 100%;
+  max-width:  1.7rem;
+  margin-left: 4px;
+  font-weight: bold;
+}
+
+.striped {
+    border-collapse: collapse;  
+    border: 2px, solid, rgba(120, 130, 227, 0.272)
+}
+
+.noPadding {padding:0 !important}
+
+.small   { font-size: small }
+.x-small { font-size: x-small }
+
+.perc12 {width: 12% !important}
+
+.redBorder {
+  border: solid 2px red;
+}
+
+.nav a { 
+  display: flex;
+  color: inherit;
+  text-decoration: none ; 
+  height: 100%;
+  align-items: stretch;
+  padding: .3rem;
+}
+
+.loginOkStyle {
+  border-color: rgb(6, 79, 6);
+  color: rgb(158, 252, 158);
+}
+
+.loginFalseStyle {
+  border-color: rgb(121, 5, 5);
+  color: rgb(255, 32, 32);
+}
+
+.partial-fill-button {
+  position: relative;
+  overflow: hidden;
+  background-color: #ccc; /* Background color of the button */
+  color: black; /* Text color */
+  border: 1px solid #ccc;
+}
+
+.partial-fill-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 50%; /* Adjust this value to control the fill percentage */
+  height: 100%;
+  background-color: #007bff; /* Fill color */
+  z-index: 0;
+}
+
+.partial-fill-button span {
+  position: relative;
+  z-index: 1;
+}
+
+.showAspectButton {
+  height: 1.3rem !important ;
+
+  padding-top: 4px !important ; 
+  margin:auto !important ; 
+  }
+
+.sliderDatumClass { font-size: x-small; }
+
+.buttonRight {position: absolute; right: 1rem;}
+
+.width3px  { width: 3px }
+.space { padding-right: 6px;}
+
+.color_0 { background-color: rgb(114, 136, 156) !important }  
+.color_1 { background-color: rgb(20, 244, 54) !important }  
+.color_2 { background-color: rgb(191, 235, 108)  !important }  
+.color_3 { background-color: rgb(255, 249, 61)  !important }  
+.color_4 { background-color: rgb(252, 198, 37)  !important }  
+.color_5 { background-color: rgb(251, 77, 77) !important }  
+
+
+.testColor { color: rgb(222, 242, 255) }
+.buttonEyeAanUit { 
+  background-color: rgb(168, 208, 235) !important; 
+  height: 2rem;
+  padding-top: 0.1rem;
+}
+
+.py-4 {
+  padding: 2px !important;
+  padding-top: 8px !important;
+}
+
+.grey {color: gray}
+
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
+}
+
+@media (min-width: 600px) {
+  #root {  padding: 2rem;
+  }
+}
+
+.card {
+  padding: 21m;
+}
+
+.read-the-docs {
+  color: #888;
+}

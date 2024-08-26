@@ -1,0 +1,22 @@
+Server	 	localhost
+Poort	 	3306
+Database	kimproce_mebyme
+Login	 	kimproce_mebymedb01
+Wachtwoord	NBz9m5tbqYCg
+
+Modem: F^A<A9q-b4
+
+or create a new repository on the command line
+
+echo "# mebyme" >> README.md
+git init
+git add README.md
+git commit -m "first commit"
+git branch -M main
+git remote add origin https://github.com/kpproce/mebyme.git
+git push -u origin main
+
+…or push an existing repository from the command line
+git remote add origin https://github.com/kpproce/mebyme.git
+git branch -M main
+git push -u origin main

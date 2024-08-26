@@ -1,0 +1,28 @@
+npm install react-bootstrap bootstrap
+npm install react-table
+npm install react-router-dom
+npm install react-icons --save
+npm install --save react-modal
+npm install --save prop-types
+npm install uuidv4
+npm install --save react-tabs
+
+
+??
+npm install react-hook-form
+
+
+
+
+echo "# mebyme" >> README.md
+git init
+git add README.md
+git commit -m "first commit"
+git branch -M main
+git remote add origin https://github.com/kpproce/mebyme.git
+git push -u origin main
+
+…or push an existing repository from the command line
+git remote add origin https://github.com/kpproce/mebyme.git
+git branch -M main
+git push -u origin main
