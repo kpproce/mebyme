@@ -50,6 +50,18 @@ body {
 
 .perc12 {width: 12% !important}
 
+.opmerking {
+  background-color: #a38a70 !important;
+  padding: 1px;
+  height: 0.6rem !important;
+  font-size: small !important;
+}
+.opmerking_kol1 {
+
+  font-size: small  !important;
+}
+
+
 .redBorder {
   border: solid 2px red;
 }

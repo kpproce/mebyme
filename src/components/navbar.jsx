@@ -80,7 +80,7 @@ const MyNavbar = () => {
                 <div style={{ margin: "6px" }}>
                     
                     <NavLink
-                        to="/slider"
+                        to="/mebyme/slider"
                         style={({ isActive }) => ({
                             margin: "5px",
                             padding: "5px",
@@ -100,7 +100,7 @@ const MyNavbar = () => {
 
                 <div style={{ margin: "6px" }}>
                     <NavLink
-                        to="/myUsers"
+                        to="/mebyme/myUsers"
                         style={({ isActive }) => ({
                             margin: "5px",
                             padding: "5px",
@@ -140,12 +140,12 @@ const MyNavbar = () => {
                 />         */}
                 <Route
                     exact
-                    path="/slider"
+                    path="/mebyme/slider"
                     element={<Slider username={username} apikey={apikey} logged_in={logged_in} />}
                 />                
                 <Route
                     exact
-                    path="/myUsers"
+                    path="/mebyme/myUsers"
                     element={<MyUsers username={username} apikey={apikey}/>}
                 />
             </Routes>

@@ -49,9 +49,10 @@ const Slider = (props) => {
 
   const [sliderData1, setSliderData1]               = useState([])
   const [hghAspecten, setHghAspecten]               = useState([])
+  const [opmerkingen, setOpmerkingen]               = useState([])
   const [hghOverigeAspecten, setHghOverigeAspecten] = useState([])
   const [aspectTypes, setAspectTypes]               = useState([])
-  const [available_icons, setAvailable_icons]         = useState([])
+  const [available_icons, setAvailable_icons]       = useState([])
 
   const [apikey, setApikey] = useState(() => {
     // let apikey = window.localStorage.getItem('apikey')
@@ -345,6 +346,7 @@ const Slider = (props) => {
       setHghAspecten(res['hghPeriod']['teTonenAspecten'])
       setHghOverigeAspecten(res['hghPeriod']['overigeAspecten'])
       setAspectTypes(res['hghPeriod']['teTonenAspectTypes'])
+      setOpmerkingen(res['hghPeriod']['dataOverPeriode'])
       // console.log('350: iconlist from API:')
       // console.log(res['hghPeriod']['iconsData']['imageNamesList'])
       setAvailable_icons(res['hghPeriod']['iconsData']['imageNamesList'])
@@ -470,32 +472,59 @@ const Slider = (props) => {
           */}
 
           <tbody>
+
+            {/* EERST de  opmerkingen */}
+
+            <tr > 
+              <td className='opmerking_kol1' key={uuidv4()} >
+                opmerking
+              </td>
+              <td className='opmerking' key={uuidv4()} colSpan={period + 1}>
+                {opmerkingen.map(opm => 
+                  <>
+            
+                    {opm.datum.substring(opm.datum.length - 2)}
+                    {opm.datum_totenmet? 
+                      <>
+                        t/m {opm.datum_totenmet.substring(opm.datum_totenmet.length - 2)} 
+                      </>
+                    : ""
+                    }
+                    <span className='space'></span>
+                    {opm.opmerking} 
+                    <br></br>
+
+                  </>
+                )}
+              </td>
+            </tr>
+
+  
+            {/* Dan per aspect de regels */}
+
             {aspectTypes.map((teTonenAspectType, teTonenAspectIndex) => (
                 <React.Fragment key={teTonenAspectIndex}>
                   <tr key={uuidv4()}>
-                  <td colSpan={1} key="slider_period_visibility">
-                                    </td>
-                  <td colSpan={period + 1} >
-                    {teTonenAspectType}
-                    <span className='space'></span>
-                    <ChangeSliderVisibility 
-                      username          = { username }
-                      apikey            = { apikey }     
-                      teTonenAspectType = { teTonenAspectType}                 
-                      aspectLijst       = { hghAspecten }
-                      overigeAspecten   = { hghOverigeAspecten }
-                      fetchURL          = { fetchURL }
-                      callBack_changeSliderVisibility = { callBack_changeSliderVisibility }
-                    />
-
-                  </td>
+                    <td colSpan={1} key="slider_period_visibility"></td>
+                    <td colSpan={period + 1} >
+                      {teTonenAspectType}
+                      <span className='space'></span>
+                      <ChangeSliderVisibility 
+                        username          = { username }
+                        apikey            = { apikey }     
+                        teTonenAspectType = { teTonenAspectType}                 
+                        aspectLijst       = { hghAspecten }
+                        overigeAspecten   = { hghOverigeAspecten }
+                        fetchURL          = { fetchURL }
+                        callBack_changeSliderVisibility = { callBack_changeSliderVisibility }
+                      />
+                    </td>
                   </tr>
 
                   {(repeatDatesRow && teTonenAspectIndex>0)?
                     <tr key={uuidv4()}>
                       <th className='striped small' key={uuidv4()}>
                         datum: 
-
                       </th>
                       { sliderData1[0].data.map((item, itemIndex) => 
                             <th className='striped x-small' key={uuidv4()}>    
@@ -520,15 +549,18 @@ const Slider = (props) => {
                         </td>
 
                         {dataRow.data.map( (dagData, dagDataIndex) => 
+                        
                             <td key = {uuidv4()}>
                             {/*   {console.log("478: details test")}
                               {console.log(JSON.stringify(dagData))} */}
+                              
                               {dagData.waarde>=0
                                 ?
                                   <EditWaardeModal 
                                     username          = { username }
                                     apikey            = { apikey }                      
                                     datum             = { dagData.datum  } 
+                                    datum_totenmet    = { dagData.datum_totenmet}  
                                     aspect            = { dagData.aspect }
                                     icon              = { dataRow.icon }
                                     available_icons   = { available_icons }
