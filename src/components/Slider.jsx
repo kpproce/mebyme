@@ -122,16 +122,16 @@ const Slider = (props) => {
     // console.log('240: startDag: ' + startDag + ' aantalDagen_eersteMaand: ' + aantalDagen_eersteMaand)
     // console.log(monthRow)
     if (startDag == aantalDagen_eersteMaand-1 ) {
-      monthRow[0]               = maandNamenKort[startDatum.getMonth() + 1]
-      monthRow[ aantalDagen-3]  = maandNamenKort[eindDatum.getMonth() + 1]
+      monthRow[0]               = maandNamenKort[startDatum.getMonth() ]
+      monthRow[ aantalDagen-3]  = maandNamenKort[eindDatum.getMonth() ]
     } else if (startDag >= aantalDagen_eersteMaand - 2) {
-      monthRow[1]               = maandNamenKort[startDatum.getMonth() + 1]
-      monthRow[ aantalDagen-3]  = maandNamenKort[eindDatum.getMonth() + 1]
+      monthRow[1]               = maandNamenKort[startDatum.getMonth() ]
+      monthRow[ aantalDagen-3]  = maandNamenKort[eindDatum.getMonth() ]
     } else if (eindDag >= 2 && startDatum.getMonth() < eindDatum.getMonth()) {
-      monthRow[1]               = maandNamenKort[startDatum.getMonth() + 1]
-      monthRow[ aantalDagen-2]  = maandNamenKort[eindDatum.getMonth() + 1]
+      monthRow[1]               = maandNamenKort[startDatum.getMonth() ]
+      monthRow[ aantalDagen-2]  = maandNamenKort[eindDatum.getMonth() ]
     } else {
-      monthRow[ Math.floor((aantalDagen-2)/2)] = maandNamenKort[startDatum.getMonth() + 1]
+      monthRow[ Math.floor((aantalDagen-2)/2)] = maandNamenKort[startDatum.getMonth() ]
     }
     
     // console.log('137: startDag: ' + startDag + ' eindDag: ' + eindDag )
@@ -173,9 +173,7 @@ const Slider = (props) => {
     console.log('172: eye uit geklikt van aspect: ' + aspect)
     
     setHasToReloadData(true);
-
   }
-
 
 
   function createSliderWeek(hghData, teTonenAspecten) {
@@ -438,7 +436,7 @@ const Slider = (props) => {
                 maand:
               </th>
               { monthRow.map((item, itemIndex) => 
-                    <th className='striped x-small' key={uuidv4()}>    
+                    <th className='striped small' key={uuidv4()}>    
                       {item}
                     </th>
                 )
@@ -457,7 +455,7 @@ const Slider = (props) => {
                 datum: 
               </th>
               { sliderData1[0].data.map((item, itemIndex) => 
-                    <th className='striped x-small' key={uuidv4()}>    
+                    <th className='striped small' key={uuidv4()}>    
                       {txtDateFormat(item.datum,'dagNr')}
                     </th>
                 )

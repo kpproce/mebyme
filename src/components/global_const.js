@@ -5,7 +5,7 @@ export const basic_API_url = () => {
   let url = ""
   // console.log('6: login: location.hostname' + location.hostname )
   if (location.hostname === "localhost" || location.hostname === "127.0.0.1" || location.hostname === "") {
-    url = "http://localhost/mebyme/";
+    url = "http://localhost/mebyme_server/";
   } else {
     url = "https://www.kimproce.nl/mebyme/"
   }
@@ -17,7 +17,7 @@ export const imageUrl = () => {  // avatars in images/avatars
   let url = ""
   //console.log('19: login: location.hostname' + location.hostname )
   if (location.hostname === "localhost" || location.hostname === "127.0.0.1" || location.hostname === "") {
-    url = "http://localhost/mebyme/php/images/";
+    url = "http://localhost/mebyme_server/php/images/";
   } else {
     url = "https://www.kimproce.nl/mebyme/php/images/"
   }
