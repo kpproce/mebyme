@@ -124,7 +124,7 @@ const MyUsers = (props) => {
 
   return (
     <>
-      <div>Dit zou zichtbaar moeten zijn</div>
+      <div>versie 1.01 </div>
       {console.log('142:')}
       {console.log(data)}
       <h2 className="smallTitle"> usergegevens, opgevraagd door {props.username}</h2> 
