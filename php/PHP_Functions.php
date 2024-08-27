@@ -58,6 +58,17 @@ function leesFilenames_V2($folder,  $sort) {
      $dir = $folder ;
      $userMessage = "";
      $messages = [];
+     $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+    $host = $_SERVER['HTTP_HOST'];
+    $request_uri = $_SERVER['REQUEST_URI'];
+    $full_url = $protocol . "://" . $host . $request_uri;
+     
+    array_push($messages, "full_url: " . $full_url);
+    array_push($messages, "full_url + dir full : " . $full_url . $dir);
+    array_push($messages, "full_url + dir : " . $protocol . "://" . $host . "/mebyme" );
+    array_push($messages, "dir : " .  $dir);
+    array_push($messages, "getcwd(): " .  getcwd());
+
 
 
     $test = "";
@@ -69,8 +80,9 @@ function leesFilenames_V2($folder,  $sort) {
     // Open a directory, and read its contents
     array_push($messages, $dir . ' check of dit een folder is?');
     if (is_dir($dir)){
-
+        array_push($messages, $dir . ' is een folder');
         if ($dh = opendir($dir)){
+          array_push($messages, $dir . ' kan deze openen');
           while (($filename = readdir($dh)) !== false){
                 if (isThisAnImages($filename)) {
                     //echo "filename:" . $filename . " " . date ("Y m F d H", filemtime($dir.$filename));
@@ -79,7 +91,7 @@ function leesFilenames_V2($folder,  $sort) {
                         // 'info'  => "test",
                         'date'          => date ("Y_m_d_H:m", filemtime($dir . '/' . $filename)),
                         'size'          => filesize($dir . '/' . $filename),
-                        'dir'           => $folder
+                        'dir'           => $dir
                     ];  
                     
                     // echo($filename. "<br>");
@@ -93,8 +105,12 @@ function leesFilenames_V2($folder,  $sort) {
                 // echo($filename. "<br>");
             }
             closedir($dh);
+        } else {
+            array_push($messages, $dir . ' kan deze NIET openen');
         }
-    } else {array_push($messages, $dir . ' NOT found');}
+    } else {
+        array_push($messages, $dir . ' is GEEN folder');
+    }
 
     if ($sort==="dateSort") {
         usort($imageDataList, function($a, $b) {return strcmp($b['date'], $a['date']);});
@@ -104,6 +120,8 @@ function leesFilenames_V2($folder,  $sort) {
     }
 
     $result = [
+        'serverInfo'       => $_SERVER,
+        'url'              => $imageDataList,
         'imageDataList'    => $imageDataList,
         'imageNamesList'   => $imageNamesList,
         'userMessage'      => $userMessage,

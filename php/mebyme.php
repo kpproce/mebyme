@@ -748,13 +748,13 @@
 
        
         if (apikeyValid($mysqli, $username, $apikey)) {
-            $query  = "SELECT datum, sliderRij, aspect, icon, waarde, opmerking, bijInvoerTonen ";
+            $query  = "SELECT datum, datum_totenmet, sliderRij, aspect, icon, waarde, opmerking, bijInvoerTonen ";
             $query .= " FROM hoegaathetview  ";
             $query .= "  WHERE username = ? AND datum >= ? AND datum <= ? ";
             $query .= "  AND (bijInvoerTonen = 'ja') AND sliderRij > 0 ";
             $query .= "  ORDER BY sliderRij, datum ";
             
-            $tstQuery  = "SELECT datum, sliderRij, aspect, icon, waarde, opmerking, bijInvoerTonen";
+            $tstQuery  = "SELECT datum, datum_totenmet, sliderRij, aspect, icon, waarde, opmerking, bijInvoerTonen";
             $tstQuery .= " FROM hoegaathetview  ";
             $tstQuery .= "  WHERE username = '$username' AND datum >= '$startDate' AND datum <= '$endDate'";
             $tstQuery .= "  AND sliderRij>0 ORDER BY sliderRij, datum ";
@@ -1398,25 +1398,25 @@
     }
 
     // mebyme 
+
     function update_of_insert_waarde_1aspect($inp, $mode) { // alleen van 1 aspect van 1 user! --> mebyme
-              
         $mysqli = connect();
            
-        $username            = $inp['username']; 
-        $aspect              = $inp['aspect'];
-        $datum               = $inp['datum'];
-        $waarde              = $inp['waarde'];
+        $username    = $inp['username']; 
+        $aspect      = $inp['aspect'];
+        $datum       = $inp['datum'];
+        $waarde      = $inp['waarde'];
 
-        $resultData = [];   
-        $messages = [];
+        $resultData  = [];   
+        $messages    = [];
         $mainMessage = "waarde niet kunnen aanpassen";
 
         // check eerst of dit aspect voor deze user op deze datum al bestaat, 
         // - zo ja, dan aanpassen
         // - zo nee, dan nieuwe invoegen
 
-        $queryCheckAspect  = "select waarde FROM hoegaathet "; // wijzigDdatumTijd = ?
-        $queryCheckAspect .= " WHERE username = ?  AND aspect= ? AND datum = ?" ;
+        $queryCheckAspect     = "select waarde FROM hoegaathet "; // wijzigDdatumTijd = ?
+        $queryCheckAspect    .= " WHERE username = ?  AND aspect= ? AND datum = ?" ;
 
         $queryCheckAspectTst  = "select COUNT(*) FROM hoegaathet "; // wijzigDdatumTijd = ?
         $queryCheckAspectTst .= " WHERE username = '$username'  AND aspect='$aspect' AND datum = '$datum'" ;

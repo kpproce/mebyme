@@ -1,12 +1,23 @@
-Server	 	localhost
-Poort	 	3306
-Database	kimproce_mebyme
-Login	 	kimproce_mebymedb01
-Wachtwoord	NBz9m5tbqYCg
+https://github.com/kpproce/mebyme
+
+npm install --save-dev gh-pages
+
+ "homepage": "https://kpproce.github.io/mebyme",
+ "predeploy": "npm run build",
+
+
+ git remote add origin https://github.com/kpproce/mebyme.git
+
+git push -u origin main
+
+
+
 
 Modem: F^A<A9q-b4
 
 or create a new repository on the command line
+
+
 
 echo "# mebyme" >> README.md
 git init
@@ -20,3 +31,6 @@ git push -u origin main
 git remote add origin https://github.com/kpproce/mebyme.git
 git branch -M main
 git push -u origin main
+
+
+

@@ -19,7 +19,7 @@ export const imageUrl = () => {  // avatars in images/avatars
   if (location.hostname === "localhost" || location.hostname === "127.0.0.1" || location.hostname === "") {
     url = "http://localhost/mebyme/php/images/";
   } else {
-    url = "https://www.kimproce.nl/mebyme/images/"
+    url = "https://www.kimproce.nl/mebyme/php/images/"
   }
   return url
   // return "http://localhost/mebyme/"
