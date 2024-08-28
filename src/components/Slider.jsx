@@ -15,6 +15,8 @@ import SliderMonthsColored from './SliderMonthsColored.jsx'
 import ChangeSliderVisibility from './ChangeSliderVisibility.jsx'
 import {v4 as uuidv4} from 'uuid';
 import {FaRegEyeSlash} from "react-icons/fa";
+import {AiOutlineEdit} from "react-icons/ai";
+
 
 // import DeleteUser from './deleteUser.jsx';
 // import EditUser from './editUser.jsx';
@@ -482,10 +484,14 @@ const Slider = (props) => {
               <td className='opmerking' key={uuidv4()} colSpan={period + 1}>
                 {opmerkingen.map(opm => 
                   <>
-            
+                    <Button className='buttonCRUD'>
+                        <AiOutlineEdit />
+                    </Button>
                     {opm.datum.substring(opm.datum.length - 2)}
                     {opm.datum_totenmet? 
-                      <>
+                      <> 
+                       
+                        <span className='space'></span>
                         t/m {opm.datum_totenmet.substring(opm.datum_totenmet.length - 2)} 
                       </>
                     : ""
@@ -499,7 +505,6 @@ const Slider = (props) => {
               </td>
             </tr>
 
-  
             {/* Dan per aspect de regels */}
 
             {aspectTypes.map((teTonenAspectType, teTonenAspectIndex) => (
