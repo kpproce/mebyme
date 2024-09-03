@@ -431,7 +431,7 @@ const Slider = (props) => {
     },
    
     preventDefaultTouchmoveEvent: true, // Prevent scrolling when swiping
-    trackMouse: true // Enable mouse swiping for desktop
+    trackMouse: true, delta: 10 // Enable mouse swiping for desktop
   });
 
 
