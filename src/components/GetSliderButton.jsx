@@ -87,7 +87,7 @@ const GetSliderButton = (props) => {
 
          return <img src={image_url_src} height='20px' width='20px'></img>;    
 
-      }
+        }
       }
     }
   }

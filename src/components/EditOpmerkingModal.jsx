@@ -2,32 +2,28 @@ import { useState, useEffect,  useCallback} from 'react';
 import { Modal, Table, Button} from "react-bootstrap";
 import propTypes from 'prop-types'; // ES6
 import { v4 as uuidv4 } from 'uuid';
+import { IoIosAdd } from "react-icons/io";
 
 const  EditOpmerkingModal = (props) => {
 
     // --------------------------------------
-    // een opmerking heeft 
-    // -- een datum en een datum_totenmet
+    // een opmerking komt uit de tabel opmerkingen en heeft 
+    // -- een id (auto uniek)
+    // -- een datum_start en een datum_einde
     // -- de opmerking zelf 
-    // -- een aspect_type, te weten opm_moment, of opm_periode
-
-    // een opmerking is eigenljk een hoegaathet meting, maar dan zonder de waarde. Die invullen op 
-
-
-  
+    // -- eventueel een aspect of aspect_type
+    // -- een prior (1 --- x)
 
     // const [id, setId] =  useState(1);
     // const [title, setTitle] =  useState("this song");
     const [show, setShow] = useState(false);
     
     // de datums worden aangeleverd, die zijn ingevuld als beginen ne einddatum op je scherm
-    const [datum, setDatum] = useState(props.datum);
-    const [datum_totenmet, setDatum_totenmet] = useState(props.datum_totenmet);
+    const [datum_start, setDatum_start] = useState(props.datum_start);
+    const [datum_einde, setDatum_einde] = useState(props.datum_einde);
 
     const [opmerking, setOpmerking] = useState(props.opmerking);
-    const [aspect, setAspect] = useState(props.aspect);
-
-
+    const [gekozenAspect, setGekozenAspect] = useState('opmerking'); // standaard.
 
 
     const handleClose = () => { 
@@ -41,15 +37,16 @@ const  EditOpmerkingModal = (props) => {
       handleClose(); 
     }; */
 
-    async function update_opmerking_via_API(nieuweOpmerking) {
+    async function update_or_create_opmerking_via_API(nieuweOpmerking) { // dit zijn de losse opmerkingen
       const postData = new FormData();
             //console.log('100 myUsers useffect 1 .. ')   
-      postData.append('username', props.username);
-      postData.append('apikey',   props.apikey);
-      postData.append('datum',    props.datum);
-      postData.append('aspect',   props.aspect);
-      postData.append('opmerking',   nieuweOpmerking);
-      postData.append('action',  'update_of_insert_opmerking_1aspect');
+      postData.append('username',       props.username);
+      postData.append('apikey',         props.apikey);
+      postData.append('datum_start',    datum_start);
+      postData.append('datum_einde',    datum_einde);
+      postData.append('aspect',         gekozenAspect);
+      postData.append('opmerking',      nieuweOpmerking);
+      postData.append('action',         'update_or_insert_opmerking');
   
       let requestOptions = {
         method: 'POST',
@@ -66,75 +63,80 @@ const  EditOpmerkingModal = (props) => {
       setShow(true)
     },[])
 
-    const callBack_handleChangeOpmerking = useCallback((nieuweOpmerking) => {
-      setOpmerking (nieuweOpmerking)
-      let result = update_opmerking_via_API(nieuweOpmerking);
-
-      console.log ('51: '+ result)
-      console.log (result)
+    const handleSaveAndClose = () => { setShow(true)
+      update_or_create_opmerking_via_API(opmerking)
+      console.log ('51: '+ opmerking + ' aangepast')
+      props.callBack_set_hgh_details()
       setShow(false); 
-      // wijzig opmerking in de database, daarvoor heb je de username en api key nodg. Die haal je uit local storage.
-
-      props.callBackSetOpmerking(props.aspect, props.datum, opmerking, nieuweOpmerking)
-      //console.log('54: API aangeroepen') 
-      //console.log(update_opmerking_via_API()) 
-    },[])
-
-    useEffect(() => { 
-      // 
-    },  [show, props.opmerking]) 
-
-    useEffect(() => { 
-      // console.log('!!! childcomponent is triggered')
-    },  []) 
+    }
 
     return (
       <>
       {/* {console.log('79: editOpmerkingModal: '+  props.opmerking) }  */}
   
-        <div className = "x-small"  onClick={handleShow}>
-          {props.opmerking.substr(0,8)}
-        </div>
+        <span className = "x-small"  onClick={handleShow}>
+          <span className='space'></span>
+          <Button size="sm" > < IoIosAdd /> </Button>
+        </span>
 
-        <Modal show={show} onHide={handleClose} active="true" centered backdrop={false}>
+        <Modal contentClassName='modalBody' show={show} onHide={handleClose} active="true" centered backdrop={false}>
           <Modal.Header>
             <Modal.Title>
-            {props.opmerking}    
-              <span className='space'></span>
-         
+              nieuwe opmerking
             </Modal.Title>  
           </Modal.Header>
-          <Modal.Body> 
-          <div style={{'fontSize': 'large', 'fontWeight': '500','paddingBottom': '0.3rem'} }>Wijzig naar:</div>
-            <Table striped bordered hover variant="light" size="sm" style={{'maxWidth': '15rem'}}>
-              <tr key={uuidv4()}>           
-                <td key={uuidv4()}>aspect</td> <td  colspan="3" key={uuidv4()}>{props.aspect}</td>
-              </tr>
+          <Modal.Body className='modalBody'> 
 
+            <Table striped bordered hover size="sm" >
+              {/* 
               <tr key={uuidv4()}>           
-                <td key={uuidv4()}>van</td> <td key={uuidv4()}>{props.datum}</td>
-                <td key={uuidv4()}>tot</td> <td key={uuidv4()}>{props.datum_totenmet}</td>
+                <td key={uuidv4()} >aspect</td> 
+                <td colSpan="2"  key={uuidv4()}>{props.aspect}</td>  
               </tr>
-              
-              <tr>
-                <td key={uuidv4()}>opmerking</td>
-                <td  colspan="3" className='perc12' key={uuidv4()}>
-                  <input type="text" 
-                    value= {opmerking} 
-                    size='50'
-                    onChange= {((event) => {setOpmerking(event.target.value)})}>         
-                  </input>    
+              */}
+              <tr key={uuidv4()}>           
+                <td key={uuidv4()} >
+                  <input 
+                    type="date" 
+                    value={datum_start}
+                    onChange= {((event) => {setDatum_start(event.target.value)
+                    })} 
+                  /> 
+
+                </td>
+                <td key={uuidv4()} >-</td> 
+                <td key={uuidv4()} > 
+                <input 
+                    type="date" 
+                    value={datum_einde}
+                    onChange= {((event) => {setDatum_einde(event.target.value)
+                    })} 
+                  />
                 </td>
               </tr>
-            </Table>         
+              
+            </Table>   
+            <div style={{'fontSize': 'large', 'fontWeight': '500','paddingBottom': '0.3rem'} }> Opmerking: </div>
+            <input type="text" 
+              value= {opmerking} 
+              size='42'
+              onChange= {((event) => {setOpmerking(event.target.value)
+                console.log('176: ' + opmerking)
+              })}>         
+            </input>          
 
               {/* <UploadFile callback_uploadModal_fileChanged ={callback_uploadModal_fileChanged}/> */}
           </Modal.Body>
           <Modal.Footer>     
-            <Button variant="primary" onClick={handleClose}>
-              sluit
+            <Button variant="primary" onClick={handleSaveAndClose}>
+              sla op en sluit
               {/* props.selectedStart bevat de huidige filenaam*/ }
             </Button>
+            <Button variant="primary" onClick={handleClose}>
+              annuleer
+              {/* props.selectedStart bevat de huidige filenaam*/ }
+            </Button>
+
             </Modal.Footer>
         
         </Modal>
@@ -144,12 +146,12 @@ const  EditOpmerkingModal = (props) => {
 
   EditOpmerkingModal.propTypes = {
     //callBackOpmerking: propTypes.number.isRequired
-    callBackSetOpmerking: propTypes.func,    
+    callBack_set_hgh_details: propTypes.func,    
     username       : propTypes.string, 
     apikey 	       : propTypes.string, 
     aspect         : propTypes.string, 
-    datum          : propTypes.string, 
-    datum_totenmet : propTypes.string, 
+    datum_start    : propTypes.string, 
+    datum_einde    : propTypes.string, 
     opmerking      : propTypes.string,
     fetchURL       : propTypes.string 
   }

@@ -22,7 +22,7 @@ const  EditWaardeModal = (props) => {
       }; 
     */
     
-    async function update_or_create_hgh_waarneming_via_API(waarde1, opmerking1) {
+    async function update_or_create_hgh_waarneming_via_API(waarde1, opmerking1) { // dit zijn de aspect buttons, met een waarde
       const postData = new FormData();
             //console.log('100 myUsers useffect 1 .. ')   
       postData.append('username'  , props.username);
@@ -99,7 +99,6 @@ const  EditWaardeModal = (props) => {
 
     return (
       <>
-
       {/* {console.log('79: editWaardeModal: '+  props.waarde) }  */}
         <GetSliderButton 
           aspect_type       = {props.aspect_type}
@@ -112,12 +111,12 @@ const  EditWaardeModal = (props) => {
 
       {props.opmerking
         ? <div className = "x-small" >
-            {props.opmerking.substr(0,5)+ '..'}
+            {props.opmerking.substr(0,7)}
           </div>
         : ""
         }
 
-        <Modal show={show} onHide={handleClose} active="true" centered backdrop={false}>
+        <Modal contentClassName='modalBody' show={show} onHide={handleClose} active="true" centered backdrop={false}>
           <Modal.Header>
             <Modal.Title>
               Huidige waarde 
@@ -171,8 +170,10 @@ const  EditWaardeModal = (props) => {
             <div style={{'fontSize': 'large', 'fontWeight': '500','paddingBottom': '0.3rem'} }> Opmerking: </div>
             <input type="text" 
               value= {opmerking} 
-              size='50'
-              onChange= {((event) => {setOpmerking(event.target.value)})}>         
+              size='42'
+              onChange= {((event) => {setOpmerking(event.target.value)
+                console.log('176: ' + opmerking)
+              })}>         
             </input>    
                     
               {/* <UploadFile callback_uploadModal_fileChanged ={callback_uploadModal_fileChanged}/> */}

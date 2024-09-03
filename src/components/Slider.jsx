@@ -1,21 +1,24 @@
 /* eslint-disable no-unused-vars */
 import {useState, useEffect, useCallback} from 'react';
-import React from 'react';
-import Table from 'react-bootstrap/Table';
-import Button from 'react-bootstrap/Button';
-import propTypes from 'prop-types'; // ES6
-import {dateToTxt} from './utils.js'
+import React        from 'react';
+import Table        from 'react-bootstrap/Table';
+import Button       from 'react-bootstrap/Button';
+import propTypes    from 'prop-types'; // ES6
+import {dateToTxt}  from './utils.js'
 import {get_changedDate_asTxt} from './utils.js'
 //import {maandNamenKort} from './utils.js'
-import {maandNamenKort} from './global_const.js'
-import {basic_API_url} from './global_const.js'
+import {maandNamenKort}       from './global_const.js'
+import {basic_API_url}        from './global_const.js'
 
-import EditWaardeModal from './EditWaardeModal.jsx'
-import SliderMonthsColored from './SliderMonthsColored.jsx'
+import EditWaardeModal        from './EditWaardeModal.jsx'
+import EditOpmerkingModal     from './EditOpmerkingModal.jsx'
+import SliderMonthsColored    from './SliderMonthsColored.jsx'
 import ChangeSliderVisibility from './ChangeSliderVisibility.jsx'
-import {v4 as uuidv4} from 'uuid';
+
+import {v4 as uuidv4}  from 'uuid';
 import {FaRegEyeSlash} from "react-icons/fa";
 import {AiOutlineEdit} from "react-icons/ai";
+import {AiOutlineClose, AiOutlineArrowLeft, AiOutlineArrowRight } from "react-icons/ai";
 
 
 // import DeleteUser from './deleteUser.jsx';
@@ -43,7 +46,9 @@ const Slider = (props) => {
       return dateToTxt (new Date())
       //return "2024-06-26" 
   })
-  const [period, setPeriod] = useState(8) // standaard een week + extra dag voor vorige of volgende periode
+  const [period, setPeriod] = useState(7
+
+  ) // standaard een week + extra dag voor vorige of volgende periode
 
   const [repeatDatesRow, setRepeatDatesRow] = useState(true)
 
@@ -78,17 +83,19 @@ const Slider = (props) => {
     // aanleveren geldige datum in text bijv 6-03 of 06-3 --> MOET NOG Met jaar ervoor 
   { 
     
-
     // uit elkaar halen:
     const eindDatum = new Date(sliderEndDate_asTxt)  // de laatste datum
     const startDatum = new Date (get_changedDate_asTxt(sliderEndDate_asTxt, ((period*-1)+1)));
     const startDag = startDatum.getDate()
     // console.log (' 91: startDatum: '  + sliderEndDate_asTxt + " dag: " + startDag)
     
-    const datum = new Date(date_asTxt) 
-    const jaar  = datum.getFullYear()
-    const maand = datum.getMonth()
-    const dag =   datum.getDate()
+    const datum   = new Date(date_asTxt) 
+    const jaar    = datum.getFullYear()
+    const maand   = datum.getMonth()
+    const dag     = datum.getDate()
+    const formatter = new Intl.DateTimeFormat('nl-NL',{ weekday: 'short' });
+    const weekdag = formatter.format(datum);
+
 
     if (vorm == 'dagNr') { return dag} 
     else 
@@ -101,7 +108,11 @@ const Slider = (props) => {
             return maandNamenKort[maand] 
           } else 
             return dag
-        } else return dag  + " " + maandNamenKort[maand]
+      } else 
+        if (vorm == 'weekDag') {
+          return weekdag
+        } 
+      else return dag  + " " + maandNamenKort[maand]
   }
 
   const numDays = (y, m) => new Date(y, m, 0).getDate();
@@ -162,14 +173,30 @@ const Slider = (props) => {
       body: postData,
     };
 
-    
-
     const res = await fetch(fetchURL, requestOptions);   
     if (!res.ok) { throw res;}
-
+    
     return res.json();
   } 
 
+  async function deleteOpmerkingViaApi (opm_id)  { // action == koppel aspect of update 
+    const postData = new FormData();
+          //console.log('100 myUsers useffect 1 .. ')   
+    postData.append('username', props.username);
+    postData.append('apikey',   props.apikey);
+    postData.append('opm_id',   opm_id);
+    postData.append('action',  'delete_opmerking');
+
+    let requestOptions = {
+      method: 'POST',
+      body: postData,
+    };
+
+    const res = await fetch(fetchURL, requestOptions);   
+    if (!res.ok) { throw res;}
+    
+    return res.json();
+  } 
 
   const handleClick_aspect_eye_out = (aspect) => {
     let result = update_bijInvoerTonen_naar_kan_via_API(aspect) 
@@ -178,6 +205,12 @@ const Slider = (props) => {
     setHasToReloadData(true);
   }
 
+  const handleClickDeleteOpmerkingViaApi = (opm_id) => {
+    let result = deleteOpmerkingViaApi(opm_id) 
+    console.log('187: opmerking gedelete met id: ' + opm_id)
+    
+    setHasToReloadData(true);
+  }
 
   function createSliderWeek(hghData, teTonenAspecten) {
     // in: HghData per aspect     
@@ -348,9 +381,9 @@ const Slider = (props) => {
       setHghAspecten(res['hghPeriod']['teTonenAspecten'])
       setHghOverigeAspecten(res['hghPeriod']['overigeAspecten'])
       setAspectTypes(res['hghPeriod']['teTonenAspectTypes'])
-      setOpmerkingen(res['hghPeriod']['dataOverPeriode'])
-      // console.log('350: iconlist from API:')
-      // console.log(res['hghPeriod']['iconsData']['imageNamesList'])
+      setOpmerkingen(res['hghPeriod']['opmerkingen'])
+      console.log('350: opmerkingen from API:')
+      console.log(res['hghPeriod']['opmerkingen'])
       setAvailable_icons(res['hghPeriod']['iconsData']['imageNamesList'])
       setHasToReloadData(false)
     })
@@ -394,7 +427,7 @@ const Slider = (props) => {
           {/* ********** NAVIGATIE boven de slider  *********** */}          
           <tr>
           <td key="slider_dateMenuRow_back"> 
-              <Button onClick={ () => changeSliderDate( period * -1 )}> 🡸 </Button>
+              <Button onClick={ () => changeSliderDate( period * -1 )}> <AiOutlineArrowLeft/> </Button>
             </td> 
             
             <td key="slider_period_select"  >
@@ -402,8 +435,8 @@ const Slider = (props) => {
                 <option defaultValue disabled>
                   periode
                 </option>
-                <option value="8" > 1 week</option>
-                <option value="15"> 2 week</option>
+                <option value="7" > 1 week</option>
+                <option value="14"> 2 week</option>
                 <option value="22"> 3 week</option>
                 <option value="29"> 4 week</option>
                 <option value="32"> 31 dagen</option>
@@ -417,7 +450,7 @@ const Slider = (props) => {
             </td>
           
             <td key="slider_dateMenuRow_forward">
-              <Button onClick={ () => changeSliderDate( period )}> 🡺 </Button>
+              <Button onClick={ () => changeSliderDate( period )}> <AiOutlineArrowRight/> </Button>
             </td>
            
           </tr>  
@@ -428,83 +461,122 @@ const Slider = (props) => {
 
       { sliderData1[0] ?
         <Table key={uuidv4()} striped bordered hover size="sm"> 
-
           {/*     **************************************  
                     1: schrijf de KOP regels met datums    
-                  **************************************       */}
-          
+                  **************************************       */ }
           <thead>
+          </thead>
+          <tbody>
+
+        {/* EERST de  opmerkingen */}
+
+        <tr> 
+             <td className='opmerkingen_header l' key={uuidv4()} colSpan={period + 2}>
+                <div className='linksRechtContent'>
+                  <div>
+                    Opmerkingen 
+                    <span className="x-small leftSpace">van - tot</span>
+                  </div>
+                  <div>
+                    <EditOpmerkingModal 
+                      username          = { username }
+                      apikey            = { apikey }                      
+                      datum_start       = { get_changedDate_asTxt(sliderEndDate_asTxt, ((period*-1)+1)) } 
+                      datum_einde       = { sliderEndDate_asTxt}  
+                      aspect            = { "opmerking" }
+                      opmerking         = { "" } 
+                      fetchURL          = { fetchURL }
+                      callBack_set_hgh_details = { callBack_set_hgh_details }
+                    />
+                  </div>               
+                </div>
+ 
+              </td>
+            </tr>
+            <tr>
+              <td className='opmerkingen' key={uuidv4()} colSpan={period + 2}>
+                {opmerkingen.map((opm, index) => 
+                  <div key={"opm_" + opm.id} className='opmerking_row'>
+                    {/* <Button  size="sm" > <AiOutlineEdit /> </Button> */}
+                    <Button size="sm" onClick={ () => handleClickDeleteOpmerkingViaApi(opm.id)}>
+                      <AiOutlineClose /> 
+                    </Button>
+                    <span className='x-small leftSpace' >
+                      {opm.datum_start.substring(opm.datum_start.length - 2)}
+                      {opm.datum_einde? 
+                        <> 
+    
+                          - {opm.datum_einde.substring(opm.datum_einde.length - 2)} 
+                        </>
+                      : ""
+                      }
+                    </span>
+                    <span className='space'></span>
+                    {opm.opmerking} 
+             
+
+                  </div>
+                )}
+              </td>
+            </tr>
+            <tr> <td key="rowOnderSliderOpmerkingen" colSpan={period + 2}></td></tr>
+
             {/* **** 1a: de maanden boven de datum rij **** */}
             <tr key={uuidv4()}>  
-              <th className='striped small' key={uuidv4()}>
+              <td className='striped small' key={uuidv4()}>
                 maand:
-              </th>
+              </td>
               { monthRow.map((item, itemIndex) => 
-                    <th className='striped small' key={uuidv4()}>    
-                      {item}
-                    </th>
+                  <th className='striped small' key={uuidv4()}>    
+                    {item}
+                  </th>
+                )
+              }
+            </tr>
+            
+            {/* **** 1a: de namen van de dag **** */}
+
+            <tr key={"sliderWeekDagRow"}>
+              <td className='striped small' key={uuidv4()}>
+            
+              </td>
+              { sliderData1[0].data.map((item, itemIndex) => 
+                    <td className='striped small' key={uuidv4()}>    
+                      <span className="x-small" >
+                        {txtDateFormat(item.datum,'weekDag')}
+                      </span>
+                    </td>
                 )
               }
             </tr>
 
             {/* **** 1b: de datums (getallen) met in eerste kolom een checkbox **** */}
-            <tr key={uuidv4()}>
-              <th className='striped small' key={uuidv4()}>
+            <tr key={"sliderDatumRow"}>
+              <td className='striped small' key={uuidv4()}>
                 <input 
                   key='repeateDatesRow' 
                   type='checkbox' 
                   checked={repeatDatesRow} 
                   onChange={ (e) => { setRepeatDatesRow(e.target.checked) }} 
                 /> 
+                <span className='space'></span>
                 datum: 
-              </th>
+              </td>
               { sliderData1[0].data.map((item, itemIndex) => 
-                    <th className='striped small' key={uuidv4()}>    
+                    <td className='striped small' key={uuidv4()}>    
                       {txtDateFormat(item.datum,'dagNr')}
-                    </th>
+                    </td>
                 )
               }
             </tr>
                       
-          </thead>
 
           {/*     **************************************  
-                  2 :Schrijf de data regels  
+                  2: zet de rijen met aspecten op het scherm   
                   **************************************
           */}
 
-          <tbody>
-
-            {/* EERST de  opmerkingen */}
-
-            <tr > 
-              <td className='opmerking_kol1' key={uuidv4()} >
-                opmerking
-              </td>
-              <td className='opmerking' key={uuidv4()} colSpan={period + 1}>
-                {opmerkingen.map(opm => 
-                  <>
-                    <Button className='buttonCRUD'>
-                        <AiOutlineEdit />
-                    </Button>
-                    {opm.datum.substring(opm.datum.length - 2)}
-                    {opm.datum_totenmet? 
-                      <> 
-                       
-                        <span className='space'></span>
-                        t/m {opm.datum_totenmet.substring(opm.datum_totenmet.length - 2)} 
-                      </>
-                    : ""
-                    }
-                    <span className='space'></span>
-                    {opm.opmerking} 
-                    <br></br>
-
-                  </>
-                )}
-              </td>
-            </tr>
-
+    
             {/* Dan per aspect de regels */}
 
             {aspectTypes.map((teTonenAspectType, teTonenAspectIndex) => (
@@ -565,7 +637,6 @@ const Slider = (props) => {
                                     username          = { username }
                                     apikey            = { apikey }                      
                                     datum             = { dagData.datum  } 
-                                    datum_totenmet    = { dagData.datum_totenmet}  
                                     aspect            = { dagData.aspect }
                                     icon              = { dataRow.icon }
                                     available_icons   = { available_icons }

@@ -50,17 +50,45 @@ body {
 
 .perc12 {width: 12% !important}
 
-.opmerking {
-  background-color: #a38a70 !important;
+.linksRechtContent {
+  display: flex;
+  justify-content: space-between; 
+  align-items: baseline;
+  
+  
+}
+
+.modalBody {
+  border: solid rgb(141, 141, 141) 4px;
+}
+
+.leftSpace {margin-left: 3px !important }
+
+.opmerkingen {
+  /* background-color: #aa9379 !important; */
   padding: 1px;
   height: 0.6rem !important;
   font-size: small !important;
   text-align: left;
 }
-.opmerking_kol1 {
 
+.opmerkingen_header {
+  background-color: #464642 !important; */
+  border: solid 1px rgb(111, 111, 111)  !important;;
+  padding: 1px;
+  height: 0.8rem !important;
+  text-align: left;
+}
+
+.opmerking_kol1 {
   font-size: small  !important;
 }
+
+.opmerking_row {
+  border: solid 1px rgb(79, 79, 79)  !important;
+  margin-bottom: 3px !important;
+}
+
 
 
 .redBorder {
