@@ -422,6 +422,7 @@ const Slider = (props) => {
   const handlers = useSwipeable({
     onSwipedRight: () => {
       // Trigger the previous week action on a left-to-right swipe
+      console.log("swipe Right detected")
       changeSliderDate( period * -1 )
     },
     onSwipedLeft: () => {
@@ -440,7 +441,7 @@ const Slider = (props) => {
     <>
       < SliderMonthsColored />
 
-      <Table key="slidermenu" striped bordered hover  size="sm"> 
+      <Table {...handlers}  key="slidermenu" striped bordered hover  size="sm"> 
 
         <tbody>
           {/* ********** NAVIGATIE boven de slider  *********** */}          
