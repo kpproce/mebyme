@@ -427,7 +427,7 @@ const Slider = (props) => {
           {/* ********** NAVIGATIE boven de slider  *********** */}          
           <tr>
           <td key="slider_dateMenuRow_back"> 
-              <Button onClick={ () => changeSliderDate( period * -1 )}> <AiOutlineArrowLeft/> </Button>
+              <Button className = "buttonBasis x-smallButton" onClick={ () => changeSliderDate( period * -1 )}> <AiOutlineArrowLeft/> </Button>
             </td> 
             
             <td key="slider_period_select"  >
@@ -450,7 +450,7 @@ const Slider = (props) => {
             </td>
           
             <td key="slider_dateMenuRow_forward">
-              <Button onClick={ () => changeSliderDate( period )}> <AiOutlineArrowRight/> </Button>
+              <Button className = "buttonBasis x-smallButton" onClick={ () => changeSliderDate( period )}> <AiOutlineArrowRight/> </Button>
             </td>
            
           </tr>  
@@ -498,7 +498,7 @@ const Slider = (props) => {
                 {opmerkingen.map((opm, index) => 
                   <div key={"opm_" + opm.id} className='opmerking_row'>
                     {/* <Button  size="sm" > <AiOutlineEdit /> </Button> */}
-                    <Button size="sm" onClick={ () => handleClickDeleteOpmerkingViaApi(opm.id)}>
+                    <Button variant="warning" className="xx-smallButton opacity_50perc" onClick={ () => handleClickDeleteOpmerkingViaApi(opm.id)}>
                       <AiOutlineClose /> 
                     </Button>
                     <span className='x-small leftSpace' >
