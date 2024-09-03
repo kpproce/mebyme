@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 import {useState, useEffect, useCallback} from 'react';
 import React        from 'react';
+import { useSwipeable } from 'react-swipeable';
 import Table        from 'react-bootstrap/Table';
 import Button       from 'react-bootstrap/Button';
 import propTypes    from 'prop-types'; // ES6
@@ -78,6 +79,7 @@ const Slider = (props) => {
     const updatedMessages = [...myMessages, newMessage];
     setMyMessages(updatedMessages);
   };
+  
 
   function txtDateFormat (date_asTxt, vorm) // zeer specifieke weergave, dus geen gebruik gemaakt van dateformat etc..
     // aanleveren geldige datum in text bijv 6-03 of 06-3 --> MOET NOG Met jaar ervoor 
@@ -415,6 +417,23 @@ const Slider = (props) => {
       setHasToReloadData(true) 
     }
   },[])
+
+
+  const handlers = useSwipeable({
+    onSwipedRight: () => {
+      // Trigger the previous week action on a left-to-right swipe
+      changeSliderDate( period * -1 )
+    },
+    onSwipedLeft: () => {
+      // Trigger the previous week action on a left-to-right swipe
+      changeSliderDate( period * 1 )
+    },
+   
+    preventDefaultTouchmoveEvent: true, // Prevent scrolling when swiping
+    trackMouse: true // Enable mouse swiping for desktop
+  });
+
+
 
   return (
     props.logged_in?
