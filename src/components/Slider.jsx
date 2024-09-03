@@ -440,45 +440,45 @@ const Slider = (props) => {
     props.logged_in?
     <>
       < SliderMonthsColored />
+      <div  {...handlers} >
+        <Table key="slidermenu" striped bordered hover  size="sm"> 
 
-      <Table {...handlers}  key="slidermenu" striped bordered hover  size="sm"> 
-
-        <tbody>
-          {/* ********** NAVIGATIE boven de slider  *********** */}          
-          <tr>
-          <td key="slider_dateMenuRow_back"> 
-              <Button className = "buttonBasis x-smallButton" onClick={ () => changeSliderDate( period * -1 )}> <AiOutlineArrowLeft/> </Button>
-            </td> 
+          <tbody>
+            {/* ********** NAVIGATIE boven de slider  *********** */}          
+            <tr>
+            <td key="slider_dateMenuRow_back"> 
+                <Button className = "buttonBasis x-smallButton" onClick={ () => changeSliderDate( period * -1 )}> <AiOutlineArrowLeft/> </Button>
+              </td> 
+              
+              <td key="slider_period_select"  >
+                <select style={{ fontSize: 'small', marginTop: '0.2rem'  }} onChange={ (e) => { setPeriod(e.target.value) }} className="form-select">
+                  <option defaultValue disabled>
+                    periode
+                  </option>
+                  <option value="7" > 1 week</option>
+                  <option value="14"> 2 week</option>
+                  <option value="22"> 3 week</option>
+                  <option value="29"> 4 week</option>
+                  <option value="32"> 31 dagen</option>
+                </select>
+              </td>
+                      
+              <td key="slider_dateMenuRow_date" style={{ fontSize: 'small', paddingTop: '0.8rem'  }}>{sliderEndDate_asTxt}</td> 
+              
+              <td key="slider_dateMenuRow_now">
+                <Button onClick={ () => setSliderDateToNow()}> nu </Button>
+              </td>
             
-            <td key="slider_period_select"  >
-              <select style={{ fontSize: 'small', marginTop: '0.2rem'  }} onChange={ (e) => { setPeriod(e.target.value) }} className="form-select">
-                <option defaultValue disabled>
-                  periode
-                </option>
-                <option value="7" > 1 week</option>
-                <option value="14"> 2 week</option>
-                <option value="22"> 3 week</option>
-                <option value="29"> 4 week</option>
-                <option value="32"> 31 dagen</option>
-              </select>
-            </td>
-                   
-            <td key="slider_dateMenuRow_date" style={{ fontSize: 'small', paddingTop: '0.8rem'  }}>{sliderEndDate_asTxt}</td> 
-            
-            <td key="slider_dateMenuRow_now">
-              <Button onClick={ () => setSliderDateToNow()}> nu </Button>
-            </td>
-          
-            <td key="slider_dateMenuRow_forward">
-              <Button className = "buttonBasis x-smallButton" onClick={ () => changeSliderDate( period )}> <AiOutlineArrowRight/> </Button>
-            </td>
-           
-          </tr>  
-        </tbody>
-      </Table>
-      {/* {console.log("496: :")}
-      {console.log(JSON.stringify(sliderData1))} */}
-
+              <td key="slider_dateMenuRow_forward">
+                <Button className = "buttonBasis x-smallButton" onClick={ () => changeSliderDate( period )}> <AiOutlineArrowRight/> </Button>
+              </td>
+              
+            </tr>  
+          </tbody>
+        </Table>
+        {/* {console.log("496: :")}
+        {console.log(JSON.stringify(sliderData1))} */}
+      </div>
       { sliderData1[0] ?
         <Table key={uuidv4()} striped bordered hover size="sm"> 
           {/*     **************************************  
