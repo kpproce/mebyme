@@ -440,7 +440,6 @@ const Slider = (props) => {
     props.logged_in?
     <>
       < SliderMonthsColored />
-      <div  {...handlers} >
         <Table key="slidermenu" striped bordered hover  size="sm"> 
 
           <tbody>
@@ -478,8 +477,8 @@ const Slider = (props) => {
         </Table>
         {/* {console.log("496: :")}
         {console.log(JSON.stringify(sliderData1))} */}
-      </div>
       { sliderData1[0] ?
+       <div  {...handlers} >
         <Table key={uuidv4()} striped bordered hover size="sm"> 
           {/*     **************************************  
                     1: schrijf de KOP regels met datums    
@@ -677,6 +676,7 @@ const Slider = (props) => {
             ))}
           </tbody>
         </Table>
+       </div>
         : "Geen data"
       }   
 

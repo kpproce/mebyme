@@ -124,7 +124,7 @@ const MyUsers = (props) => {
 
   return (
     <>
-      <div>versie 1.09G swipe test 3!</div>
+      <div>versie 1.1 prod versie met swipe en opmerkingen !</div>
       {console.log('142:')}
       {console.log(data)}
       <h2 className="smallTitle"> usergegevens, opgevraagd door {props.username}</h2> 
