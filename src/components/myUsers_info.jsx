@@ -124,7 +124,7 @@ const MyUsers = (props) => {
 
   return (
     <>
-      <div>versie 1.01 </div>
+      <div>versie 1.09D test root color </div>
       {console.log('142:')}
       {console.log(data)}
       <h2 className="smallTitle"> usergegevens, opgevraagd door {props.username}</h2> 
