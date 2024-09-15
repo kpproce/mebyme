@@ -25,9 +25,9 @@ const MyNavbar = () => {
         return apikey ? apikey : 'no_apikey' // standaard 
     })
     
-    const [sitename, setSitename] = useState(() => {
-        return username? username : 'astma' // standaard 
-    })
+    // const [sitename, setSitename] = useState(() => {
+    //     return username? username : 'astma' // standaard 
+    // })
 
     const [logged_in, setLogged_in] = useState(false)
 
@@ -44,11 +44,11 @@ const MyNavbar = () => {
 
     // CALBACK 
     const callBackNavBarFromLogin = useCallback((username, apikey, logged_in_result) => {
-        console.log('31: callBack FromLogin')
-        console.log(username + "  apikey: " + apikey + "  logged_in_result: " + logged_in_result)
+        // console.log('31: callBack FromLogin')
+        // console.log(username + "  apikey: " + apikey + "  logged_in_result: " + logged_in_result)
         setApikey(apikey)
         setUsername(username)
-        setSitename(username)
+        // setSitename(username)
         setLogged_in(logged_in_result)
     },[]);
 

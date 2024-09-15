@@ -28,14 +28,14 @@ const MyUsers = (props) => {
   const [needToReload, setNeedToReload] = useState(() => {true})
 
   function callBack_myUsers_from_deleteUser(userMessage, value) {
-    console.log('24 callBack_myUsers_from_deleteUser ')
-    console.log('25: usermessage: ' + userMessage)
+    // console.log('24 callBack_myUsers_from_deleteUser ')
+    // console.log('25: usermessage: ' + userMessage)
     setNeedToReload(true)
   }
 
   function callBack_myUsers_from_editRole(userMessage) {
-    console.log('34 callBack_myUsers_from_deleteUser ')
-    console.log('35: usermessage: ' + userMessage)
+    // console.log('34 callBack_myUsers_from_deleteUser ')
+    // console.log('35: usermessage: ' + userMessage)
     setMyUsers_message(userMessage)
   }
 
@@ -57,15 +57,15 @@ const MyUsers = (props) => {
         data[index] = {... object_InfoButton, ...object_Avatar, ...row}
     });
 
-    console.log('59:  .. ')
-    console.log(data)   
+    //console.log('59:  .. ')
+    //console.log(data)   
 
     return data
   }
 
   async function getData() {
     const postData = new FormData();
-    console.log('100 myUsers useffect 1 .. ')   
+    // console.log('100 myUsers useffect 1 .. ')   
     postData.append ('username_aanvrager', username);
     postData.append('api_aanvrager', apikey);
     postData.append('action', 'get_meta_accounts_1');
@@ -87,13 +87,13 @@ const MyUsers = (props) => {
   useEffect (() => {
     getData()
     .then ((res) => {
-      console.log('105: res data opgehaald');
-      console.log(res);
+      // console.log('105: res data opgehaald');
+      // console.log(res);
       setMessage(res['messages'][0]);
       let users = addButtons(res['user_info'])
       setData(res['user_info']);
-      console.log("110: data: ")
-      console.log(data)
+      // console.log("110: data: ")
+      // console.log(data)
       handleData(data)
       setNeedToReload('false')
     })
@@ -101,15 +101,15 @@ const MyUsers = (props) => {
 
 
   useEffect (() => {
-    console.log('120 myUsers useffect 2 .. ')
+    // console.log('120 myUsers useffect 2 .. ')
     setUsername(props.username) // de username parent is gewijzigd
     setApikey(props.apikey) // de apikey parent is gewijzigd
-    console.log('120 myUsers useffect 3 .. ')
+    // console.log('120 myUsers useffect 3 .. ')
   }, [props.username, props.apikey]) 
 
   useEffect (() => { // voor de child component -> deleteUser
     if (needToReload == true) {
-      console.log('130: need to reload userdata  .. ')
+      // console.log('130: need to reload userdata  .. ')
       getData()
       .then ((res) => {
         setMessage(res['messages'][0]);
@@ -118,27 +118,26 @@ const MyUsers = (props) => {
         handleData()
         setNeedToReload('false')
       })
-    } else 
-      console.log('130: DONT need to reload userdata  .. ')
+    } 
   }, [needToReload])
 
   return (
     <>
-      <div>versie 1.1 prod versie met swipe en opmerkingen !</div>
-      {console.log('142:')}
-      {console.log(data)}
+      <div> versie 1.202 prod versie met dagDelen zonder comment!</div>
+      {/* {console.log('142:')} */}
+      {/* {console.log(data)} */}
       <h2 className="smallTitle"> usergegevens, opgevraagd door {props.username}</h2> 
       <div>{myUsers_message}</div>
       {data?
         data[0]? 
           <>
-            {console.log('101: ' + needToReload)}
+            {/* {console.log('101: ' + needToReload)} */}
             <Table striped bordered hover variant="dark" size="sm"> 
               <thead>
                 <tr>
                   {Object.keys(data[0]).map(header => <th key={header}>{header}</th>)}
-                  {console.log('154:')}
-                  {console.log(data)}
+                  {/* {console.log('154:')} */}
+                  {/* {console.log(data)} */}
                 </tr>
               </thead>
               <tbody>

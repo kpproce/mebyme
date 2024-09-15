@@ -208,7 +208,7 @@ const Slider = (props) => {
 
   const handleClickDeleteOpmerkingViaApi = (opm_id) => {
     let result = deleteOpmerkingViaApi(opm_id) 
-    console.log('187: opmerking gedelete met id: ' + opm_id)
+    console.log('187: delete opmerking met id: ' + opm_id)
     
     setHasToReloadData(true);
   }
@@ -256,8 +256,8 @@ const Slider = (props) => {
         let hghData_alleDagen = [] // lege dataRow
         datesRow.forEach(date => {
           if (date == hghRow.data[loopRowIndex].datum) {
-            console.log('260: ')
-            console.log(JSON.stringify(hghRow.data[loopRowIndex]))
+            //console.log('260: ')
+            //console.log(JSON.stringify(hghRow.data[loopRowIndex]))
             let dataObject = {
               'datum'          : date, 
               'aspect'         : hghRow.data[0].aspect,
@@ -304,7 +304,7 @@ const Slider = (props) => {
         // is dit aspect al opegnomen??
         let hghData_alleDagen=[];
         if (teTonenAspect.bijInvoerTonen==='ja') {    //  Moet je dit aspect tonen? 
-          console.log("303: " + teTonenAspect.aspect + " === ja")               
+          // console.log("303: " + teTonenAspect.aspect + " === ja")               
           if (!hghData_alleDagen_alleAspecten.find((zoekAspect) => zoekAspect.aspect === teTonenAspect.aspect)) {
             //  Is dit aspect NOG NIET opgenomen in hghData_alleDagen_alleAspecten, de huisige slider
             // console.log(teTonenAspect.aspect + " nog opnemen") 
@@ -329,62 +329,62 @@ const Slider = (props) => {
             })
           } 
         } else {
-          console.log("303: " + teTonenAspect.aspect + " =X= niet Ja")  
+          // console.log("303: " + teTonenAspect.aspect + " =X= niet Ja")  
         }
       });
 
       //  ******************************** 
       //      Voeg aspect_type toe
       //  ********************************
-      console.log("337:zoek de aspecten in: aspect teTonenAspecten" ) 
-      console.log(JSON.stringify(teTonenAspecten))
+      // console.log("337:zoek de aspecten in: aspect teTonenAspecten" ) 
+      // console.log(JSON.stringify(teTonenAspecten))
 
       hghData_alleDagen_alleAspecten.forEach((aspectData) => {
         // zoek aspect_type op in de array en wijzig deze. 
-        console.log("340: hghData_alleDagen_alleAspecten:" ) 
-        hghData_alleDagen_alleAspecten.forEach(dat => {
-          //console.log(dat.aspect_type)
-          dat.data.forEach(datRow => console.log(JSON.stringify(datRow)))
-        })
+        // console.log("340: hghData_alleDagen_alleAspecten:" ) 
+        // hghData_alleDagen_alleAspecten.forEach(dat => {
+        //   //console.log(dat.aspect_type)
+        //   dat.data.forEach(datRow => console.log(JSON.stringify(datRow)))
+        // })
         let teZoekenAspect = aspectData.aspect
         let orgTeZoekenAspect = aspectData.aspect
         
-        console.log("345: zoek naar " + teZoekenAspect)
+        // console.log("345: zoek naar " + teZoekenAspect)
         if (aspectData.aspect.includes("max_")) {
           teZoekenAspect = teZoekenAspect.substring(4)
-          console.log("345max yes: "+ aspectData.aspect + " contains max_ wordt nu: " +  teZoekenAspect)        
+          // console.log("345max yes: "+ aspectData.aspect + " contains max_ wordt nu: " +  teZoekenAspect)        
           // aspectData.aspect_type = teTonenAspecten.find((zoekAspect) => zoekAspect.aspect === aspectData.aspect).aspect_type
         } else {
-          console.log("345max no: "+ aspectData.aspect + " ( "  + teZoekenAspect + " ) XX contains NO max_") 
+          //console.log("345max no: "+ aspectData.aspect + " ( "  + teZoekenAspect + " ) XX contains NO max_") 
          }
-        console.log("355: -" + teZoekenAspect + "- " + teZoekenAspect.length)
+        // console.log("355: -" + teZoekenAspect + "- " + teZoekenAspect.length)
          
          let tmp = teTonenAspecten.find((zoekAspect) => zoekAspect.aspect === teZoekenAspect)
         
         if (tmp === undefined) { // aspect niet gevonden 
-          console.log ("362: tmp = undefined, hier is de lijst:") 
+          // console.log ("362: tmp = undefined, hier is de lijst:") 
           teTonenAspecten.forEach( teTonenAspect=> {
-            console.log(teTonenAspect)
+            // console.log(teTonenAspect)
           })
           aspectData.aspect_type = teZoekenAspect 
           
         } else { 
-          console.log ("366: max gevonden: " + tmp.aspect_type) 
-          console.log(JSON.stringify(tmp))
+          // console.log ("366: max gevonden: " + tmp.aspect_type) 
+          // console.log(JSON.stringify(tmp))
           aspectData.aspect_type = tmp.aspect_type
         }
        
-          console.log("371: gezocht: " + orgTeZoekenAspect +  " gebruikt: " + teZoekenAspect + " gevonden aspect_type: " + aspectData.aspect_type)
+          // console.log("371: gezocht: " + orgTeZoekenAspect +  " gebruikt: " + teZoekenAspect + " gevonden aspect_type: " + aspectData.aspect_type)
       
       })
       // console.log('381: ')
       // console.log(hghData_alleDagen_alleAspecten)
       setSliderData1 (hghData_alleDagen_alleAspecten)  
-      console.log("376: hghData_alleDagen_alleAspecten:" ) 
-      hghData_alleDagen_alleAspecten.forEach(dat => {
-        console.log(dat.aspect_type)
-        dat.data.forEach(datRow => console.log(JSON.stringify(datRow)))
-      })
+      // console.log("376: hghData_alleDagen_alleAspecten:" ) 
+      // hghData_alleDagen_alleAspecten.forEach(dat => {
+      //   // console.log(dat.aspect_type)
+      //   //dat.data.forEach(datRow => console.log(JSON.stringify(datRow)))
+      // })
     } 
   }   
 
@@ -396,7 +396,7 @@ const Slider = (props) => {
   
  
   const maakIndividueleDagWaardes = (waardesAsString) => {
-    console.log("401: "+ waardesAsString)
+    // console.log("401: "+ waardesAsString)
     if (waardesAsString === undefined)  return Array(5).fill('0')
 
     const arr = waardesAsString.split(''); // Split the string into an array of characters
@@ -442,8 +442,8 @@ const Slider = (props) => {
       setHghOverigeAspecten(res['hghPeriod']['overigeAspecten'])
       setAspectTypes(res['hghPeriod']['teTonenAspectTypes'])
       setOpmerkingen(res['hghPeriod']['opmerkingen'])
-      console.log('350: opmerkingen from API:')
-      console.log(res['hghPeriod']['opmerkingen'])
+      // console.log('350: opmerkingen from API:')
+      // console.log(res['hghPeriod']['opmerkingen'])
       setAvailable_icons(res['hghPeriod']['iconsData']['imageNamesList'])
       setHasToReloadData(false)
     })
@@ -462,15 +462,15 @@ const Slider = (props) => {
     // console.log (JSON.stringify(sliderData1))
     if (oudeWaarde===nieuweWaarde) {
     
-       console.log ('callBackSetOpmerking: Opmerking NIET veranderd' + oudeOpmerking + ' --> ' + nieuweOpmerking)
+       // console.log ('callBackSetOpmerking: Opmerking NIET veranderd' + oudeOpmerking + ' --> ' + nieuweOpmerking)
     } else {
       setHasToReloadData(true) 
-      console.log ('callBackSetOpmerkingOpmerking aangeroepen: opmerking WEL veranderd veranderd' + oudeOpmerking + ' --> ' + nieuweOpmerking)
+      //console.log ('callBackSetOpmerkingOpmerking aangeroepen: opmerking WEL veranderd veranderd' + oudeOpmerking + ' --> ' + nieuweOpmerking)
     }
   },[])
 
   const callBack_changeSliderVisibility = useCallback((visibilityChanged) => {
-    console.log ('307: callBack_changeSliderVisibility aangeroepen met visibilityChanged = ' + visibilityChanged)
+    //console.log ('307: callBack_changeSliderVisibility aangeroepen met visibilityChanged = ' + visibilityChanged)
     if (visibilityChanged) {
       setHasToReloadData(true) 
     }
