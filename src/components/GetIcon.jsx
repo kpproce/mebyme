@@ -33,6 +33,12 @@ const GetIcon = (props) => {
         }
       }
 
+      let available_icon1 =  "" + props.available_icons.filter(
+        available_icon => available_icon.substring(0, available_icon.indexOf(".")) === props.aspect_type
+      );
+
+      let image_url_src = imageUrl() + 'mebyme_icons/' + available_icon1
+      
       if (props.aspect_type === 'medicatie') {
           image_url_src = imageUrl() + 'mebyme_icons/' + "med_basis.png"
           return <img src={image_url_src} height='20px' width='20px'></img>;    
@@ -44,11 +50,7 @@ const GetIcon = (props) => {
         return <img src={image_url_src} height='20px' width='20px'></img>;    
       }
 
-      let available_icon1 =  "" + props.available_icons.filter(
-        available_icon => available_icon.substring(0, available_icon.indexOf(".")) === props.aspect_type
-      );
 
-      let image_url_src = imageUrl() + 'mebyme_icons/' + available_icon1
 
       if (available_icon1.length > 3) {
         return <img src={image_url_src} height='20px' width='20px'></img>;
