@@ -44,30 +44,10 @@ body {
 
 .noPadding {padding:0 !important}
 
-/*   WIJZIGEN van de waarde details     */
-
-.css-13cymwt-control {   /* this is de dropdown, to align vertical */
-  flex-direction: column;
-}
-
-.edit_waardeDagDeel_header {
-  font-size: small;
-  text-align: center
-}
-
-.edit_waardeDagDeel_Select {
-  width: 10rem !important;
-  font-size: x-large !important;
-}
-
-.select-container {
-  /*
-    display: flex;     
-    justify-content: space-between; 
-    flex-direction: column;
-    gap: 10px; 
-  */
-}
+.waardeSelectTd {
+  padding: 3px; 
+  font-size: x-large
+};
 
 .small     { font-size: small }
 .x-small   { font-size: x-small }
@@ -119,22 +99,6 @@ body {
   padding:3px !important;
 }
 
-/* Example CSS classes for background colors */
-.custom-select .select__control {
-  background-color: transparent; /* You can use the class for styling here */
-}
-
-/* Add specific styles if needed */
-.select__control.color_0 {
-  background-color: rgb(114, 136, 156); /* Adjust or override based on your classes */
-}
-
-.select__control.color_1 {
-  background-color: rgb(20, 244, 54); /* Adjust or override based on your classes */
-}
-
-
-
 .bootstrap-select .dropdown-toggle {
   display: flex;
   flex-direction: column; /* Stack children vertically */
@@ -154,13 +118,22 @@ body {
   margin-bottom: 2px; /* Adjust spacing between icon and arrow */
 }
 
-
+.select-container {
+  display: flex;      /* Flexbox layout */
+  justify-content: space-between; /* Spread elements horizontally */
+  flex-direction: column;
+  gap: 10px; /* Add space between the selects */
+}
 
 /* Ensure icon and arrow are in column layout on mobile */
 @media (max-width: 768px) {
  
 }
 
+.table_selectDagdelen {
+  width: 20rem;
+  border-spacing: 10px; /* Adjust the value as needed */
+}
 
 .buttonBasis {
   margin-top: 0.2rem;
@@ -233,19 +206,20 @@ body {
 .width3px  { width: 3px }
 .space { padding-right: 6px;}
 
-.color_0 { background-color: rgb(211, 211, 211)    !important }  
-.color_1 { background-color: rgb(30, 255, 0) !important }  
-.color_2 { background-color: rgb(108, 150, 30)  !important }  
-.color_3 { background-color: rgb(207, 197, 22)  !important }  
-.color_4 { background-color: rgb(255, 115, 1)  !important }  
-.color_5 { background-color: rgb(236, 24, 140) !important }  
+.color_0 { background-color: rgb(114, 136, 156) !important }  
+.color_1 { background-color: rgb(20, 244, 54) !important }  
+.color_2 { background-color: rgb(191, 235, 108)  !important }  
+.color_3 { background-color: rgb(255, 249, 61)  !important }  
+.color_4 { background-color: rgb(252, 198, 37)  !important }  
+.color_5 { background-color: rgb(251, 77, 77) !important }  
 
-.fg_color_0 { color: rgb(211, 211, 211)    !important }  
-.fg_color_1 { color: rgb(0, 255, 38)    !important }   
-.fg_color_2 { color: rgb(104, 164, 0)   !important }  
-.fg_color_3 { color: rgb(207, 197, 22)  !important }  
-.fg_color_4 { color: rgb(255, 132, 1)   !important }  
-.fg_color_5 { color: rgb(236, 24, 140)  !important }  
+.fg_color_0 { color: rgb(114, 136, 156) !important }  
+.fg_color_1 { color: rgb(20, 244, 54) !important }  
+.fg_color_2 { color: rgb(191, 235, 108)  !important }  
+.fg_color_3 { color: rgb(255, 249, 61)  !important }  
+.fg_color_4 { color: rgb(252, 198, 37)  !important }  
+.fg_color_5 { color: rgb(251, 77, 77) !important }  
+
 
 .testColor { color: rgb(222, 242, 255) }
 .buttonEyeAanUit { 
@@ -261,10 +235,10 @@ body {
   padding: 0.2rem !important; 
 }
 
+
 .py-4 {
   padding: 2px !important;
   padding-top: 8px !important;
-  margin-right:-5px;
 }
 
 .grey {color: gray}

@@ -11,16 +11,16 @@ import {get_changedDate_asTxt} from './utils.js'
 import {maandNamenKort}       from './global_const.js'
 import {basic_API_url}        from './global_const.js'
 
-import EditWaardeModal        from './EditWaardeModal.jsx'
-import EditOpmerkingModal     from './EditOpmerkingModal.jsx'
-import SliderMonthsColored    from './SliderMonthsColored.jsx'
-import ChangeSliderVisibility from './ChangeSliderVisibility.jsx'
+import EditWaardeModal         from './EditWaardeModal.jsx'
+import EditWaardeDagdelenModal from './EditWaardeDagdelenModal.jsx'
+import EditOpmerkingModal      from './EditOpmerkingModal.jsx'
+import SliderMonthsColored     from './SliderMonthsColored.jsx'
+import ChangeSliderVisibility  from './ChangeSliderVisibility.jsx'
 
 import {v4 as uuidv4}  from 'uuid';
 import {FaRegEyeSlash} from "react-icons/fa";
 import {AiOutlineEdit} from "react-icons/ai";
 import {AiOutlineClose, AiOutlineArrowLeft, AiOutlineArrowRight } from "react-icons/ai";
-
 
 // import DeleteUser from './deleteUser.jsx';
 // import EditUser from './editUser.jsx';
@@ -84,7 +84,6 @@ const Slider = (props) => {
   function txtDateFormat (date_asTxt, vorm) // zeer specifieke weergave, dus geen gebruik gemaakt van dateformat etc..
     // aanleveren geldige datum in text bijv 6-03 of 06-3 --> MOET NOG Met jaar ervoor 
   { 
-    
     // uit elkaar halen:
     const eindDatum = new Date(sliderEndDate_asTxt)  // de laatste datum
     const startDatum = new Date (get_changedDate_asTxt(sliderEndDate_asTxt, ((period*-1)+1)));
@@ -202,7 +201,7 @@ const Slider = (props) => {
 
   const handleClick_aspect_eye_out = (aspect) => {
     let result = update_bijInvoerTonen_naar_kan_via_API(aspect) 
-    console.log('172: eye uit geklikt van aspect: ' + aspect)
+    console.log('206: eye uit geklikt van aspect: ' + aspect)
     
     setHasToReloadData(true);
   }
@@ -257,13 +256,17 @@ const Slider = (props) => {
         let hghData_alleDagen = [] // lege dataRow
         datesRow.forEach(date => {
           if (date == hghRow.data[loopRowIndex].datum) {
-              
+            console.log('260: ')
+            console.log(JSON.stringify(hghRow.data[loopRowIndex]))
             let dataObject = {
-              'datum'     : date, 
-              'aspect'    : hghRow.data[0].aspect,
-              'waarde'    : hghRow.data[loopRowIndex].waarde,
+              'datum'          : date, 
+              'aspect'         : hghRow.data[0].aspect,
+              'waarde'         : hghRow.data[loopRowIndex].waarde,
+              'waardeDagdelen' : hghRow.data[loopRowIndex].waardeDagdelen,
+              
               'opmerking' : hghRow.data[loopRowIndex].opmerking
             }
+         
             hghData_alleDagen.push( dataObject )
 
             let len = Object.keys(hghRow.data).length
@@ -271,17 +274,16 @@ const Slider = (props) => {
           
           } else {
             let dataObject = {
-              'datum'       : date, 
-              'aspect'      : hghRow.data[0].aspect,
-              'waarde'      : 0,
-              'opmerking'   : null
+              'datum'           : date, 
+              'aspect'          : hghRow.data[0].aspect,
+              'waarde'          : 0,
+              'waardeDagdelen'  : "00000",
+              'opmerking'       : null
             }
             hghData_alleDagen.push( dataObject )
           }
         })
 
-        // console.log('216: hghRow ' )
-        // console.log(JSON.stringify(hghRow))
         hghData_alleDagen_alleAspecten.push({
           'aspect'      : hghRow.data[0].aspect , 
           'aspect_type' : 'unknown',
@@ -299,9 +301,10 @@ const Slider = (props) => {
       // console.log(hghData_alleDagen_alleAspecten)
 
       teTonenAspecten.forEach((teTonenAspect, teTonenAspectIndex) => {
-        // is dit aspect al opgnomen??
+        // is dit aspect al opegnomen??
         let hghData_alleDagen=[];
-        if (teTonenAspect.bijInvoerTonen==='ja') {    //  Moet je dit aspect tonen?        
+        if (teTonenAspect.bijInvoerTonen==='ja') {    //  Moet je dit aspect tonen? 
+          console.log("303: " + teTonenAspect.aspect + " === ja")               
           if (!hghData_alleDagen_alleAspecten.find((zoekAspect) => zoekAspect.aspect === teTonenAspect.aspect)) {
             //  Is dit aspect NOG NIET opgenomen in hghData_alleDagen_alleAspecten, de huisige slider
             // console.log(teTonenAspect.aspect + " nog opnemen") 
@@ -325,19 +328,63 @@ const Slider = (props) => {
               'data'        : hghData_alleDagen 
             })
           } 
+        } else {
+          console.log("303: " + teTonenAspect.aspect + " =X= niet Ja")  
         }
       });
 
       //  ******************************** 
       //      Voeg aspect_type toe
       //  ********************************
+      console.log("337:zoek de aspecten in: aspect teTonenAspecten" ) 
+      console.log(JSON.stringify(teTonenAspecten))
+
       hghData_alleDagen_alleAspecten.forEach((aspectData) => {
         // zoek aspect_type op in de array en wijzig deze. 
-        aspectData.aspect_type = teTonenAspecten.find((zoekAspect) => zoekAspect.aspect === aspectData.aspect).aspect_type
+        console.log("340: hghData_alleDagen_alleAspecten:" ) 
+        hghData_alleDagen_alleAspecten.forEach(dat => {
+          //console.log(dat.aspect_type)
+          dat.data.forEach(datRow => console.log(JSON.stringify(datRow)))
+        })
+        let teZoekenAspect = aspectData.aspect
+        let orgTeZoekenAspect = aspectData.aspect
+        
+        console.log("345: zoek naar " + teZoekenAspect)
+        if (aspectData.aspect.includes("max_")) {
+          teZoekenAspect = teZoekenAspect.substring(4)
+          console.log("345max yes: "+ aspectData.aspect + " contains max_ wordt nu: " +  teZoekenAspect)        
+          // aspectData.aspect_type = teTonenAspecten.find((zoekAspect) => zoekAspect.aspect === aspectData.aspect).aspect_type
+        } else {
+          console.log("345max no: "+ aspectData.aspect + " ( "  + teZoekenAspect + " ) XX contains NO max_") 
+         }
+        console.log("355: -" + teZoekenAspect + "- " + teZoekenAspect.length)
+         
+         let tmp = teTonenAspecten.find((zoekAspect) => zoekAspect.aspect === teZoekenAspect)
+        
+        if (tmp === undefined) { // aspect niet gevonden 
+          console.log ("362: tmp = undefined, hier is de lijst:") 
+          teTonenAspecten.forEach( teTonenAspect=> {
+            console.log(teTonenAspect)
+          })
+          aspectData.aspect_type = teZoekenAspect 
+          
+        } else { 
+          console.log ("366: max gevonden: " + tmp.aspect_type) 
+          console.log(JSON.stringify(tmp))
+          aspectData.aspect_type = tmp.aspect_type
+        }
+       
+          console.log("371: gezocht: " + orgTeZoekenAspect +  " gebruikt: " + teZoekenAspect + " gevonden aspect_type: " + aspectData.aspect_type)
+      
       })
       // console.log('381: ')
       // console.log(hghData_alleDagen_alleAspecten)
       setSliderData1 (hghData_alleDagen_alleAspecten)  
+      console.log("376: hghData_alleDagen_alleAspecten:" ) 
+      hghData_alleDagen_alleAspecten.forEach(dat => {
+        console.log(dat.aspect_type)
+        dat.data.forEach(datRow => console.log(JSON.stringify(datRow)))
+      })
     } 
   }   
 
@@ -348,6 +395,17 @@ const Slider = (props) => {
  }
   
  
+  const maakIndividueleDagWaardes = (waardesAsString) => {
+    console.log("401: "+ waardesAsString)
+    if (waardesAsString === undefined)  return Array(5).fill('0')
+
+    const arr = waardesAsString.split(''); // Split the string into an array of characters
+    while (arr.length < 5) {
+      arr.push('0'); // Fill with empty strings until the length is 5
+    }
+    return arr;
+  }
+
   const setSliderDateToNow = () => {  
     setSliderEndDate_asTxt(dateToTxt (new Date()))
   }
@@ -434,249 +492,254 @@ const Slider = (props) => {
     trackMouse: true, delta: 10 // Enable mouse swiping for desktop
   });
 
-
-
   return (
     props.logged_in?
     <>
       < SliderMonthsColored />
-        <Table key="slidermenu" striped bordered hover  size="sm"> 
 
-          <tbody>
-            {/* ********** NAVIGATIE boven de slider  *********** */}          
-            <tr>
+      <Table key="slidermenu" striped bordered hover  size="sm"> 
+        <thead>
+        </thead>
+        <tbody>
+          {/* ********** NAVIGATIE boven de slider  *********** */}          
+          <tr>
             <td key="slider_dateMenuRow_back"> 
                 <Button className = "buttonBasis x-smallButton" onClick={ () => changeSliderDate( period * -1 )}> <AiOutlineArrowLeft/> </Button>
-              </td> 
-              
-              <td key="slider_period_select"  >
-                <select style={{ fontSize: 'small', marginTop: '0.2rem'  }} onChange={ (e) => { setPeriod(e.target.value) }} className="form-select">
-                  <option defaultValue disabled>
-                    periode
-                  </option>
-                  <option value="7" > 1 week</option>
-                  <option value="14"> 2 week</option>
-                  <option value="22"> 3 week</option>
-                  <option value="29"> 4 week</option>
-                  <option value="32"> 31 dagen</option>
-                </select>
-              </td>
-                      
-              <td key="slider_dateMenuRow_date" style={{ fontSize: 'small', paddingTop: '0.8rem'  }}>{sliderEndDate_asTxt}</td> 
-              
-              <td key="slider_dateMenuRow_now">
-                <Button onClick={ () => setSliderDateToNow()}> nu </Button>
-              </td>
+            </td> 
+            <td key="slider_period_select"  >
+              <select style={{ fontSize: 'small', marginTop: '0.2rem'  }} onChange={ (e) => { setPeriod(e.target.value) }} className="form-select">
+                <option defaultValue disabled>
+                  periode
+                </option>
+                <option value="7" > 1 week</option>
+                <option value="14"> 2 week</option>
+                <option value="22"> 3 week</option>
+                <option value="29"> 4 week</option>
+                <option value="32"> 31 dagen</option>
+              </select>
+            </td>
+                    
+            <td key="slider_dateMenuRow_date" style={{ fontSize: 'small', paddingTop: '0.8rem'  }}>{sliderEndDate_asTxt}</td> 
             
-              <td key="slider_dateMenuRow_forward">
-                <Button className = "buttonBasis x-smallButton" onClick={ () => changeSliderDate( period )}> <AiOutlineArrowRight/> </Button>
-              </td>
-              
-            </tr>  
-          </tbody>
-        </Table>
-        {/* {console.log("496: :")}
-        {console.log(JSON.stringify(sliderData1))} */}
-      { sliderData1[0] ?
-       <div  {...handlers} >
-        <Table key={uuidv4()} striped bordered hover size="sm"> 
-          {/*     **************************************  
-                    1: schrijf de KOP regels met datums    
-                  **************************************       */ }
-          <thead>
-          </thead>
-          <tbody>
-
-        {/* EERST de  opmerkingen */}
-
-        <tr> 
-             <td className='opmerkingen_header l' key={uuidv4()} colSpan={period + 2}>
-                <div className='linksRechtContent'>
-                  <div>
-                    Opmerkingen 
-                    <span className="x-small leftSpace">van - tot</span>
-                  </div>
-                  <div>
-                    <EditOpmerkingModal 
-                      username          = { username }
-                      apikey            = { apikey }                      
-                      datum_start       = { get_changedDate_asTxt(sliderEndDate_asTxt, ((period*-1)+1)) } 
-                      datum_einde       = { sliderEndDate_asTxt}  
-                      aspect            = { "opmerking" }
-                      opmerking         = { "" } 
-                      fetchURL          = { fetchURL }
-                      callBack_set_hgh_details = { callBack_set_hgh_details }
-                    />
-                  </div>               
-                </div>
- 
-              </td>
-            </tr>
-            <tr>
-              <td className='opmerkingen' key={uuidv4()} colSpan={period + 2}>
-                {opmerkingen.map((opm, index) => 
-                  <div key={"opm_" + opm.id} className='opmerking_row'>
-                    {/* <Button  size="sm" > <AiOutlineEdit /> </Button> */}
-                    <Button variant="warning" className="xx-smallButton opacity_50perc" onClick={ () => handleClickDeleteOpmerkingViaApi(opm.id)}>
-                      <AiOutlineClose /> 
-                    </Button>
-                    <span className='x-small leftSpace' >
-                      {opm.datum_start.substring(opm.datum_start.length - 2)}
-                      {opm.datum_einde? 
-                        <> 
+            <td key="slider_dateMenuRow_now">
+              <Button onClick={ () => setSliderDateToNow()}> nu </Button>
+            </td>
+          
+            <td key="slider_dateMenuRow_forward">
+              <Button className = "buttonBasis x-smallButton" onClick={ () => changeSliderDate( period )}> <AiOutlineArrowRight/> </Button>
+            </td>
+            
+          </tr>  
+        </tbody>
+      </Table>
+      
+      {/* {console.log("496: :")}
+      {console.log(JSON.stringify(sliderData1))} */}
     
-                          - {opm.datum_einde.substring(opm.datum_einde.length - 2)} 
-                        </>
-                      : ""
-                      }
+      { sliderData1[0] ?
+        <div  {...handlers} >
+          <Table key={uuidv4()} striped bordered hover size="sm"> 
+            {/*     **************************************  
+                      1: schrijf de KOP regels met datums    
+                    **************************************       */ }
+            <thead>
+            </thead>
+            <tbody>
+
+          {/* EERST de  opmerkingen */}
+
+          <tr> 
+            <td className='opmerkingen_header l' key={uuidv4()} colSpan={period + 2}>
+              <div className='linksRechtContent'>
+                <div>
+                  Opmerkingen 
+                  <span className="x-small leftSpace">van - tot</span>
+                </div>
+                <div>
+                  <EditOpmerkingModal 
+                    username          = { username }
+                    apikey            = { apikey }                      
+                    datum_start       = { get_changedDate_asTxt(sliderEndDate_asTxt, ((period*-1)+1)) } 
+                    datum_einde       = { sliderEndDate_asTxt}  
+                    aspect            = { "opmerking" }
+                    opmerking         = { "" } 
+                    fetchURL          = { fetchURL }
+                    callBack_set_hgh_details = { callBack_set_hgh_details }
+                  />
+                </div>               
+              </div>
+
+            </td>
+          </tr>
+          <tr>
+            <td className='opmerkingen' key={uuidv4()} colSpan={period + 2}>
+              {opmerkingen.map((opm, index) => 
+                <div key={"opm_" + opm.id} className='opmerking_row'>
+                  {/* <Button  size="sm" > <AiOutlineEdit /> </Button> */}
+                  <Button variant="warning" className="xx-smallButton opacity_50perc" onClick={ () => handleClickDeleteOpmerkingViaApi(opm.id)}>
+                    <AiOutlineClose /> 
+                  </Button>
+                  <span className='x-small leftSpace' >
+                    {opm.datum_start.substring(opm.datum_start.length - 2)}
+                    {opm.datum_einde? 
+                      <> 
+                        - {opm.datum_einde.substring(opm.datum_einde.length - 2)} 
+                      </>
+                    : ""
+                    }
+                  </span>
+                  <span className='space'></span>
+                  {opm.opmerking} 
+                </div>
+              )}
+            </td>
+          </tr>
+          <tr> 
+            <td key="rowOnderSliderOpmerkingen" colSpan={period + 2}>
+              --
+            </td>
+          </tr>
+
+          {/* **** 1a: de maanden boven de datum rij **** */}
+          <tr key={uuidv4()}>  
+            <td className='striped small' key={uuidv4()}>
+              maand:
+            </td>
+            { monthRow.map((item, itemIndex) => 
+                <th className='striped small' key={uuidv4()}>    
+                  {item}
+                </th>
+              )
+            }
+          </tr>
+              
+          {/* **** 1a: de namen van de dag **** */}
+
+          <tr key={"sliderWeekDagRow"}>
+            <td className='striped small' key={uuidv4()}>
+          
+            </td>
+            { sliderData1[0].data.map((item, itemIndex) => 
+                  <td className='striped small' key={uuidv4()}>    
+                    <span className="x-small" >
+                      {txtDateFormat(item.datum,'weekDag')}
                     </span>
-                    <span className='space'></span>
-                    {opm.opmerking} 
-             
+                  </td>
+              )
+            }
+          </tr>
 
-                  </div>
-                )}
-              </td>
-            </tr>
-            <tr> <td key="rowOnderSliderOpmerkingen" colSpan={period + 2}></td></tr>
-
-            {/* **** 1a: de maanden boven de datum rij **** */}
-            <tr key={uuidv4()}>  
-              <td className='striped small' key={uuidv4()}>
-                maand:
-              </td>
-              { monthRow.map((item, itemIndex) => 
-                  <th className='striped small' key={uuidv4()}>    
-                    {item}
-                  </th>
-                )
-              }
-            </tr>
-            
-            {/* **** 1a: de namen van de dag **** */}
-
-            <tr key={"sliderWeekDagRow"}>
-              <td className='striped small' key={uuidv4()}>
-            
-              </td>
-              { sliderData1[0].data.map((item, itemIndex) => 
-                    <td className='striped small' key={uuidv4()}>    
-                      <span className="x-small" >
-                        {txtDateFormat(item.datum,'weekDag')}
-                      </span>
-                    </td>
-                )
-              }
-            </tr>
-
-            {/* **** 1b: de datums (getallen) met in eerste kolom een checkbox **** */}
-            <tr key={"sliderDatumRow"}>
-              <td className='striped small' key={uuidv4()}>
-                <input 
-                  key='repeateDatesRow' 
-                  type='checkbox' 
-                  checked={repeatDatesRow} 
-                  onChange={ (e) => { setRepeatDatesRow(e.target.checked) }} 
-                /> 
-                <span className='space'></span>
-                datum: 
-              </td>
-              { sliderData1[0].data.map((item, itemIndex) => 
-                    <td className='striped small' key={uuidv4()}>    
-                      {txtDateFormat(item.datum,'dagNr')}
-                    </td>
-                )
-              }
-            </tr>
-                      
+          {/* **** 1b: de datums (getallen) met in eerste kolom een checkbox **** */}
+          
+          <tr key={"sliderDatumRow"}>
+            <td className='striped small' key={uuidv4()}>
+              <input 
+                key='repeateDatesRow' 
+                type='checkbox' 
+                checked={repeatDatesRow} 
+                onChange={ (e) => { setRepeatDatesRow(e.target.checked) }} 
+              /> 
+              <span className='space'></span>
+              datum: 
+            </td>
+            { sliderData1[0].data.map((item, itemIndex) => 
+                  <td className='striped small' key={uuidv4()}>    
+                    {txtDateFormat(item.datum,'dagNr')}
+                  </td>
+              )
+            }
+          </tr>
+                        
 
           {/*     **************************************  
                   2: zet de rijen met aspecten op het scherm   
                   **************************************
           */}
 
-    
-            {/* Dan per aspect de regels */}
+      
+          {/* Dan per aspect de regels */}
 
-            {aspectTypes.map((teTonenAspectType, teTonenAspectIndex) => (
-                <React.Fragment key={teTonenAspectIndex}>
+          {aspectTypes.map((teTonenAspectType, teTonenAspectIndex) => (
+              <React.Fragment key={teTonenAspectIndex}>
+                <tr key={uuidv4()}>
+                  <td colSpan={1} key="slider_period_visibility"></td>
+                  <td colSpan={period + 1} >
+                    {teTonenAspectType}
+                    <span className='space'></span>
+                    <ChangeSliderVisibility 
+                      username          = { username }
+                      apikey            = { apikey }     
+                      teTonenAspectType = { teTonenAspectType}                 
+                      aspectLijst       = { hghAspecten }
+                      overigeAspecten   = { hghOverigeAspecten }
+                      fetchURL          = { fetchURL }
+                      callBack_changeSliderVisibility = { callBack_changeSliderVisibility }
+                    />
+                  </td>
+                </tr>
+
+                {(repeatDatesRow && teTonenAspectIndex>0)?
                   <tr key={uuidv4()}>
-                    <td colSpan={1} key="slider_period_visibility"></td>
-                    <td colSpan={period + 1} >
-                      {teTonenAspectType}
-                      <span className='space'></span>
-                      <ChangeSliderVisibility 
-                        username          = { username }
-                        apikey            = { apikey }     
-                        teTonenAspectType = { teTonenAspectType}                 
-                        aspectLijst       = { hghAspecten }
-                        overigeAspecten   = { hghOverigeAspecten }
-                        fetchURL          = { fetchURL }
-                        callBack_changeSliderVisibility = { callBack_changeSliderVisibility }
-                      />
-                    </td>
+                    <th className='striped small' key={uuidv4()}>
+                      datum: 
+                    </th>
+                    { sliderData1[0].data.map((item, itemIndex) => 
+                          <th className='striped x-small' key={uuidv4()}>    
+                            {txtDateFormat(item.datum,'dagNr')}
+                          </th>
+                    )}
                   </tr>
-
-                  {(repeatDatesRow && teTonenAspectIndex>0)?
+                  
+                  : ""
+                }
+                { sliderData1.filter(aspect => aspect.aspect_type === teTonenAspectType).map(
+                  (dataRow, dataRowIndex) => 
                     <tr key={uuidv4()}>
-                      <th className='striped small' key={uuidv4()}>
-                        datum: 
-                      </th>
-                      { sliderData1[0].data.map((item, itemIndex) => 
-                            <th className='striped x-small' key={uuidv4()}>    
-                              {txtDateFormat(item.datum,'dagNr')}
-                            </th>
+                      <td key={uuidv4()} className='striped small'> {/* eerste kolom  */} 
+                        {dataRow.aspect}
+                        <span className='space'></span><br></br>
+                        <FaRegEyeSlash
+                          size  = "1rem"
+                          color = "grey"
+                          onClick= {() => handleClick_aspect_eye_out(dataRow.aspect)}
+                        />
+                      </td>
+
+                      {dataRow.data.map( (dagData, dagDataIndex) => // per button van links naar rechts ..
+                      
+                          <td key = {uuidv4()}>
+                          {/*   {console.log("478: details test")}
+                            {console.log(JSON.stringify(dagData))} */}
+                            
+                            {dagData.waarde>=0
+                              ?
+                                // <EditWaardeModal 
+                                <EditWaardeDagdelenModal 
+                                  username          = { username }
+                                  apikey            = { apikey }                      
+                                  datum             = { dagData.datum  } 
+                                  aspect            = { dagData.aspect }
+                                  icon              = { dataRow.icon }
+                                  available_icons   = { available_icons }
+                                  aspect_type       = { teTonenAspectType}
+                                  waarde            = { dagData.waarde } 
+                                  waardeDagdelen    = { maakIndividueleDagWaardes(dagData.waardeDagdelen)} 
+                                  opmerking         = { dagData.opmerking? dagData.opmerking : "" } 
+                                  fetchURL          = { fetchURL }
+                                  callBack_set_hgh_details = { callBack_set_hgh_details }
+                                />
+                              : 
+                                "----"
+                            }
+                          </td>
                       )}
                     </tr>
-                    
-                    : ""
-                  }
-                  { sliderData1.filter(aspect => aspect.aspect_type === teTonenAspectType).map(
-                    (dataRow, dataRowIndex) => 
-                      <tr key={uuidv4()}>
-                        <td key={uuidv4()} className='striped small'> {/* eerste kolom  */} 
-                          {dataRow.aspect}
-                          <span className='space'></span><br></br>
-                          <FaRegEyeSlash
-                            size  = "1rem"
-                            color = "grey"
-                            onClick= {() => handleClick_aspect_eye_out(dataRow.aspect)}
-                          />
-                        </td>
-
-                        {dataRow.data.map( (dagData, dagDataIndex) => 
-                        
-                            <td key = {uuidv4()}>
-                            {/*   {console.log("478: details test")}
-                              {console.log(JSON.stringify(dagData))} */}
-                              
-                              {dagData.waarde>=0
-                                ?
-                                  <EditWaardeModal 
-                                    username          = { username }
-                                    apikey            = { apikey }                      
-                                    datum             = { dagData.datum  } 
-                                    aspect            = { dagData.aspect }
-                                    icon              = { dataRow.icon }
-                                    available_icons   = { available_icons }
-                                    aspect_type       = { teTonenAspectType}
-                                    waarde            = { dagData.waarde } 
-                                    opmerking         = { dagData.opmerking? dagData.opmerking : "" } 
-                                    fetchURL          = { fetchURL }
-                                    callBack_set_hgh_details = { callBack_set_hgh_details }
-                                  />
-                                : 
-                                  "----"
-                              }
-                            </td>
-                        )}
-                      </tr>
-                  )}
-              </React.Fragment>
-            ))}
-          </tbody>
-        </Table>
-       </div>
+                )}
+            </React.Fragment>
+          ))}
+            </tbody>
+          </Table>
+        </div>
         : "Geen data"
       }   
 

@@ -1,0 +1,58 @@
+/* Container of the dropdown */
+.custom-select__control {
+  background-color: rgb(128, 186, 205) !important; /* This is working */
+  border: 2px solid #00f !important; /* Border example */
+  border-radius: 5px !important;
+}
+
+/* Text in the selected option */
+.custom-select__single-value {
+  color: darkblue !important;
+  font-weight: bold !important;
+}
+
+/* The dropdown arrow indicator */
+.custom-select__indicator {
+  color: darkgreen !important;
+}
+
+/* Dropdown menu */
+.custom-select__menu {
+  background-color: #f0f0f0 !important; /* Make sure the menu background is styled */
+}
+
+/* Dropdown options */
+.custom-select__option {
+  color: #333 !important;
+  background-color: #fff !important;
+}
+
+/* When the option is focused (hovered) */
+.custom-select__option--is-focused {
+  background-color: #ddd !important; /* Change the hover/focus background */
+}
+
+/* When the option is selected */
+.custom-select__option--is-selected {
+  background-color: #007bff !important;
+  color: #fff !important;
+}
+
+.div-TestComponent {
+  border: solid 2px blue;
+}
+
+/* More specific targeting for options */
+div.custom-select__menu div.custom-select__option {
+  background-color: #fff !important;
+  color: #333 !important;
+}
+
+div.custom-select__menu div.custom-select__option--is-focused {
+  background-color: #ddd !important;
+}
+
+div.custom-select__menu div.custom-select__option--is-selected {
+  background-color: #007bff !important;
+  color: #fff !important;
+}

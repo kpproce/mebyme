@@ -1,11 +1,13 @@
 
 import MyNavbar from "./components/navbar.jsx";
+//import TestComponent from "./components/TestComponent.jsx";
 import { useState } from 'react';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Container, Button } from 'react-bootstrap';
+import { Container} from 'react-bootstrap';
 
 import './App.css'
+
 
 function App() {
 
@@ -21,7 +23,7 @@ function App() {
     <div className={`App ${darkMode ? 'theme-dark' : 'theme-light'}`}>
     <Container className="py-4">
     < MyNavbar /> 
-  
+    {/* <TestComponent/> */}
     </Container>
   </div>
 
