@@ -37,6 +37,7 @@ const GetIcon = (props) => {
         available_icon => available_icon.substring(0, available_icon.indexOf(".")) === props.aspect_type
       );
 
+      
       let image_url_src = imageUrl() + 'mebyme_icons/' + available_icon1
       
       if (props.aspect_type === 'medicatie') {

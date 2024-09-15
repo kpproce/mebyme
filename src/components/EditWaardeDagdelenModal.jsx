@@ -277,6 +277,7 @@ const  EditWaardeDagdelenModal = (props) => {
                   <td key={`wdd_td_${waardeIndex}`} className={`color_${waarde} edit_waardeDagDeel_Select`}>
                     <Select
                       key={"wdd_" + waardeIndex}
+                      isSearchable={false} 
                       styles={customStyles}
                       classNamePrefix="custom-select"
                       className={`select-container ${getSelectClassName(waarde)}`}
