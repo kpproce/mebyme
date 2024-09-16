@@ -7,7 +7,7 @@ function UploadModal(props) {
     const [show, setShow] = useState(false);
     // const [id, setId] =  useState(1);
     // const [title, setTitle] =  useState("this song");
-    const [statusTekst, setStatusTekst] = useState("--");
+    const [statusTekst, setStatusTekst] = useState("---------");
     const [filename, setFilename] = useState(props.selectedStart);
     const handleShow = () => { 
       setShow(true)

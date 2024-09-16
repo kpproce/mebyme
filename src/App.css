@@ -226,6 +226,12 @@ body {
   margin:auto !important ; 
   }
 
+.long-word-break {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  word-break: break-all; /* Ensures long words break */
+}
+
 .sliderDatumClass { font-size: x-small; }
 
 .buttonRight {position: absolute; right: 1rem;}

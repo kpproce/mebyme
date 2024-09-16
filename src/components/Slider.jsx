@@ -79,7 +79,6 @@ const Slider = (props) => {
     const updatedMessages = [...myMessages, newMessage];
     setMyMessages(updatedMessages);
   };
-  
 
   function txtDateFormat (date_asTxt, vorm) // zeer specifieke weergave, dus geen gebruik gemaakt van dateformat etc..
     // aanleveren geldige datum in text bijv 6-03 of 06-3 --> MOET NOG Met jaar ervoor 
@@ -476,25 +475,39 @@ const Slider = (props) => {
     }
   },[])
 
-
+  const handleSwipe = (eventData, direction) => {
+    const screenWidth = window.innerWidth;
+    const startX = eventData.initial[0]; // X-coordinate of where the swipe started
+  
+    // Example: Only trigger if the swipe starts on the left part of the screen
+    if (startX < screenWidth / 1.5) {
+      console.log(`Swipe detected in the left part of the screen, direction: ${direction}`);
+  
+      // Different logic based on direction
+      if (direction === 'right') {
+        changeSliderDate(period * 1); // Logic for swiping right
+      } else if (direction === 'left') {
+        changeSliderDate(period * -1); // Logic for swiping left
+      }
+    }
+  };
+  
+  // Wrapper functions to call handleSwipe with the correct direction
+  const handleSwipedRight = (eventData) => handleSwipe(eventData, 'right');
+  const handleSwipedLeft = (eventData) => handleSwipe(eventData, 'left');
+  
+  // Swipeable handlers
   const handlers = useSwipeable({
-    onSwipedRight: () => {
-      // Trigger the previous week action on a left-to-right swipe
-      console.log("swipe Right detected")
-      changeSliderDate( period * -1 )
-    },
-    onSwipedLeft: () => {
-      // Trigger the previous week action on a left-to-right swipe
-      changeSliderDate( period * 1 )
-    },
-   
+    onSwipedRight: handleSwipedRight,
+    onSwipedLeft: handleSwipedLeft,
     preventDefaultTouchmoveEvent: true, // Prevent scrolling when swiping
-    trackMouse: true, delta: 10 // Enable mouse swiping for desktop
+    trackMouse: true, // Enable mouse swiping for desktop
+    delta: 10, // Swipe sensitivity
   });
 
   return (
     props.logged_in?
-    <>
+    <div className="w3-container w3-center w3-animate-zoom">
       < SliderMonthsColored />
 
       <Table key="slidermenu" striped bordered hover  size="sm"> 
@@ -594,11 +607,7 @@ const Slider = (props) => {
               )}
             </td>
           </tr>
-          <tr> 
-            <td key="rowOnderSliderOpmerkingen" colSpan={period + 2}>
-              --
-            </td>
-          </tr>
+         
 
           {/* **** 1a: de maanden boven de datum rij **** */}
           <tr key={uuidv4()}>  
@@ -696,8 +705,13 @@ const Slider = (props) => {
                   (dataRow, dataRowIndex) => 
                     <tr key={uuidv4()}>
                       <td key={uuidv4()} className='striped small'> {/* eerste kolom  */} 
-                        {dataRow.aspect}
-                        <span className='space'></span><br></br>
+                        {dataRow.aspect.length<12 
+                        ? <div className ="small" >{dataRow.aspect.substring(0,11)} </div>
+                          : <div className = "long-word-break x-small" >
+                          {dataRow.aspect}
+                        </div>
+
+                        }
                         <FaRegEyeSlash
                           size  = "1rem"
                           color = "grey"
@@ -758,7 +772,7 @@ const Slider = (props) => {
       : ""
       }  
       {/* {JSON.stringify(sliderData1)} */}
-    </>
+    </div>
     : "geen data"
   )
 }
