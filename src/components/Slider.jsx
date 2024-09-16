@@ -485,9 +485,9 @@ const Slider = (props) => {
   
       // Different logic based on direction
       if (direction === 'right') {
-        changeSliderDate(period * 1); // Logic for swiping right
+        changeSliderDate(period * -1); // Logic for swiping right
       } else if (direction === 'left') {
-        changeSliderDate(period * -1); // Logic for swiping left
+        changeSliderDate(period * 1); // Logic for swiping left
       }
     }
   };
