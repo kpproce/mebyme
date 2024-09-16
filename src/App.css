@@ -239,14 +239,14 @@ body {
 .width3px  { width: 3px }
 .space { padding-right: 6px;}
 
-.color_0 { background-color: rgb(211, 211, 211)    !important }  
-.color_1 { background-color: rgb(30, 255, 0) !important }  
+.color_0 { background-color: rgb(99, 97, 97)    !important }  
+.color_1 { background-color: rgb(30, 255, 0)    !important }  
 .color_2 { background-color: rgb(108, 150, 30)  !important }  
 .color_3 { background-color: rgb(207, 197, 22)  !important }  
-.color_4 { background-color: rgb(255, 115, 1)  !important }  
-.color_5 { background-color: rgb(236, 24, 140) !important }  
+.color_4 { background-color: rgb(255, 115, 1)   !important }  
+.color_5 { background-color: rgb(236, 24, 140)  !important }  
 
-.fg_color_0 { color: rgb(211, 211, 211)    !important }  
+.fg_color_0 { color: rgb(99, 97, 97)    !important }  
 .fg_color_1 { color: rgb(0, 255, 38)    !important }   
 .fg_color_2 { color: rgb(104, 164, 0)   !important }  
 .fg_color_3 { color: rgb(207, 197, 22)  !important }  
