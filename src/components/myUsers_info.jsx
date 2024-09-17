@@ -123,7 +123,7 @@ const MyUsers = (props) => {
 
   return (
     <>
-      <div> versie 1.21c 16 sept productie swipe alleen links op scherm, color voor lege aspecten, aspect (afbreken als te lang) </div>
+      <div> versie 1.22a 17-sept prod dagedelen per aspect aan uit zetten in database </div>
       {/* {console.log('142:')} */}
       {/* {console.log(data)} */}
       <h2 className="smallTitle"> usergegevens, opgevraagd door {props.username}</h2> 

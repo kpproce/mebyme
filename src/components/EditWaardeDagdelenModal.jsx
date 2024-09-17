@@ -226,12 +226,14 @@ const  EditWaardeDagdelenModal = (props) => {
           callBack          = {callBack_handleShow}
         />
 
-      {props.opmerking
+        {props.opmerking
         ? <div className = "x-small" >
             {props.opmerking.substr(0,7)}
           </div>
         : ""
         }
+
+
 
         <Modal contentClassName='modalBody' show={show} onHide={handleClose} active="true" centered backdrop={false}>
           <Modal.Header>
@@ -253,97 +255,110 @@ const  EditWaardeDagdelenModal = (props) => {
           </Modal.Header>
           <Modal.Body> 
          
-          <p> 
-            Waarde per dagdeel:   
-            <span className='space'></span>  
-            {waardeDagdelen.map(digit => digit || 0).join('').padEnd(5, '0') // de dagwaardes in getallen 
-            }
-          </p>
+         {props.dagdelenInvullen=='ja'?
+          <>
+            <p> 
+              Waarde per dagdeel:   
+              <span className='space'></span>  
+              {waardeDagdelen.map(digit => digit || 0).join('').padEnd(5, '0') // de dagwaardes in getallen 
+              }
+            </p>
           
-          <table size="sm" >
-            <thead>
-              <tr key={'waardeDagdeel_edit_row_header'}>
-                <th className = "edit_waardeDagDeel_header"> nacht</th>
-                <th className = "edit_waardeDagDeel_header"> opstaan</th>
-                <th className = "edit_waardeDagDeel_header"> ochtend</th>
-                <th className = "edit_waardeDagDeel_header"> middag</th>
-                <th className = "edit_waardeDagDeel_header"> avond</th>
-              </tr>
-            </thead>
+            <table size="sm" >
+              <thead>
+                <tr key={'waardeDagdeel_edit_row_header'}>
+                  <th className = "edit_waardeDagDeel_header"> nacht</th>
+                  <th className = "edit_waardeDagDeel_header"> opstaan</th>
+                  <th className = "edit_waardeDagDeel_header"> ochtend</th>
+                  <th className = "edit_waardeDagDeel_header"> middag</th>
+                  <th className = "edit_waardeDagDeel_header"> avond</th>
+                </tr>
+              </thead>
 
-            <tbody>
-              <tr key={'waardeDagdeel_edit_row'}>
-                {waardeDagdelen.map((waarde, waardeIndex) => (
-                  <td key={`wdd_td_${waardeIndex}`} className={`color_${waarde} edit_waardeDagDeel_Select`}>
-                    <Select
-                      key={"wdd_" + waardeIndex}
-                      isSearchable={false} 
-                      styles={customStyles}
-                      classNamePrefix="custom-select"
-                      className={`select-container ${getSelectClassName(waarde)}`}
-                      value={selectedOption[waardeIndex]}
-                      onChange={(selected) => handleSelectChange(selected, waardeIndex)}
-                      options={options}
-                      placeholder="Select an option"
-                    />
-                  </td>
-                ))}
-              </tr>
-            </tbody>
-          </table>
-          <br></br>
-          <div style={{'fontSize': 'large', 'fontWeight': '500','paddingBottom': '0.3rem'} }>Of wijzig alle dagdelen naar:</div>
-            <Table striped bordered hover variant="light" size="sm" style={{'maxWidth': '15rem'}}>
-              <tr key={uuidv4()}>  
-                {/* {console.log('135: ' + props.aspect_type + '  ' + props.icon)}          */}
-                {aantalKnoppen.map((waarde, index) => 
-                    <td className='perc12' key={index}>         
-                        <GetSliderButton 
-                          aspect_type     = {props.aspect_type} 
-                          icon            = {props.icon} 
-                          available_icons = {props.available_icons}
-                          waarde          = {waarde} 
-                          size            = {'large'} 
-                          callBack        = {callBack_handleChangeWaarde}
-                        />
+              <tbody>
+                <tr key={'waardeDagdeel_edit_row'}>
+                  {waardeDagdelen.map((waarde, waardeIndex) => (
+                    <td key={`wdd_td_${waardeIndex}`} className={`color_${waarde} edit_waardeDagDeel_Select`}>
+                      <Select
+                        key={"wdd_" + waardeIndex}
+                        isSearchable={false} 
+                        styles={customStyles}
+                        classNamePrefix="custom-select"
+                        className={`select-container ${getSelectClassName(waarde)}`}
+                        value={selectedOption[waardeIndex]}
+                        onChange={(selected) => handleSelectChange(selected, waardeIndex)}
+                        options={options}
+                        placeholder="Select an option"
+                      />
                     </td>
-                )}
-                <td className='perc12' key={uuidv4()}>
-                  <GetSliderButton 
-                    key             = {'editwaarde0'}
-                    aspect_type     = {props.aspect_type} 
-                    available_icons = {props.available_icons}
-                    icon            = {props.icon} 
-                    waarde          = {0} 
-                    size            = {'large'} 
-                    callBack        = {callBack_handleChangeWaarde}
-                  />
-                </td>
-              </tr>
-            </Table>     
-            <div style={{'fontSize': 'large', 'fontWeight': '500','paddingBottom': '0.3rem'} }> Opmerking: </div>
-            <input type="text" 
-              value= {opmerking} 
-              size='42'
-              onChange= {((event) => {setOpmerking(event.target.value)
-                console.log('176: ' + opmerking)
-              })}>         
-            </input>    
-                    
-              {/* <UploadFile callback_uploadModal_fileChanged ={callback_uploadModal_fileChanged}/> */}
-          </Modal.Body>
-          <Modal.Footer>     
+                  ))}
+                </tr>
+              </tbody>
+            </table>
+            <br></br>
+          </>
+          : ""
+          }
+          <br/>
+          <div> 
+            Dagdelen Invullen: {props.dagdelenInvullen}
+          </div>
+          <br/>
+          
+          <div style={{'fontSize': 'large', 'fontWeight': '500','paddingBottom': '0.3rem'} }>
+          {props.dagdelenInvullen=='ja'? ' Of wijzig hier alle dagdelen naar' : 'Geef de waarde voor de hele dag op'}
+          </div>
+          <Table striped bordered hover variant="light" size="sm" style={{'maxWidth': '15rem'}}>
+            <tr key={uuidv4()}>  
+              {/* {console.log('135: ' + props.aspect_type + '  ' + props.icon)}          */}
+              {aantalKnoppen.map((waarde, index) => 
+                  <td className='perc12' key={index}>         
+                      <GetSliderButton 
+                        aspect_type     = {props.aspect_type} 
+                        icon            = {props.icon} 
+                        available_icons = {props.available_icons}
+                        waarde          = {waarde} 
+                        size            = {'large'} 
+                        callBack        = {callBack_handleChangeWaarde}
+                      />
+                  </td>
+              )}
+              <td className='perc12' key={uuidv4()}>
+                <GetSliderButton 
+                  key             = {'editwaarde0'}
+                  aspect_type     = {props.aspect_type} 
+                  available_icons = {props.available_icons}
+                  icon            = {props.icon} 
+                  waarde          = {0} 
+                  size            = {'large'} 
+                  callBack        = {callBack_handleChangeWaarde}
+                />
+              </td>
+            </tr>
+          </Table>     
+          <div style={{'fontSize': 'large', 'fontWeight': '500','paddingBottom': '0.3rem'} }> Opmerking: </div>
+          <input type="text" 
+            value= {opmerking} 
+            size='42'
+            onChange= {((event) => {setOpmerking(event.target.value)
+              console.log('176: ' + opmerking)
+            })}>         
+          </input>    
+                  
+            {/* <UploadFile callback_uploadModal_fileChanged ={callback_uploadModal_fileChanged}/> */}
+        </Modal.Body>
+        <Modal.Footer>     
 
-            <Button variant="primary" onClick={handleAnnuleer}>
-              annuleer
-              {/* props.selectedStart bevat de huidige filenaam*/ }
-            </Button>
-       
-            <Button variant="primary" onClick={handleClose}>
-              opslaan en sluiten
-              {/* props.selectedStart bevat de huidige filenaam*/ }
-            </Button>
-            </Modal.Footer>
+          <Button variant="primary" onClick={handleAnnuleer}>
+            annuleer
+            {/* props.selectedStart bevat de huidige filenaam*/ }
+          </Button>
+    
+          <Button variant="primary" onClick={handleClose}>
+            opslaan en sluiten
+            {/* props.selectedStart bevat de huidige filenaam*/ }
+          </Button>
+          </Modal.Footer>
         </Modal>
       </>
     )
@@ -352,17 +367,18 @@ const  EditWaardeDagdelenModal = (props) => {
   EditWaardeDagdelenModal.propTypes = {
     //callBackWaarde: propTypes.number.isRequired
     callBack_set_hgh_details: propTypes.func,    
-    username        : propTypes.string, 
-    apikey 	        : propTypes.string, 
-    aspect_type     : propTypes.string, 
-    aspect          : propTypes.string, 
-    icon            : propTypes.string, 
-    available_icons : propTypes.array, 
-    datum           : propTypes.string, 
-    waarde          : propTypes.number,
-    waardeDagdelen  : propTypes.array,
-    opmerking       : propTypes.string,
-    fetchURL        : propTypes.string 
+    username         : propTypes.string, 
+    apikey 	         : propTypes.string, 
+    aspect_type      : propTypes.string, 
+    aspect           : propTypes.string, 
+    icon             : propTypes.string, 
+    available_icons  : propTypes.array, 
+    datum            : propTypes.string, 
+    waarde           : propTypes.number,
+    waardeDagdelen   : propTypes.array,
+    dagdelenInvullen : propTypes.string,
+    opmerking        : propTypes.string,
+    fetchURL         : propTypes.string 
   }
   
   export default EditWaardeDagdelenModal; 

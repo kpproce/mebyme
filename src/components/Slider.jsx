@@ -1,16 +1,15 @@
 /* eslint-disable no-unused-vars */
 import {useState, useEffect, useCallback} from 'react';
-import React        from 'react';
-import { useSwipeable } from 'react-swipeable';
-import Table        from 'react-bootstrap/Table';
-import Button       from 'react-bootstrap/Button';
-import propTypes    from 'prop-types'; // ES6
-import {dateToTxt}  from './utils.js'
+import React          from 'react';
+import {useSwipeable} from 'react-swipeable';
+import Table          from 'react-bootstrap/Table';
+import Button         from 'react-bootstrap/Button';
+import propTypes      from 'prop-types'; // ES6
+import {dateToTxt}    from './utils.js'
 import {get_changedDate_asTxt} from './utils.js'
 //import {maandNamenKort} from './utils.js'
-import {maandNamenKort}       from './global_const.js'
-import {basic_API_url}        from './global_const.js'
-
+import {maandNamenKort}        from './global_const.js'
+import {basic_API_url}         from './global_const.js'
 import EditWaardeModal         from './EditWaardeModal.jsx'
 import EditWaardeDagdelenModal from './EditWaardeDagdelenModal.jsx'
 import EditOpmerkingModal      from './EditOpmerkingModal.jsx'
@@ -255,15 +254,13 @@ const Slider = (props) => {
         let hghData_alleDagen = [] // lege dataRow
         datesRow.forEach(date => {
           if (date == hghRow.data[loopRowIndex].datum) {
-            //console.log('260: ')
-            //console.log(JSON.stringify(hghRow.data[loopRowIndex]))
             let dataObject = {
-              'datum'          : date, 
-              'aspect'         : hghRow.data[0].aspect,
-              'waarde'         : hghRow.data[loopRowIndex].waarde,
-              'waardeDagdelen' : hghRow.data[loopRowIndex].waardeDagdelen,
-              
-              'opmerking' : hghRow.data[loopRowIndex].opmerking
+              'datum'            : date, 
+              'aspect'           : hghRow.data[0].aspect,
+              'waarde'           : hghRow.data[loopRowIndex].waarde,
+              'waardeDagdelen'   : hghRow.data[loopRowIndex].waardeDagdelen,
+              'dagdelenInvullen' : hghRow.data[loopRowIndex].dagdelenInvullen,
+              'opmerking'        : hghRow.data[loopRowIndex].opmerking
             }
          
             hghData_alleDagen.push( dataObject )
@@ -273,11 +270,12 @@ const Slider = (props) => {
           
           } else {
             let dataObject = {
-              'datum'           : date, 
-              'aspect'          : hghRow.data[0].aspect,
-              'waarde'          : 0,
-              'waardeDagdelen'  : "00000",
-              'opmerking'       : null
+              'datum'            : date, 
+              'aspect'           : hghRow.data[0].aspect,
+              'waarde'           : 0,
+              'waardeDagdelen'   : "00000",
+              'dagdelenInvullen' : hghRow.data[0].dagdelenInvullen,
+              'opmerking'        : null
             }
             hghData_alleDagen.push( dataObject )
           }
@@ -309,13 +307,13 @@ const Slider = (props) => {
             // console.log(teTonenAspect.aspect + " nog opnemen") 
 
             // breid de slider uit met een nieuwe regel met dit aspect
-            // console.log(' 193: datesRow' )
             datesRow.forEach(date => {
               let dataObject = {
-                'datum'       : date, 
-                'aspect'      : teTonenAspect.aspect,
-                'waarde'      : 0,
-                'opmerking'   : null
+                'datum'            : date, 
+                'aspect'           : teTonenAspect.aspect,
+                'waarde'           : 0,
+                'dagdelenInvullen' : teTonenAspect.dagdelenInvullen, 
+                'opmerking'        : null
               }
               hghData_alleDagen.push( dataObject )
             });
@@ -433,9 +431,7 @@ const Slider = (props) => {
     getData()
     .then ((res) => {
       setMessage(res['hghPeriod']['messages'][0])
-     
       createSliderWeek(res['hghPeriod']['dataPerAspect'], res['hghPeriod']['teTonenAspecten']) // with hghData
-
       setHghData(res['hghPeriod']['dataPerAspect'])    
       setHghAspecten(res['hghPeriod']['teTonenAspecten'])
       setHghOverigeAspecten(res['hghPeriod']['overigeAspecten'])
@@ -449,18 +445,11 @@ const Slider = (props) => {
   }, [sliderEndDate_asTxt, period, hasToReloadData] ) 
 
   const callBack_set_hgh_details  = useCallback(() => {
-    // alert(aspect + '  op ' + datum + ' aangepast van: ' + oudeWaarde + ' --> ' + nieuweWaarde) 
-  
       setHasToReloadData(true) 
-     
   },[])
 
   const callBackSetWaardeEnOpmerking = useCallback((aspect, datum, oudeWaarde, nieuweWaarde, oudeOpmerking, nieuweOpmerking) => {
-    // alert(aspect + '  op ' + datum + ' aangepast van: ' + oudeWaarde + ' --> ' + nieuweWaarde) 
-    // console.log ('325 type: ' + typeof(sliderData1))
-    // console.log (JSON.stringify(sliderData1))
     if (oudeWaarde===nieuweWaarde) {
-    
        // console.log ('callBackSetOpmerking: Opmerking NIET veranderd' + oudeOpmerking + ' --> ' + nieuweOpmerking)
     } else {
       setHasToReloadData(true) 
@@ -721,26 +710,25 @@ const Slider = (props) => {
 
                       {dataRow.data.map( (dagData, dagDataIndex) => // per button van links naar rechts ..
                       
-                          <td key = {uuidv4()}>
-                          {/*   {console.log("478: details test")}
-                            {console.log(JSON.stringify(dagData))} */}
-                            
+                          <td key = {uuidv4()}>                          
                             {dagData.waarde>=0
                               ?
                                 // <EditWaardeModal 
                                 <EditWaardeDagdelenModal 
-                                  username          = { username }
-                                  apikey            = { apikey }                      
-                                  datum             = { dagData.datum  } 
-                                  aspect            = { dagData.aspect }
-                                  icon              = { dataRow.icon }
-                                  available_icons   = { available_icons }
-                                  aspect_type       = { teTonenAspectType}
-                                  waarde            = { dagData.waarde } 
-                                  waardeDagdelen    = { maakIndividueleDagWaardes(dagData.waardeDagdelen)} 
-                                  opmerking         = { dagData.opmerking? dagData.opmerking : "" } 
-                                  fetchURL          = { fetchURL }
-                                  callBack_set_hgh_details = { callBack_set_hgh_details }
+                                  username                  = { username }
+                                  apikey                    = { apikey }                      
+                                  datum                     = { dagData.datum  } 
+                                  aspect                    = { dagData.aspect }
+                                  icon                      = { dataRow.icon }
+                                  available_icons           = { available_icons }
+                                  aspect_type               = { teTonenAspectType}
+                                  waarde                    = { dagData.waarde } 
+                                  dagdelenInvullen          = { dagData.dagdelenInvullen }
+                                  basis_dagwaardeBerekening = { 'gem_max_iets_zwaarder'}
+                                  waardeDagdelen            = { maakIndividueleDagWaardes(dagData.waardeDagdelen)} 
+                                  opmerking                 = { dagData.opmerking? dagData.opmerking : "" } 
+                                  fetchURL                  = { fetchURL }
+                                  callBack_set_hgh_details  = { callBack_set_hgh_details }
                                 />
                               : 
                                 "----"
