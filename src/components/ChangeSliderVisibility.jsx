@@ -1,18 +1,25 @@
 import {useState, useEffect} from 'react';
 import { Modal, Table, Button} from "react-bootstrap";
+import Select from 'react-select';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
 import propTypes from 'prop-types'; // ES6
 import { BsEye } from "react-icons/bs";
 import { FaRegEyeSlash } from "react-icons/fa";
+import { FaCog } from "react-icons/fa";
 
 const  ChangeSliderVisibility = (props) => {
     // const [id, setId] =  useState(1);
     // const [title, setTitle] =  useState("this song");
     const [show, setShow] = useState(false);
 
+    const [dataArray, setDataArray] = useState(props.aspectLijst.filter( (item) => item.aspect_type === props.teTonenAspectType))
+
     const handleShow = () => { setShow(true) }
-    const handleClose = () => { setShow(false) }
+    const handleClose = () => { 
+      props.callBack_changeSliderVisibility(true);
+      setShow(false) 
+    }
 
     /*   const handleSaveAndClose = () => { 
       handleSave();
@@ -42,14 +49,51 @@ const  ChangeSliderVisibility = (props) => {
       return res.json();
     } 
 
+    async function update_aspect_dagwaardeBerekening_via_API(aspect, dagwaardeBerekening) { // action == koppel aspect of update 
+      const postData = new FormData();
+            //console.log('100 myUsers useffect 1 .. ')   
+      postData.append('username'            , props.username)
+      postData.append('apikey'              , props.apikey)
+      postData.append('aspect'              , aspect)
+      postData.append('dagwaardeBerekening' , dagwaardeBerekening);
+      postData.append('action'              , 'update_aspect_dagwaardeBerekening')
+      
+      let requestOptions = {
+        method: 'POST',
+        body: postData,
+      };
+      const res = await fetch(props.fetchURL, requestOptions)   
+      if (!res.ok) { throw res;}
+
+      return res.json();
+    } 
+
     useEffect(() => { 
       // 
     },  [show]) 
+
+    
+    const handleSelectChange = (aspect, dagwaardeBerekening) => {
+      update_aspect_dagwaardeBerekening_via_API(aspect, dagwaardeBerekening) 
+      
+      props.callBack_changeSliderVisibility(true);
+    };
+
 
     const handleClick_visibilityChange_button = (aspect, bijInvoerTonen, action) => {
       update_bijInvoerTonen_via_API(aspect, bijInvoerTonen=='ja'?'kan':'ja', action) 
       props.callBack_changeSliderVisibility(true);
     }
+    const customStyles = {   control: (provided) => ({
+      ...provided,
+      backgroundColor: 'rgb(50,60,180)', // Background color
+      display: 'flex',
+      flexDirection: 'column', // Align items in a column
+      alignItems: 'center', // Center items horizontally
+      justifyContent: 'center', // Center items vertically
+      padding: '0',
+      minHeight: '40px', // Set a minimum height if needed
+    }),}
 
     return (
       <>
@@ -60,9 +104,8 @@ const  ChangeSliderVisibility = (props) => {
           onClick={handleShow}
         />
 
-
         <Modal  show={show} onHide={handleClose} active="true" backdrop={false}>
-          <Modal.Header>
+          <Modal.Header className="modalBody" >
             <Modal.Title>
               <div> Welke aspecten wil je zien? </div>
               
@@ -70,7 +113,7 @@ const  ChangeSliderVisibility = (props) => {
             <Button className="buttonRight" variant="primary" onClick={handleClose} > X </Button>
           </Modal.Header>
         
-          <Modal.Body> 
+          <Modal.Body className="modalBody"> 
             <Tabs>
               <TabList>
                 <Tab>Jouw Aspecten {props.teTonenAspectType }</Tab>
@@ -78,27 +121,28 @@ const  ChangeSliderVisibility = (props) => {
               </TabList>
 
               <TabPanel>
+                              
                 <Table key="table_jouw_aspecten" striped bordered hover size="sm">       
                   <thead>
                     <tr key='tr_jouw_aspecten'>
-                      <th key="head_jouw_aspect_type">Type</th>
                       <th key="head_jouw_aspect_aspect">Aspect</th>
                       <th key="head_jouw_aspect_tonen">Tonen</th>
+                      <th key="head_jouw_aspect_wijzig">bereken dag</th>
                     </tr>    
                   </thead> 
                   <tbody>
-                    {props.aspectLijst.map((aspectDetails, aspectIndex) => 
-                      // {props.teTonenAspectType.localeCompare(aspectDetails.aspect_type)==0 ? // dit werkt niet, begrijp niet waarom niet. Oplossing is de data aanpassen
+                   
+                    {dataArray.map((aspectDetails, aspectIndex) => 
                           <tr key={"tr_jouwAspecten" + aspectIndex}>
-                            <td key= {"td_jouwAspecten" + aspectIndex + "_aspect_type"} > { aspectDetails.aspect_type } </td>
                             <td key= {"td_jouwAspecten" + aspectIndex + "_aspect_aspect"}> { aspectDetails.aspect }       </td>
                             <td key= {"td_jouwAspecten" + aspectIndex + "_aspect_tonen"}> { 
-                              <Button
-                                className= 'buttonEyeAanUit'
-                                onClick={ 
-                                  () => handleClick_visibilityChange_button(aspectDetails.aspect, aspectDetails.bijInvoerTonen, 'update') 
-                                }>
-                                {aspectDetails.bijInvoerTonen=='ja'?
+                                <Button
+                                  className= 'buttonEyeAanUit'
+                                  onClick = { 
+                                    () => handleClick_visibilityChange_button(aspectDetails.aspect, aspectDetails.bijInvoerTonen, 'update') 
+                                  }
+                                >
+                                  {aspectDetails.bijInvoerTonen=='ja'?
                                     <BsEye
                                       //style={{ padding_top: '0px'}}
                                       size  = "1rem"
@@ -110,7 +154,31 @@ const  ChangeSliderVisibility = (props) => {
                                     />
                                   }     
                                 </Button>
-                            } </td>
+                              } 
+                            </td>
+                            <td key= {"td_jouwAspecten" + aspectIndex + "_aspect_tonen"}> { 
+                              <select 
+                                className = "form-control" 
+                                id        = {aspectDetails.dagwaardeBerekening}
+                                value     = {aspectDetails.dagwaardeBerekening}
+                                onChange  = {
+                                  //() => handleClick_visibilityChange_button(aspectDetails.aspect, aspectDetails.bijInvoerTonen, 'update') 
+                                  () => { 
+                                      console.log('160')
+                                      console.log()
+                                      handleSelectChange(aspectDetails.aspect, event.target.value)
+                                    }
+                                }
+                              >
+                              {props.berekenmethodes.map((item, index) => (
+                                <option key={index} 
+                                value={item.id}>
+                                  {item.id}
+                                </option>
+                              ))}
+                              </select>
+                            } 
+                            </td>
                           </tr>
 
                         // : <Fragment> 
@@ -124,6 +192,7 @@ const  ChangeSliderVisibility = (props) => {
               </TabPanel>
 
               <TabPanel>
+              <p>Aspecten die (nog) niet aan jou gekoppeld zijn als user</p>
               <Table key="table_overige_aspecten" striped bordered hover size="sm">       
                 <tr key='tr_overige_aspecten'>
                   <th key="head_overige_aspecten_type">Type</th>
@@ -186,7 +255,8 @@ const  ChangeSliderVisibility = (props) => {
     aspectLijst       : propTypes.array, 
     overigeAspecten   : propTypes.array, 
     username          : propTypes.string, 
-    apikey 	          : propTypes.string, 
+    apikey 	          : propTypes.string,
+    berekenmethodes   : propTypes.array,
     aspect            : propTypes.string, 
     fetchURL          : propTypes.string,
 

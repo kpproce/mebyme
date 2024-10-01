@@ -9,8 +9,7 @@ import { MdNightsStay } from "react-icons/md";
 
 // import UploadFile from './uploadFileV1.jsx';
 
-import {BrowserRouter, Routes, Route, NavLink} from "react-router-dom";
-
+import {BrowserRouter, HashRouter, Navigate, Routes, Route, NavLink} from "react-router-dom";
 
 const MyNavbar = () => { 
     //const path = window.location.pathname
@@ -31,7 +30,6 @@ const MyNavbar = () => {
 
     const [logged_in, setLogged_in] = useState(false)
 
-
     const [darkMode, setDarkMode] = useState('light');
    
     const toggleTheme = () => {
@@ -40,7 +38,6 @@ const MyNavbar = () => {
       htmlElement.setAttribute('data-bs-theme', 
       darkMode ? 'dark' : 'light');
     };
-
 
     // CALBACK 
     const callBackNavBarFromLogin = useCallback((username, apikey, logged_in_result) => {
@@ -67,7 +64,7 @@ const MyNavbar = () => {
 
       // END CALLBACK
     return <>
-        <BrowserRouter>
+        <HashRouter>
             <div
                 style={{
                     display: "flex",
@@ -78,7 +75,6 @@ const MyNavbar = () => {
                 }}
                 >
                 <div style={{ margin: "6px" }}>
-                    
                     <NavLink
                         to="/mebyme/slider"
                         style={({ isActive }) => ({
@@ -130,14 +126,10 @@ const MyNavbar = () => {
                     </Button>
                 </div>
 
-               
             </div>
-            <Routes>
-              {/*   <Route
-                    exact
-                    path="/"
-                    element={<Home username={username}/>}
-                />         */}
+          {/*   <Routes>
+                <Route path="/" element={<Navigate to="/mebyme/slider" replace />} />
+            
                 <Route
                     exact
                     path="/mebyme/slider"
@@ -148,8 +140,23 @@ const MyNavbar = () => {
                     path="/mebyme/myUsers"
                     element={<MyUsers username={username} apikey={apikey}/>}
                 />
+            </Routes> */}
+
+            <Routes>
+                {/* Redirect from the root path to /mebyme/slider */}
+                <Route path="/" element={<Navigate to="/mebyme/slider" replace />} />
+                <Route
+                path="/mebyme/slider"
+                element={<Slider username={username} apikey={apikey} logged_in={logged_in} />}
+                />
+                
+                <Route
+                path="/mebyme/myUsers"
+                element={<MyUsers username={username} apikey={apikey} />}
+                />
             </Routes>
-        </BrowserRouter>
+
+        </HashRouter>
     </>
 }
 

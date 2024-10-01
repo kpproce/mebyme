@@ -13,11 +13,7 @@ const test_mapping_chatgpt = () => {
     { id: 'id3', className: 'class3', dataValue: 'data3', content: 'Content 3' }
   ];
 
-
-  
-
   // setDataCol1 (data[0])
-
 
   return (
     <div>

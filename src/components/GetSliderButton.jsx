@@ -15,7 +15,7 @@ import {imageUrl} from './global_const.js'
 const GetSliderButton = (props) => { 
   
   //console.log('17: iconlist from API:')
-  //console.log(props.available_icons)
+  //console.log(props.available_images)
  
   const getClassName = (my_waarde) => {
     if ( my_waarde >=0 && my_waarde<=5 ) 
@@ -23,6 +23,9 @@ const GetSliderButton = (props) => {
     else 
       return 'color_0'
   }  
+
+  // console.log("27:")
+  // props.icon==null? console.log (' icon = null'):console.log(props.icon)
 
   const getColor = (waarde) => {
     //console.log('26: waarde: ' + waarde + ' type: ' + typeof(waarde))
@@ -40,39 +43,35 @@ const GetSliderButton = (props) => {
   }  
 
   const getWidthFromSize = () => {
-    if (props.size=='large') 
-      return '3.2rem'
-    else   
-      return '1.8rem'
+    switch (props.size) {
+      case 'large'   : return '4rem';
+      case 'x-large' : return '5rem';  
+      default        : return '3rem'
+    }
   }
 
   return (
-      <Button 
-        className= {getClassName(props.waarde)}   
-        style={ 
-          { backgroundColor: getColor(props.waarde),  
-            width: getWidthFromSize(), 
-            paddingLeft: "4px"}}
-        onClick={() => props.callBack(props.waarde)}
-      >
-        <GetIcon        
-                aspect_type     = {props.aspect_type} 
-                icon            = {props.icon} 
-                available_icons = {props.available_icons}
-                waarde          = {props.waarde} 
-                size            = {'large'} 
-        />
-      </Button>     
-  )  
+   /*  <Button onClick={ () => props.callBack(props.waarde)} className={`slider-button size-${props.size}`}>
+      {props.icon}
+    </Button>
+    */
+    <Button 
+      onClick={() => props.callBack(props.waarde)} 
+      className={`slider-button btn btn-primary bk_color_${props.waarde} Button_${props.size === 'x-large' ? 'x-large' : props.size}`}>
+      {props.icon} {/* Render the dynamic icon */}
+    </Button>
+
+  )
+
+  
 }
 
 GetSliderButton.propTypes = {
-  aspect_type     : PropTypes.string.isRequired,
-  size            : PropTypes.string.isRequired,
-  icon            : PropTypes.string.isRequired,
-  available_icons : PropTypes.array.isRequired,
-  waarde          : PropTypes.any.isRequired,
-  callBack        : PropTypes.func.isRequired
+  aspect_type      : PropTypes.string.isRequired,
+  size             : PropTypes.string.isRequired,
+  available_images : PropTypes.array.isRequired,
+  waarde           : PropTypes.any.isRequired,
+  callBack         : PropTypes.func.isRequired
 
 // callBack_myUsers_from_editRole: propTypes.func.isRequired
 }

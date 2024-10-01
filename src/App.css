@@ -60,17 +60,11 @@ body {
   font-size: x-large !important;
 }
 
-.select-container {
-  /*
-    display: flex;     
-    justify-content: space-between; 
-    flex-direction: column;
-    gap: 10px; 
-  */
-}
-
-.small     { font-size: small }
-.x-small   { font-size: x-small }
++x-small   { font-size: x-small }
+.small     { font-size: small   }
+.large     { font-size: large   }
+.x-large   { font-size: x-large }
+.xx-large  { font-size: xx-large }
 
 .perc12 {width: 11% !important}
 
@@ -239,6 +233,22 @@ body {
 .width3px  { width: 3px }
 .space { padding-right: 6px;}
 
+.welzijn_color_0 {  background-color: rgb(99, 97, 97, 0.4)   !important; color: rgb(99, 97, 97)   !important }  
+.welzijn_color_1 {  background-color: rgb(30, 255, 0, 0.4)   !important; color: rgb(30, 255, 0)   !important }
+.welzijn_color_2 {  background-color: rgb(108, 150, 30, 0.4) !important; color: rgb(108, 150, 30) !important }
+.welzijn_color_3 {  background-color: rgb(207, 197, 22, 0.4) !important; color: rgb(207, 197, 22) !important }
+.welzijn_color_4 {  background-color: rgb(255, 115, 1, 0.4)  !important; color: rgb(255, 115, 1)  !important }
+.welzijn_color_5 {  background-color: rgb(236, 24, 140, 0.4) !important; color: rgb(236, 24, 140) !important }
+
+.med_color_0     {  background-color: rgb(99, 97, 97, 0.4)   !important; color: rgb(99, 97, 97)   !important }  
+.med_color_1     {  background-color: rgb(207, 197, 22, 0.4) !important; color: rgb(207, 197, 22) !important }
+.med_color_2     {  background-color: rgb(108, 150, 30, 0.4) !important; color: rgb(108, 150, 30) !important }
+.med_color_3     {  background-color: rgb(30, 255, 0, 0.4)   !important; color: rgb(30, 255, 0)   !important }
+.med_color_4     {  background-color: rgb(207, 197, 22, 0.4) !important; color: rgb(207, 197, 22) !important }
+.med_color_5     {  background-color: rgb(255, 115, 1, 0.4)  !important; color: rgb(255, 115, 1)  !important }
+
+
+
 .color_0 { background-color: rgb(99, 97, 97)    !important }  
 .color_1 { background-color: rgb(30, 255, 0)    !important }  
 .color_2 { background-color: rgb(108, 150, 30)  !important }  
@@ -246,12 +256,30 @@ body {
 .color_4 { background-color: rgb(255, 115, 1)   !important }  
 .color_5 { background-color: rgb(236, 24, 140)  !important }  
 
+/* colors for norma range low - high */
 .fg_color_0 { color: rgb(99, 97, 97)    !important }  
 .fg_color_1 { color: rgb(0, 255, 38)    !important }   
 .fg_color_2 { color: rgb(104, 164, 0)   !important }  
 .fg_color_3 { color: rgb(207, 197, 22)  !important }  
 .fg_color_4 { color: rgb(255, 132, 1)   !important }  
 .fg_color_5 { color: rgb(236, 24, 140)  !important }  
+
+.bk_color_0 { background-color: rgb(99, 97, 97, 0.2)    !important }  
+.bk_color_1 { background-color: rgba(0, 255, 38, 0.2)   !important }   
+.bk_color_2 { background-color: rgba(0, 164, 101, 0.2)   !important }  
+.bk_color_3 { background-color: rgb(207, 197, 22, 0.2)  !important }  
+.bk_color_4 { background-color: rgba(225, 255, 1, 0.2)   !important }  
+.bk_color_5 { background-color: rgb(236, 24, 140, 0.2)  !important }  
+
+
+/* colors for gedaan middle = normal low = blue and hgh is red */
+
+.gedaan_color_0 { color: rgb(99,  97,  97)  !important }  
+.gedaan_color_1 { color: rgb(175, 225, 245) !important }   
+.gedaan_color_2 { color: rgb(50,  191, 163) !important }   
+.gedaan_color_3 { color: rgb(104, 164, 0)   !important }   
+.gedaan_color_4 { color: rgb(255, 132, 1)   !important }  
+.gedaan_color_5 { color: rgb(236, 24,  140) !important } 
 
 .testColor { color: rgb(222, 242, 255) }
 .buttonEyeAanUit { 
@@ -265,6 +293,11 @@ body {
   height: 1.4rem !important;
   width: 2rem  !important;  
   padding: 0.2rem !important; 
+}
+
+.Button_x-large {
+  padding: 1rem 2rem; /* Increase padding for an extra-large button */
+  font-size: 1.5rem;   /* Increase font size */
 }
 
 .py-4 {

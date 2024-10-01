@@ -10,7 +10,7 @@ import {imageUrl} from './global_const.js'
 const formWaardeDagdelen = (props) => { 
   
   //console.log('17: iconlist from API:')
-  //console.log(props.available_icons)
+  //console.log(props.available_images)
  
   const getClassName = (my_waarde) => {
     if ( my_waarde >=0 && my_waarde<=5 ) 
@@ -48,8 +48,8 @@ const formWaardeDagdelen = (props) => {
       return "-" 
     } else {
 
-      // zit icon in de available_icons, let op de extentie uit de available_icons niet menemen. 
-      let available_icon1 =  "" + props.available_icons.filter(available_icon => available_icon.substring(0, available_icon.indexOf(".")) === icon);
+      // zit icon in de available_images, let op de extentie uit de available_images niet menemen. 
+      let available_icon1 =  "" + props.available_images.filter(available_icon => available_icon.substring(0, available_icon.indexOf(".")) === icon);
         // (dataRow, dataRowIndex) => 
       let image_url_src = imageUrl() + 'mebyme_icons/' + available_icon1
         // console.log('69a:  icon: ' + icon  + ' available_icon: -' + available_icon1 +  '- lengte: ' + available_icon1.length)
@@ -112,12 +112,12 @@ const formWaardeDagdelen = (props) => {
 
 formWaardeDagdelen.propTypes = {
 
-  aspect_type     : PropTypes.string.isRequired,
-  size            : PropTypes.string.isRequired,
-  icon            : PropTypes.string.isRequired,
-  available_icons : PropTypes.array.isRequired,
-  waarde          : PropTypes.any.isRequired,
-  callBack        : PropTypes.func.isRequired
+  aspect_type      : PropTypes.string.isRequired,
+  size             : PropTypes.string.isRequired,
+  icon             : PropTypes.string.isRequired,
+  available_images : PropTypes.array.isRequired,
+  waarde           : PropTypes.any.isRequired,
+  callBack         : PropTypes.func.isRequired
 
 // callBack_myUsers_from_editRole: propTypes.func.isRequired
 }

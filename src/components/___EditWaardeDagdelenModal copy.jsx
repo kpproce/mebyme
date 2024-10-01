@@ -8,11 +8,10 @@ import { Modal, Table, Col, Row, Button} from "react-bootstrap";
 import GetSliderButton from './GetSliderButton.jsx';
 import GetIcon from './GetIcon.jsx';
 import { FaSmile, FaFrown, FaMeh, FaAngry } from 'react-icons/fa';
-import { FaBlind, FaMinus, FaCheck, FaPlus, FaRegCircle } from 'react-icons/fa';
+import { FaEquals, FaMinus, FaCheck, FaPlus, FaRegCircle } from 'react-icons/fa';
 
 
 import { FaUserFriends, FaUserNinja,FaUserSecret,FaUserTie, FaChair, FaBed, FaWalking, FaRunning, FaBiking, FaSkiingNordic } from 'react-icons/fa';
-import { ImSleepy } from "react-icons/im";
 
 import propTypes from 'prop-types'; // ES6
 import { v4 as uuidv4 } from 'uuid';
@@ -31,58 +30,80 @@ const  EditWaardeDagdelenModal = (props) => {
     })
     const [opmerking, setOpmerking]       = useState(props.opmerking);
 
-
-    const icons = {
-      medicatie: {
-        0: <span className="med_color_0">X</span>,
-        1: <span className="med_color_1">--</span>,
-        2: <FaMinus className="med_color_2" title="Slightly Less" />,
-        3: <FaCheck className="med_color_3" title="Normal" />,
-        4: <FaPlus className="med_color_4" title="More" />,
-        5: <span className="med_color_5">++</span>,
-      },
-      gedaan: {
-        0: <span className="fg_color_0">X</span>,
-        1: <ImSleepy  className="gedaan_color_1" title="Resting" />,
-        2: <FaBlind   className="gedaan_color_2" title="low effort" />,
-        3: <FaWalking className="gedaan_color_3" title="medium Effort" />,
-        4: <FaRunning className="gedaan_color_4" title="Moderate Effort" />,
-        5: <FaBiking  className="gedaan_color_5" title="High Effort" />,
-
-      },
-      default: {
-        0: <span className="fg_color_0">X</span>,
-        1: <FaSmile className="fg_color_1" />,
-        2: <FaMeh className="fg_color_2" />,
-        3: <FaFrown className="fg_color_3" />,
-        4: <FaMeh className="fg_color_4" />,
-        5: <FaAngry className="fg_color_5" />,
-      }
-    };
-
     const [options] = useState(() => {
-      const aspectIcons = icons[props.aspect_type] || icons.default;
-      return Object.keys(aspectIcons).map(key => ({
-        value: key,
-        label: aspectIcons[key] // Directly reference the icon
-      }));
+      if (props.aspect_type === 'medicatie') {
+        return [
+          { value: '0', label: <span className="fg_color_0"> X</span> },
+          // { value: '1', label: <span><FaMinus className="fg_color_5"/><FaMinus className="fg_color_5" title="Minimum (--)" /></span> },
+          { value: '1', label: <span className="fg_color_4 x-large" >---</span> },
+          // { value: '2', label: <span className="fg_color_2 xx-large"> -</span> },
+          { value: '2', label: <FaMinus className="fg_color_2" title="Single Minus (slightly less)" /> },  // Slightly less (-)
+          { value: '3', label: <FaCheck className="fg_color_1" title="Normal, OK" /> },    // Normal (OK)
+          { value: '4', label: <FaPlus className="fg_color_2" title="More than normal (+)" /> },   // More (+)
+          // { value: '5', label: <span><FaPlus className="fg_color_4"/><FaPlus className="fg_color_4" title="Maximum (++)" /></span> },  // Maximum (++)
+          { value: '5', label: <span className="fg_color_4 x-large" >+++</span> },
+        ];
+
+      } else if (props.aspect_type === 'gedaan') {
+        return [
+       /*    { value: '0', label: <span className="fg_color_0"> X</span> },
+          // { value: '1', label: <span><FaMinus className="fg_color_5"/><FaMinus className="fg_color_5" title="Minimum (--)" /></span> },
+          { value: '1', label: <span className="fg_color_3 x-large" >xxx</span> },
+          // { value: '2', label: <span className="fg_color_2 xx-large"> -</span> },
+          { value: '2', label: <FaMinus className="fg_color_2" title="Single Minus (slightly less)" /> },  // Slightly less (-)
+          { value: '3', label: <FaCheck className="fg_color_1" title="Normal, OK" /> },    // Normal (OK)
+          { value: '4', label: <FaPlus className="fg_color_2" title="More than normal (+)" /> },   // More (+)
+          // { value: '5', label: <span><FaPlus className="fg_color_4"/><FaPlus className="fg_color_4" title="Maximum (++)" /></span> },  // Maximum (++)
+          { value: '5', label: <span className="fg_color_5 x-large" >!!!!</span> }, */
+          { value: '0', label: <span className="fg_color_0"> X</span> },
+          { value: '1', label: <FaUserFriends className="fg_color_3" title="Resting" /> },             // Resting
+          { value: '2', label: <FaWalking className="fg_color_2" title="Low Effort" /> },      // Walking (low effort)
+          { value: '3', label: <FaRunning className="fg_color_3" title="Moderate Effort" /> }, // Running (moderate effort)
+          { value: '4', label: <FaBiking className="fg_color_4" title="High Effort" /> },      // Biking (high effort)
+          { value: '5', label: <FaSkiingNordic className="fg_color_5" title="Extreme Effort" /> }, // Skiing (extreme exertion)
+
+
+        ];
+        
+      } else {
+        return [
+          { value: '0', label: <span className="fg_color_0"> X</span> },
+          { value: '1', label: <FaSmile className="fg_color_1" /> },
+          { value: '2', label: <FaMeh className="fg_color_2" /> },
+          { value: '3', label: <FaFrown className="fg_color_3" /> },
+          { value: '4', label: <FaMeh className="fg_color_4" /> },
+          { value: '5', label: <FaAngry className="fg_color_5" /> },
+        ];
+      }
     });
     
-
     const [selectedOption, setSelectedOption] = useState([]);
 
-    const getIcon1 = (aspect_type, waarde) => {
-      if (icons[aspect_type] && icons[aspect_type][waarde]) {
-        return icons[aspect_type][waarde];
-      }
-      return icons.default[waarde] || null;
+    const icons = {
+      0: <FaTired className="fg_color_0" />,  // Example icons you used in Select component
+      1: <FaUserFriends className="fg_color_3" title="Resting" />,
+      2: <FaWalking className="fg_color_2" title="Low Effort" />,
+      3: <FaCheck className="fg_color_3" />,
+      4: <FaPlus className="fg_color_4" />,
+      5: <FaPlusPlus className="fg_color_5" />
     };
-   
+
+
+    // Dynamically assign a class based on waarde
 
     const getSelectClassName = (waarde) => {
       return `fg_color_${waarde}`;  // Use your existing class names
     };
 
+    // const customStyles = {
+    //   // No need to define backgroundColor here, as you'll use classes
+    //   control: (provided, state) => ({
+    //     ...provided,
+    //     // Conditional class application based on the state
+    //     // This approach assumes you will apply classes conditionally via className
+    //   }),
+    //   // Add any other style overrides you need
+    // };
     
     const customStyles = {
       control: (provided) => ({
@@ -137,7 +158,7 @@ const  EditWaardeDagdelenModal = (props) => {
     async function update_or_create_hgh_waarneming_via_API(waardeDagdelenArray, opmerking1) { // dit zijn de aspect buttons, met een waarde
       
       // waardeDagdelenArray is een array [1,4,5,3,2]
-      console.log('140: ')
+      console.log('97: ')
       console.log(waardeDagdelenArray)
       const waardeDagdelenString = waardeDagdelenArray.map(digit => digit || 0).join('').padEnd(5, '0');
       
@@ -235,11 +256,13 @@ const  EditWaardeDagdelenModal = (props) => {
 
     return (
       <>
-                 
+        {/*  { console.log('102: props: ') }  
+           { console.log(JSON.stringify(props))}  
+        */} 
         <GetSliderButton 
           aspect_type       = {props.aspect_type}
-          icon              = {getIcon1(props.aspect_type, waarde)} // Dynamically passing the icon
-          available_images  = {props.available_images }
+          icon              = {props.icon} 
+          available_icons   = {props.available_icons }
           waarde            = {waarde} 
           size              = {'basic'} 
           callBack          = {callBack_handleShow}
@@ -258,14 +281,14 @@ const  EditWaardeDagdelenModal = (props) => {
               {props.aspect} {props.datum}       
   
               <span className='space'></span>       <span className='space'></span> 
-              
+
               <GetSliderButton 
-                aspect_type      = {props.aspect_type} 
-                icon             = {getIcon1(props.aspect_type, waarde)} // Dynamically passing the icon
-                available_images = {props.available_images}
-                waarde           = {waarde} 
-                size             = {'large'} 
-                callBack         = {callBack_handleChangeWaarde}
+                aspect_type     = {props.aspect_type} 
+                icon            = {props.icon} 
+                available_icons = {props.available_icons}
+                waarde          = {waarde} 
+                size            = {'large'} 
+                callBack        = {callBack_handleChangeWaarde}
               />
               
             </Modal.Title>  
@@ -329,30 +352,30 @@ const  EditWaardeDagdelenModal = (props) => {
           <div style={{'fontSize': 'large', 'fontWeight': '500','paddingBottom': '0.3rem'} }>
           {props.dagdelenInvullen=='ja'? ' Of wijzig hier alle dagdelen naar' : 'Geef de waarde voor de hele dag op'}
           </div>
-          <Table striped bordered hover variant="light" size="sm" >
+          <Table striped bordered hover variant="light" size="sm" style={{'maxWidth': '15rem'}}>
             <tr key={uuidv4()}>  
               {/* {console.log('135: ' + props.aspect_type + '  ' + props.icon)}          */}
               {aantalKnoppen.map((waarde, index) => 
                   <td className='perc12' key={index}>         
                       <GetSliderButton 
-                        aspect_type      = {props.aspect_type} 
-                        icon             ={getIcon1(props.aspect_type, waarde)}  // Dynamically get the icon based on aspect_type and waarde
-                        available_images = {props.available_images}
+                        aspect_type     = {props.aspect_type} 
+                        icon            = {props.icon} 
+                        available_icons = {props.available_icons}
                         waarde          = {waarde} 
-                        size            = {'x-large'} 
+                        size            = {'large'} 
                         callBack        = {callBack_handleChangeWaarde}
                       />
                   </td>
               )}
               <td className='perc12' key={uuidv4()}>
                 <GetSliderButton 
-                  key              = {'editwaarde0'}
-                  aspect_type      = {props.aspect_type} 
-                  available_images = {props.available_images}
-                  icon             = {"X"} 
-                  waarde           = {0} 
-                  size             = {'x_large'} 
-                  callBack         = {callBack_handleChangeWaarde}
+                  key             = {'editwaarde0'}
+                  aspect_type     = {props.aspect_type} 
+                  available_icons = {props.available_icons}
+                  icon            = {props.icon} 
+                  waarde          = {0} 
+                  size            = {'large'} 
+                  callBack        = {callBack_handleChangeWaarde}
                 />
               </td>
             </tr>
@@ -393,7 +416,7 @@ const  EditWaardeDagdelenModal = (props) => {
     aspect_type           : propTypes.string, 
     aspect                : propTypes.string, 
     icon                  : propTypes.string, 
-    available_images       : propTypes.array, 
+    available_icons       : propTypes.array, 
     datum                 : propTypes.string, 
     waarde                : propTypes.string,
     waardeDagdelen        : propTypes.array,

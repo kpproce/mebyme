@@ -1,0 +1,30 @@
+Gebruik van images, of icons, of sliders, of kleuren
+
+Ideaal design: 
+Kies per aspect wat je wil zien, standaard voor dit aspect_type, of individuele plaatjes. 
+Of standaard.
+Aan en uit kunnen zetten eenvoudig in de website. 
+
+Icons voor medicatie lopen niet van groen naar rood, maar hebben in het mdden (waarde = 3) groen, daarboven minder, is blauwig, daarboven is richting rood. 
+
+icons kunnen ook images zijn. 
+
+settings_slider: // gehele systeem 
+- kleuren:  kies uit ['red-green', 'darkGrey-lightGrey', 'noColor'] 
+- voorkeur_icons: kies uit: ['per_aspectType', 'per_aspect_if_available', 'noIcons']
+
+Must have: 
+alleen 'per_aspectType' werk nog. 
+code is wel zo gebouwd dat 
+
+Should have (of latere versie)
+kunnen kiezen per aspect of je de 5 images wil zien, mits ze er zijn, anders per aspcttype
+bovenstaande instellingen in de database, per persoon
+
+
+1) voorkeur_icons: 'per_aspect_if_available' geselecteerd? 
+Als er images (5 stuks, voor iedere waarde een image) voor dit aspect zijn dan worden die getoond, bij invoer en in de slider. 
+
+1) Breedte edit form 
+2) Naamgeving 
+3) 

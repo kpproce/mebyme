@@ -4,7 +4,7 @@ import GetSliderButton from './GetSliderButton.jsx';
 import propTypes from 'prop-types'; // ES6
 import { v4 as uuidv4 } from 'uuid';
 
-const  EditWaardeModal = (props) => {
+const  EditWaardeModal = (props) => { // **********   niet meer in gebruik  ************
     // const [id, setId] =  useState(1);
     // const [title, setTitle] =  useState("this song");
     const [show, setShow] = useState(false);
@@ -103,7 +103,7 @@ const  EditWaardeModal = (props) => {
         <GetSliderButton 
           aspect_type       = {props.aspect_type}
           icon              = {props.icon} 
-          available_icons   = { props.available_icons }
+          available_images   = { props.available_images }
           waarde            = {waarde} 
           size              = {'basic'} 
           callBack          = {callBack_handleShow}
@@ -129,7 +129,7 @@ const  EditWaardeModal = (props) => {
               <GetSliderButton 
                 aspect_type     = {props.aspect_type} 
                 icon            = {props.icon} 
-                available_icons = {props.available_icons}
+                available_images = {props.available_images}
                 waarde          = {waarde} 
                 size            = {'large'} 
                 callBack        = {callBack_handleChangeWaarde}
@@ -147,7 +147,7 @@ const  EditWaardeModal = (props) => {
                         <GetSliderButton 
                           aspect_type     = {props.aspect_type} 
                           icon            = {props.icon} 
-                          available_icons = {props.available_icons}
+                          available_images = {props.available_images}
                           waarde          = {waarde} 
                           size            = {'large'} 
                           callBack        = {callBack_handleChangeWaarde}
@@ -158,7 +158,7 @@ const  EditWaardeModal = (props) => {
                 <GetSliderButton 
                           key             = {'editwaarde0'}
                           aspect_type     = {props.aspect_type} 
-                          available_icons = {props.available_icons}
+                          available_images = {props.available_images}
                           icon            = {props.icon} 
                           waarde          = {0} 
                           size            = {'large'} 
@@ -199,16 +199,16 @@ const  EditWaardeModal = (props) => {
   EditWaardeModal.propTypes = {
     //callBackWaarde: propTypes.number.isRequired
     callBack_set_hgh_details: propTypes.func,    
-    username        : propTypes.string, 
-    apikey 	        : propTypes.string, 
-    aspect_type     : propTypes.string, 
-    aspect          : propTypes.string, 
-    icon            : propTypes.string, 
-    available_icons : propTypes.array, 
-    datum           : propTypes.string, 
-    waarde          : propTypes.number,
-    opmerking       : propTypes.string,
-    fetchURL        : propTypes.string 
+    username         : propTypes.string, 
+    apikey 	         : propTypes.string, 
+    aspect_type      : propTypes.string, 
+    aspect           : propTypes.string, 
+    icon             : propTypes.string, 
+    available_images : propTypes.array, 
+    datum            : propTypes.string, 
+    waarde           : propTypes.number,
+    opmerking        : propTypes.string,
+    fetchURL         : propTypes.string 
   }
   
   export default EditWaardeModal; 

@@ -16,7 +16,7 @@ const GetIcon = (props) => {
     
     let waarde = "" + props.waarde
     //console.log('18: getPresentation aangeroepen met waarde: ' + waarde +  ', aspect_type: ' + props.aspect_type)
-    //console.log(props.available_icons)
+    //console.log(props.available_images)
 
     if (waarde == "0") {
       return "-" 
@@ -33,7 +33,7 @@ const GetIcon = (props) => {
         }
       }
 
-      let available_icon1 =  "" + props.available_icons.filter(
+      let available_icon1 =  "" + props.available_images.filter(
         available_icon => available_icon.substring(0, available_icon.indexOf(".")) === props.aspect_type
       );
 
@@ -71,7 +71,7 @@ GetIcon.propTypes = {
 
   aspect_type     : PropTypes.string.isRequired,
   size            : PropTypes.string.isRequired,
-  available_icons : PropTypes.array.isRequired,
+  available_images : PropTypes.array.isRequired,
   waarde          : PropTypes.any.isRequired,
 
 

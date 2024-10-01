@@ -10,7 +10,6 @@ import {get_changedDate_asTxt} from './utils.js'
 //import {maandNamenKort} from './utils.js'
 import {maandNamenKort}        from './global_const.js'
 import {basic_API_url}         from './global_const.js'
-import EditWaardeModal         from './EditWaardeModal.jsx'
 import EditWaardeDagdelenModal from './EditWaardeDagdelenModal.jsx'
 import EditOpmerkingModal      from './EditOpmerkingModal.jsx'
 import SliderMonthsColored     from './SliderMonthsColored.jsx'
@@ -59,8 +58,8 @@ const Slider = (props) => {
   const [opmerkingen, setOpmerkingen]               = useState([])
   const [hghOverigeAspecten, setHghOverigeAspecten] = useState([])
   const [aspectTypes, setAspectTypes]               = useState([])
-  const [available_icons, setAvailable_icons]       = useState([])
-
+  const [available_images, setAvailable_images]       = useState([])
+  const [berekenmethodes, setBerekenmethodes]       = useState([])
   const [apikey, setApikey] = useState(() => {
     // let apikey = window.localStorage.getItem('apikey')
     let apikey = props.apikey
@@ -255,12 +254,13 @@ const Slider = (props) => {
         datesRow.forEach(date => {
           if (date == hghRow.data[loopRowIndex].datum) {
             let dataObject = {
-              'datum'            : date, 
-              'aspect'           : hghRow.data[0].aspect,
-              'waarde'           : hghRow.data[loopRowIndex].waarde,
-              'waardeDagdelen'   : hghRow.data[loopRowIndex].waardeDagdelen,
-              'dagdelenInvullen' : hghRow.data[loopRowIndex].dagdelenInvullen,
-              'opmerking'        : hghRow.data[loopRowIndex].opmerking
+              'datum'               : date, 
+              'aspect'              : hghRow.data[0].aspect,
+              'waarde'              : hghRow.data[loopRowIndex].waarde,
+              'waardeDagdelen'      : hghRow.data[loopRowIndex].waardeDagdelen,
+              'dagdelenInvullen'    : hghRow.data[loopRowIndex].dagdelenInvullen,
+              'dagwaardeBerekening' : hghRow.data[loopRowIndex].dagwaardeBerekening,
+              'opmerking'           : hghRow.data[loopRowIndex].opmerking
             }
          
             hghData_alleDagen.push( dataObject )
@@ -270,12 +270,13 @@ const Slider = (props) => {
           
           } else {
             let dataObject = {
-              'datum'            : date, 
-              'aspect'           : hghRow.data[0].aspect,
-              'waarde'           : 0,
-              'waardeDagdelen'   : "00000",
-              'dagdelenInvullen' : hghRow.data[0].dagdelenInvullen,
-              'opmerking'        : null
+              'datum'               : date, 
+              'aspect'              : hghRow.data[0].aspect,
+              'waarde'              : 0,
+              'waardeDagdelen'      : "00000",
+              'dagdelenInvullen'    : hghRow.data[0].dagdelenInvullen,
+              'dagwaardeBerekening' : hghRow.data[0].dagwaardeBerekening,
+              'opmerking'           : null
             }
             hghData_alleDagen.push( dataObject )
           }
@@ -309,10 +310,11 @@ const Slider = (props) => {
             // breid de slider uit met een nieuwe regel met dit aspect
             datesRow.forEach(date => {
               let dataObject = {
-                'datum'            : date, 
-                'aspect'           : teTonenAspect.aspect,
-                'waarde'           : 0,
-                'dagdelenInvullen' : teTonenAspect.dagdelenInvullen, 
+                'datum'               : date, 
+                'aspect'              : teTonenAspect.aspect,
+                'waarde'              : 0,
+                'dagdelenInvullen'    : teTonenAspect.dagdelenInvullen, 
+                'dagwaardeBerekening' : teTonenAspect.dagwaardeBerekening,
                 'opmerking'        : null
               }
               hghData_alleDagen.push( dataObject )
@@ -374,8 +376,8 @@ const Slider = (props) => {
           // console.log("371: gezocht: " + orgTeZoekenAspect +  " gebruikt: " + teZoekenAspect + " gevonden aspect_type: " + aspectData.aspect_type)
       
       })
-      // console.log('381: ')
-      // console.log(hghData_alleDagen_alleAspecten)
+      console.log('379: ')
+      console.log(hghData_alleDagen_alleAspecten)
       setSliderData1 (hghData_alleDagen_alleAspecten)  
       // console.log("376: hghData_alleDagen_alleAspecten:" ) 
       // hghData_alleDagen_alleAspecten.forEach(dat => {
@@ -437,9 +439,10 @@ const Slider = (props) => {
       setHghOverigeAspecten(res['hghPeriod']['overigeAspecten'])
       setAspectTypes(res['hghPeriod']['teTonenAspectTypes'])
       setOpmerkingen(res['hghPeriod']['opmerkingen'])
+      setBerekenmethodes(res['hghPeriod']['berekenmethodes'])
       // console.log('350: opmerkingen from API:')
       // console.log(res['hghPeriod']['opmerkingen'])
-      setAvailable_icons(res['hghPeriod']['iconsData']['imageNamesList'])
+      setAvailable_images(res['hghPeriod']['iconsData']['imageNamesList'])
       setHasToReloadData(false)
     })
   }, [sliderEndDate_asTxt, period, hasToReloadData] ) 
@@ -667,7 +670,8 @@ const Slider = (props) => {
                     <ChangeSliderVisibility 
                       username          = { username }
                       apikey            = { apikey }     
-                      teTonenAspectType = { teTonenAspectType}                 
+                      teTonenAspectType = { teTonenAspectType} 
+                      berekenmethodes   = { berekenmethodes }                
                       aspectLijst       = { hghAspecten }
                       overigeAspecten   = { hghOverigeAspecten }
                       fetchURL          = { fetchURL }
@@ -706,25 +710,27 @@ const Slider = (props) => {
                           color = "grey"
                           onClick= {() => handleClick_aspect_eye_out(dataRow.aspect)}
                         />
-                      </td>
+                      </td>                      
+
 
                       {dataRow.data.map( (dagData, dagDataIndex) => // per button van links naar rechts ..
-                      
+   
                           <td key = {uuidv4()}>                          
+                            {/* { console.log('718' + dagData.waarde)} */}
+                            {/* { console.log(dagData.dagwaardeBerekening + '  ' + dagData.aspect + '  ' + dagData.waarde +  ' waardeDagdelen: ' + dagData.waardeDagdelen)} */}
                             {dagData.waarde>=0
                               ?
-                                // <EditWaardeModal 
                                 <EditWaardeDagdelenModal 
                                   username                  = { username }
                                   apikey                    = { apikey }                      
                                   datum                     = { dagData.datum  } 
                                   aspect                    = { dagData.aspect }
                                   icon                      = { dataRow.icon }
-                                  available_icons           = { available_icons }
+                                  available_images          = { available_images }
                                   aspect_type               = { teTonenAspectType}
                                   waarde                    = { dagData.waarde } 
                                   dagdelenInvullen          = { dagData.dagdelenInvullen }
-                                  basis_dagwaardeBerekening = { 'gem_max_iets_zwaarder'}
+                                  dagwaardeBerekening       = { dagData.dagwaardeBerekening}
                                   waardeDagdelen            = { maakIndividueleDagWaardes(dagData.waardeDagdelen)} 
                                   opmerking                 = { dagData.opmerking? dagData.opmerking : "" } 
                                   fetchURL                  = { fetchURL }
