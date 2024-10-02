@@ -87,8 +87,6 @@ const Slider = (props) => {
     setMyMessages(updatedMessages);
   };
 
-
-
   function txtDateFormat (date_asTxt, vorm) // zeer specifieke weergave, dus geen gebruik gemaakt van dateformat etc..
     // aanleveren geldige datum in text bijv 6-03 of 06-3 --> MOET NOG Met jaar ervoor 
   { 

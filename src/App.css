@@ -60,11 +60,12 @@ body {
   font-size: x-large !important;
 }
 
-+x-small   { font-size: x-small }
-.small     { font-size: small   }
-.large     { font-size: large   }
-.x-large   { font-size: x-large }
-.xx-large  { font-size: xx-large }
+.xx-small  { font-size: xx-small !important}
+.x-small   { font-size: x-small !important}
+.small     { font-size: small  !important }
+.large     { font-size: large  !important }
+.x-large   { font-size: x-large !important}
+.xx-large  { font-size: xx-large !important}
 
 .perc12 {width: 11% !important}
 
