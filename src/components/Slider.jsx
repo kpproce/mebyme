@@ -45,9 +45,15 @@ const Slider = (props) => {
       return dateToTxt (new Date())
       //return "2024-06-26" 
   })
-  const [period, setPeriod] = useState(7
 
-  ) // standaard een week + extra dag voor vorige of volgende periode
+  const [width, setWidth] = useState(window.innerWidth);
+
+  const [period, setPeriod] = useState(() => {
+    if (width<800) return 7
+    if (width<1200) return 14
+    else return 21
+    
+  }) // standaard een week 
 
   const [repeatDatesRow, setRepeatDatesRow] = useState(true)
 
@@ -447,6 +453,21 @@ const Slider = (props) => {
     })
   }, [sliderEndDate_asTxt, period, hasToReloadData] ) 
 
+  useEffect(() => { 
+    const handleResize = () => {
+      setWidth(window.innerWidth); // Update the width when the window is resized
+    };
+
+    // Attach the event listener on mount
+    window.addEventListener('resize', handleResize);
+
+    // Clean up the event listener on unmount
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
+
   const callBack_set_hgh_details  = useCallback(() => {
       setHasToReloadData(true) 
   },[])
@@ -512,15 +533,20 @@ const Slider = (props) => {
                 <Button className = "buttonBasis x-smallButton" onClick={ () => changeSliderDate( period * -1 )}> <AiOutlineArrowLeft/> </Button>
             </td> 
             <td key="slider_period_select"  >
-              <select style={{ fontSize: 'small', marginTop: '0.2rem'  }} onChange={ (e) => { setPeriod(e.target.value) }} className="form-select">
+              <select 
+                style     = {{ fontSize: 'small', marginTop: '0.2rem'  }} 
+                onChange  = { (e) => { setPeriod(e.target.value) }} 
+                className = "form-select"
+                value={period} // Set the default value dynamically
+              >
                 <option defaultValue disabled>
                   periode
                 </option>
                 <option value="7" > 1 week</option>
                 <option value="14"> 2 week</option>
-                <option value="22"> 3 week</option>
-                <option value="29"> 4 week</option>
-                <option value="32"> 31 dagen</option>
+                <option value="21"> 3 week</option>
+                <option value="28"> 4 week</option>
+                <option value="31"> 31 dagen</option>
               </select>
             </td>
                     
@@ -716,10 +742,14 @@ const Slider = (props) => {
                       {dataRow.data.map( (dagData, dagDataIndex) => // per button van links naar rechts ..
    
                           <td key = {uuidv4()}>                          
-                            {/* { console.log('718' + dagData.waarde)} */}
+                            { console.log('745: a: ' + dagData.waarde?dagData.waarde:' dagwaarde null of undefined' )}
+                            { console.log('745: b: ' + dagData.waarde?typeof(dagData.waarde): ' dagwaarde null of undefined' )}
+                            { console.log(typeof(dagData.waarde)=='string'?" 747: STRING ": '' )}
+                            { console.log(JSON.stringify(dagData))}
                             {/* { console.log(dagData.dagwaardeBerekening + '  ' + dagData.aspect + '  ' + dagData.waarde +  ' waardeDagdelen: ' + dagData.waardeDagdelen)} */}
-                            {dagData.waarde>=0
-                              ?
+                            {dagData.waarde>=0 
+                             // {dagData.waarde>=0 && dagData.waarde // nog maken wel of geen 0 waardes tonn
+                             ? <>
                                 <EditWaardeDagdelenModal 
                                   username                  = { username }
                                   apikey                    = { apikey }                      
@@ -728,7 +758,7 @@ const Slider = (props) => {
                                   icon                      = { dataRow.icon }
                                   available_images          = { available_images }
                                   aspect_type               = { teTonenAspectType}
-                                  waarde                    = { dagData.waarde } 
+                                  waarde                    = { dagData.waarde} 
                                   dagdelenInvullen          = { dagData.dagdelenInvullen }
                                   dagwaardeBerekening       = { dagData.dagwaardeBerekening}
                                   waardeDagdelen            = { maakIndividueleDagWaardes(dagData.waardeDagdelen)} 
@@ -736,8 +766,11 @@ const Slider = (props) => {
                                   fetchURL                  = { fetchURL }
                                   callBack_set_hgh_details  = { callBack_set_hgh_details }
                                 />
+                                { console.log('745: c: ' + dagData.waarde?dagData.waarde:' dagwaarde null of undefined' )}
+                              
+                                </>                              
                               : 
-                                "----"
+                                ""
                             }
                           </td>
                       )}

@@ -165,7 +165,6 @@ const MyUsers = (props) => {
       -{fetchURL}-
     </>
   );  
-
 }
 
 MyUsers.propTypes = {
