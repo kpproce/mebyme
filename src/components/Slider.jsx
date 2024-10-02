@@ -47,7 +47,13 @@ const Slider = (props) => {
   })
 
   const [width, setWidth] = useState(window.innerWidth);
-
+  
+  const getPeriod = (width) => {
+    if (width < 800) return 7;
+    if (width < 1200) return 14;
+    return 21;
+  };
+  
 
   const [period, setPeriod] = useState(() => getPeriod(width));
 
@@ -80,12 +86,7 @@ const Slider = (props) => {
     setMyMessages(updatedMessages);
   };
 
-  const getPeriod = (width) => {
-    if (width < 800) return 7;
-    if (width < 1200) return 14;
-    return 21;
-  };
-  
+
 
   function txtDateFormat (date_asTxt, vorm) // zeer specifieke weergave, dus geen gebruik gemaakt van dateformat etc..
     // aanleveren geldige datum in text bijv 6-03 of 06-3 --> MOET NOG Met jaar ervoor 
