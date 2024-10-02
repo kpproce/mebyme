@@ -49,9 +49,10 @@ const Slider = (props) => {
   const [width, setWidth] = useState(window.innerWidth);
   
   const getPeriod = (width) => {
-    if (width < 800) return 7;
-    if (width < 1200) return 14;
-    return 21;
+    if (width < 550) return 7;
+    if (width < 700) return 14;
+    if (width < 950) return 21;
+    return 28;
   };
   
 
