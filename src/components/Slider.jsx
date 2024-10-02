@@ -48,12 +48,8 @@ const Slider = (props) => {
 
   const [width, setWidth] = useState(window.innerWidth);
 
-  const [period, setPeriod] = useState(() => {
-    if (width<800) return 7
-    if (width<1200) return 14
-    else return 21
-    
-  }) // standaard een week 
+
+  const [period, setPeriod] = useState(() => getPeriod(width));
 
   const [repeatDatesRow, setRepeatDatesRow] = useState(true)
 
@@ -83,6 +79,13 @@ const Slider = (props) => {
     const updatedMessages = [...myMessages, newMessage];
     setMyMessages(updatedMessages);
   };
+
+  const getPeriod = (width) => {
+    if (width < 800) return 7;
+    if (width < 1200) return 14;
+    return 21;
+  };
+  
 
   function txtDateFormat (date_asTxt, vorm) // zeer specifieke weergave, dus geen gebruik gemaakt van dateformat etc..
     // aanleveren geldige datum in text bijv 6-03 of 06-3 --> MOET NOG Met jaar ervoor 
@@ -397,9 +400,8 @@ const Slider = (props) => {
     // console.log('391: sliderEndDate_asTxt: ' + sliderEndDate_asTxt +  ' deltaDays: '+ deltaDays)
     // console.log(get_changedDate_asTxt(sliderEndDate_asTxt, deltaDays))
     setSliderEndDate_asTxt(get_changedDate_asTxt(sliderEndDate_asTxt, (deltaDays*1)))
- }
+  }
   
- 
   const maakIndividueleDagWaardes = (waardesAsString) => {
     // console.log("401: "+ waardesAsString)
     if (waardesAsString === undefined)  return Array(5).fill('0')
@@ -455,7 +457,8 @@ const Slider = (props) => {
 
   useEffect(() => { 
     const handleResize = () => {
-      setWidth(window.innerWidth); // Update the width when the window is resized
+      setWidth(window.innerWidth);
+      setPeriod(() => getPeriod(window.innerWidth)); // Use the same logic
     };
 
     // Attach the event listener on mount
@@ -521,6 +524,7 @@ const Slider = (props) => {
   return (
     props.logged_in?
     <div className="w3-container w3-center w3-animate-zoom">
+       <div>width: {width} period: {period} </div>
       < SliderMonthsColored />
 
       <Table key="slidermenu" striped bordered hover  size="sm"> 
