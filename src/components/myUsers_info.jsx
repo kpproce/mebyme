@@ -123,7 +123,7 @@ const MyUsers = (props) => {
 
   return (
     <>
-      <div> versie 1.31_13 3 okt responsive betere max en kleuren per aspect_type </div>
+       <p>Laatste versie message: {process.env.REACT_APP_COMMIT_MESSAGE}</p>
       {/* {console.log('142:')} */}
       {/* {console.log(data)} */}
       <h2 className="smallTitle"> usergegevens, opgevraagd door {props.username}</h2> 

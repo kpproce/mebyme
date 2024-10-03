@@ -523,6 +523,27 @@ const Slider = (props) => {
     }
   };
   
+  const handleTouchStart = (event) => {
+    const startY = event.touches[0].clientY;
+
+    const handleTouchMove = (moveEvent) => {
+        const currentY = moveEvent.touches[0].clientY;
+        const diffY = currentY - startY;
+
+        // Prevent the default behavior if the swipe is downwards
+        if (diffY > 0) {
+            moveEvent.preventDefault(); // Prevent the refresh on swipe down
+        }
+    };
+
+    window.addEventListener('touchmove', handleTouchMove, { passive: false });
+
+    // Clean up the event listener on touch end
+    window.addEventListener('touchend', () => {
+        window.removeEventListener('touchmove', handleTouchMove);
+    }, { once: true });
+  };
+
   // Wrapper functions to call handleSwipe with the correct direction
   const handleSwipedRight = (eventData) => handleSwipe(eventData, 'right');
   const handleSwipedLeft = (eventData) => handleSwipe(eventData, 'left');
@@ -531,6 +552,7 @@ const Slider = (props) => {
   const handlers = useSwipeable({
     onSwipedRight: handleSwipedRight,
     onSwipedLeft: handleSwipedLeft,
+    onTouchStart: handleTouchStart, // Attach touch start event
     preventDefaultTouchmoveEvent: true, // Prevent scrolling when swiping
     trackMouse: true, // Enable mouse swiping for desktop
     delta: 10, // Swipe sensitivity
