@@ -16,7 +16,7 @@ body {
   } 
 
 .fitIn {
-  width: 95%;
+  width: 90% !important;
 }
 
 .logo {
