@@ -21,10 +21,10 @@ function App() {
 
   return (
     <div className={`App ${darkMode ? 'theme-dark' : 'theme-light'}`}>
-    <Container className="py-4">
+   
     < MyNavbar /> 
     {/* <TestComponent/> */}
-    </Container>
+
   </div>
 
 

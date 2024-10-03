@@ -11,6 +11,8 @@
 body {
     align-content: flex-start;
     background-color: #18bbdc;
+    padding-left: 0;
+    margin-left: 0;
   } 
 
 .logo {

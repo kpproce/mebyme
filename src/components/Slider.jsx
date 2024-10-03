@@ -457,13 +457,7 @@ const Slider = (props) => {
   useEffect(() => { 
     const handleResize = () => {
       const newWidth = window.innerWidth;
-      const newHeight = window.innerHeight;
       
-      // Detect if the device is back to portrait mode
-      if (newHeight > newWidth) {
-        window.location.reload();  // Reload the browser when switching to portrait
-      }
-
       setWidth(newWidth);
       setPeriod(getPeriod(newWidth));
     };
