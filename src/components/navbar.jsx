@@ -73,6 +73,7 @@ const MyNavbar = () => {
                     padding: "2px 5px 5px 5px",
                     margin: "3px",
                     fontSize: "19px",
+                    boxSizing: "border-box", // Still helpful to include this
                 }}
                 >
                 <div style={{ margin: "6px" }}>
