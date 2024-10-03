@@ -759,8 +759,8 @@ const Slider = (props) => {
                   (dataRow, dataRowIndex) => 
                     <tr key={uuidv4()}>
                       <td key={uuidv4()} className='striped small'> {/* eerste kolom  */} 
-                        {dataRow.aspect.length<12 
-                        ? <div className ="small" >{dataRow.aspect.substring(0,11)} </div>
+                        {dataRow.aspect.length<10 
+                        ? <div className ="small" >{dataRow.aspect.substring(0,9)} </div>
                           : <div className = "long-word-break x-small" >
                           {dataRow.aspect}
                         </div>

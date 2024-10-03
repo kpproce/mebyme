@@ -68,7 +68,7 @@ const MyNavbar = () => {
             <div
                 style={{
                     display: "flex",
-                    width: "95%",
+                    width: "97%",
                     background: "rgb(187, 206, 224)",
                     padding: "2px 5px 5px 5px",
                     margin: "3px",
