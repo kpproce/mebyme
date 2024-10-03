@@ -57,7 +57,7 @@ const GetSliderButton = (props) => {
     */
     <Button 
       onClick={() => props.callBack(props.waarde)} 
-      className={`slider-button btn btn-primary bk_color_${props.waarde} Button_${props.size === 'x-large' ? 'x-large' : props.size}`}>
+      className={`slider-button btn-primary bk_color_${props.waarde} Button_${props.size === 'x-large' ? 'x-large' : props.size}`}>
       {props.icon} {/* Render the dynamic icon */}
     </Button>
 

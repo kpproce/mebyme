@@ -235,6 +235,10 @@ body {
 
 .sliderDatumClass { font-size: x-small; }
 
+.slider-button {
+  padding: 10px;
+}
+
 .buttonRight {position: absolute; right: 1rem;}
 
 .width3px  { width: 3px }
