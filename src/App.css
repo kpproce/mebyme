@@ -15,6 +15,10 @@ body {
     margin-left: 0;
   } 
 
+.fitIn {
+  width: 95%;
+}
+
 .logo {
   height: 6em;
   padding: 1.5em;

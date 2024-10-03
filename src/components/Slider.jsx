@@ -554,8 +554,8 @@ const Slider = (props) => {
 
   return (
     props.logged_in?
-    <div className=" w3-center w3-animate-zoom">
-       <div>width: {width} period: {period} </div>
+    <div className=" w3-center w3-animate-zoom fitIn">
+       <div> width: {width} period: {period} </div>
       < SliderMonthsColored />
 
       <Table key="slidermenu" striped bordered hover  size="sm"> 
