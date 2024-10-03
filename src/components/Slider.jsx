@@ -462,10 +462,12 @@ const Slider = (props) => {
 
     // Attach the event listener on mount
     window.addEventListener('resize', handleResize);
+    window.addEventListener('orientationchange', handleResize);
 
     // Clean up the event listener on unmount
     return () => {
       window.removeEventListener('resize', handleResize);
+      window.removeEventListener('orientationchange', handleResize);
     };
   }, []);
 
