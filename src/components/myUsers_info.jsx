@@ -119,7 +119,7 @@ const MyUsers = (props) => {
         setNeedToReload('false')
       })
     } 
-  }, [needToReload])
+  }, [needToReload]) 
 
   return (
     <>
