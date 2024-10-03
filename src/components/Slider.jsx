@@ -46,7 +46,6 @@ const Slider = (props) => {
       //return "2024-06-26" 
   })
 
-  const [width, setWidth] = useState(window.innerWidth);
   
   const getPeriod = (width) => {
     if (width < 550) return 6;
@@ -55,8 +54,8 @@ const Slider = (props) => {
     return 28;
   };
   
-
-  const [period, setPeriod] = useState(() => getPeriod(width));
+  const [width, setWidth] = useState(window.innerWidth);
+  const [period, setPeriod] = useState(() => getPeriod(window.innerWidth));
 
   const [repeatDatesRow, setRepeatDatesRow] = useState(true)
 
