@@ -247,7 +247,7 @@ const  EditWaardeDagdelenModal = (props) => {
 
         {props.opmerking
         ? <div className = "xx-small" >
-            {props.opmerking.substr(0,6)}
+            {props.opmerking.substr(0,5)}
           </div>
         : ""
         }
