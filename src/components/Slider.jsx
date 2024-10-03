@@ -456,8 +456,16 @@ const Slider = (props) => {
 
   useEffect(() => { 
     const handleResize = () => {
-      setWidth(window.innerWidth);
-      setPeriod(() => getPeriod(window.innerWidth)); // Use the same logic
+      const newWidth = window.innerWidth;
+      const newHeight = window.innerHeight;
+      
+      // Detect if the device is back to portrait mode
+      if (newHeight > newWidth) {
+        window.location.reload();  // Reload the browser when switching to portrait
+      }
+
+      setWidth(newWidth);
+      setPeriod(getPeriod(newWidth));
     };
 
     // Attach the event listener on mount
