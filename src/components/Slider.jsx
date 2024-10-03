@@ -503,17 +503,24 @@ const Slider = (props) => {
   const handleSwipe = (eventData, direction) => {
     const screenWidth = window.innerWidth;
     const startX = eventData.initial[0]; // X-coordinate of where the swipe started
+    const { deltaX, deltaY } = eventData;
   
-    // Example: Only trigger if the swipe starts on the left part of the screen
-    if (startX < screenWidth / 1.5) {
-      console.log(`Swipe detected in the left part of the screen, direction: ${direction}`);
+    // Ensure the swipe is primarily horizontal (deltaX > deltaY)
+    if (Math.abs(deltaX) > Math.abs(deltaY)) {
+      // Example: Only trigger if the swipe starts on the left part of the screen
+      if (startX < screenWidth / 1.5) {
+        console.log(`Swipe detected in the left part of the screen, direction: ${direction}`);
   
-      // Different logic based on direction
-      if (direction === 'right') {
-        changeSliderDate(period * -1); // Logic for swiping right
-      } else if (direction === 'left') {
-        changeSliderDate(period * 1); // Logic for swiping left
+        // Different logic based on direction
+        if (direction === 'right') {
+          changeSliderDate(period * -1); // Logic for swiping right
+        } else if (direction === 'left') {
+          changeSliderDate(period * 1); // Logic for swiping left
+        }
       }
+    } else {
+      // Ignore if the swipe is primarily vertical
+      console.log('Ignored vertical swipe');
     }
   };
   
