@@ -123,7 +123,7 @@ const MyUsers = (props) => {
 
   return (
     <>
-      <p>Versie 1.32_01 responsive en swipe 3 okt</p>
+      <p>Versie 1.32_02 responsive en swipe 3 okt</p>
       {/* {console.log('142:')} */}
       {/* {console.log(data)} */}
       <h2 className="smallTitle"> usergegevens, opgevraagd door {props.username}</h2> 

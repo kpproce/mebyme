@@ -495,13 +495,15 @@ const Slider = (props) => {
   },[])
 
   const handleSwipe = (eventData, direction) => {
+     console.log ('498:  eventData')
+     console.log (eventData)
     const screenWidth = window.innerWidth;
     const startX = eventData.initial[0]; // X-coordinate of where the swipe started
-    const deltaY = eventData.delta[1]; // Y-distance of the swipe
+    const deltaY = eventData.deltaY // Y-distance of the swipe
   
     // Example: Only trigger if the swipe starts on the left part of the screen
     if (startX < screenWidth / 1.5) {
-      console.log(`Swipe detected in the left part of the screen, direction: ${direction}`);
+      console.log(`504: Swipe detected in the left part of the screen, direction: ${direction}`);
   
       // Different logic based on direction
       if (direction === 'right') {
