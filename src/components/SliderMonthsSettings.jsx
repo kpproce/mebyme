@@ -80,7 +80,7 @@ const  SliderMonthsSettings = (props) => {
 
   
     return (
-      <div style={{ margin: 0, padding: 0 }}>
+      <div>
         <Button size="sm" >  <IoSettingsOutline/> </Button>
         
         <Modal contentClassName='modalBody' show={show} onHide={handleClose} active="true" centered backdrop={false}>
