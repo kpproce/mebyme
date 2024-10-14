@@ -118,7 +118,7 @@ const handleTap = (wekenData, e) => {
 
 
   return (
-    <div>
+    <div className='fitIn'>
       <Table>
       {/*   <tr>          
           <th>week</th>            
