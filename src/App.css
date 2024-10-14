@@ -262,7 +262,7 @@ body {
 .buttonRight {position: absolute; right: 1rem;}
 
 .width3px  { width: 3px }
-.space { padding-right: 6px;}
+.space { padding-right: 4px;}
 
 .welzijn_color_0 {  background-color: rgb(99, 97, 97, 0.4)   !important; color: rgb(99, 97, 97)   !important }  
 .welzijn_color_1 {  background-color: rgb(30, 255, 0, 0.4)   !important; color: rgb(30, 255, 0)   !important }

@@ -563,7 +563,7 @@ const Slider = (props) => {
           />
         )}
  
-      <Table key="slidermenu" striped bordered hover  size="sm"> 
+      <Table key="slidermenu" striped bordered hover size="sm"> 
         <thead>
         </thead>
         <tbody>
