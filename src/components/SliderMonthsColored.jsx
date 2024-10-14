@@ -119,7 +119,7 @@ const handleTap = (wekenData, e) => {
 
   return (
     <div className='fitIn'>
-      <Table>
+      <Table striped bordered hover size="sm">
       {/*   <tr>          
           <th>week</th>            
           <th>vanaf</th>            
@@ -160,21 +160,21 @@ const handleTap = (wekenData, e) => {
             ))}
           </tr>   
           {isHovered && (
-                      <div style={{
-                          position: 'absolute',
-                          top: tooltipStyle.top,
-                          left: tooltipStyle.left,
-                          backgroundColor: '#333',
-                          color: '#fff',
-                          padding: '5px 10px',
-                          borderRadius: '5px',
-                          zIndex: 100,
-                          whiteSpace: 'nowrap',
-                          opacity: 0.8,
-                      }}>
-                          {tooltipContent}
-                      </div>
-                  )}
+            <div style={{
+                position: 'absolute',
+                top: tooltipStyle.top,
+                left: tooltipStyle.left,
+                backgroundColor: '#333',
+                color: '#fff',
+                padding: '5px 10px',
+                borderRadius: '5px',
+                zIndex: 100,
+                whiteSpace: 'nowrap',
+                opacity: 0.8,
+            }}>
+                {tooltipContent}
+            </div>
+        )}
         </tbody>
       </Table>
     </div>
