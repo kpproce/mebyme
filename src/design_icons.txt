@@ -26,5 +26,7 @@ bovenstaande instellingen in de database, per persoon
 Als er images (5 stuks, voor iedere waarde een image) voor dit aspect zijn dan worden die getoond, bij invoer en in de slider. 
 
 1) Breedte edit form 
-2) Naamgeving 
-3) 
+
+3) text voor 0 of X
+
+als scherm breder -> meer weken

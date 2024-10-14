@@ -2,7 +2,6 @@ import {React, useState, useEffect, useCallback  } from 'react';
 import PropTypes from 'prop-types'
 import Table from 'react-bootstrap/Table';
 import {getLastDateOfDutchWeek} from './utils.js'
-import SliderMonthsSettings from './SliderMonthsSettings.jsx'
 // import {maandNamenKort} from './utils.js'
 import {maandNamenKort} from './global_const.js'
 import { v4 as uuidv4 } from 'uuid';
@@ -24,7 +23,6 @@ const SliderMonthsColored = (props) => {
   const [isHovered, setIsHovered] = useState(false);
   const [tooltipContent, setTooltipContent] = useState('');
   const [tooltipStyle, setTooltipStyle] = useState({});
- 
   const [isMobile, setIsMobile] = useState(false); // State to track mobile status
 
   // Check if the device is mobile
@@ -48,14 +46,21 @@ const SliderMonthsColored = (props) => {
     return date.toLocaleString('default', { month: 'short' }); // Return month name (short format)
   };
 
+
   const create_montNameRow_fromWeeknumbers = () =>  {
+
     const monthsRow = []
+    
+    console.log('108:')
+    console.log(props)
     let currentMonth = getMonthNameFromWeek(props.metaWeek[0].yearWeek);
+    console.log('currentMonth: ' + currentMonth)
+    console.log('112:')
     let monthCountItem = {
       'monthName' : currentMonth, 
       'count'     : 0
     }
-
+    console.log('117:')
     props.metaWeek.forEach((week, index) => {
       if (getMonthNameFromWeek(week.yearWeek) == currentMonth) {
         monthCountItem.count += 1;
@@ -69,13 +74,11 @@ const SliderMonthsColored = (props) => {
     });
     monthsRow.push(Object.assign({}, monthCountItem))
 
+    console.log('131:')
+    console.log(monthsRow)
     return monthsRow
   }
-    
-  const formatDate = (dateStr) => {
-    return new Date(dateStr).toLocaleString('nl-NL', { day: 'numeric', month: 'short' });
-  };
-    
+  
   const handleMouseEnter = (wekenData, e) => {  // tooltip
     if (!e.currentTarget) return; // Ensure currentTarget is available
     const rect = e.currentTarget.getBoundingClientRect();
@@ -89,7 +92,7 @@ const SliderMonthsColored = (props) => {
     }
 
     setTooltipStyle({ top, left });
-    setTooltipContent("week " + wekenData.week + " " + " t/m " + formatDate(getLastDateOfDutchWeek(wekenData.yearWeek))); // Set tooltip content
+    setTooltipContent(wekenData.data[0].vanDatum + " t/m " + wekenData.data[0].totDatum); // Set tooltip content
     setIsHovered(true); // Show tooltip
 };
 
@@ -115,10 +118,10 @@ const handleTap = (wekenData, e) => {
   setIsHovered(true); // Show tooltip
 };
 
-
-
   return (
-    <div>
+  <div>
+    <h3>Weekdata voor {props.aspect}</h3>
+  
       <Table>
       {/*   <tr>          
           <th>week</th>            
@@ -128,31 +131,26 @@ const handleTap = (wekenData, e) => {
         </tr> */}
         <tbody>      
           <tr>           
-            <td key='sliderMonthsSettingCell_0'></td>
             {  create_montNameRow_fromWeeknumbers().map((item, index) => (
               <td key={"weekdat" + index} className='tdBorder' colSpan={item.count}>
                 {item.count>1?item.monthName:""}
               </td>
             ))}
           </tr>   
-          <tr key={"sliderMonthsDataRow"}>  
-            <td key='sliderMontsSettingCell_1'>
-                < SliderMonthsSettings/>
-            </td>    
+          <tr key={"12345"}>      
             { props.metaWeek.map((wekenData, index) => (
                   wekenData.data.length>0?
-                    <> 
                     <td 
                       key={ index + "weekDataMaxWaarde"} 
                       className={"color_" + wekenData.data[0].maxWaarde + " tdBorder" }
                       //onClick={() => alert(wekenData.yearWeek + ": " + getLastDateOfDutchWeek(wekenData.yearWeek))}
-                      onClick={() => props.callBack_changePeriod(wekenData.yearWeek)}
+                      onClick={() => props.callBack_changePeriod(getLastDateOfDutchWeek(wekenData.yearWeek))}
                       onMouseEnter={(e) => handleMouseEnter(wekenData, e)} // Show tooltip on hover
                       onMouseLeave={handleMouseLeave} // Hide tooltip on mouse leave
                     > 
                       {wekenData.data[0].maxWaarde} 
                     </td>
-                    </>
+                    
                   : <td key={ index + "weekDataMaxWaarde"} className='color_0 tdBorder'> 
                       - 
                     </td>
@@ -177,8 +175,8 @@ const handleTap = (wekenData, e) => {
                   )}
         </tbody>
       </Table>
-    </div>
-  )
+  </div>
+    )
 }
 
 SliderMonthsColored.propTypes = {

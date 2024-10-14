@@ -14,3 +14,20 @@ export function get_changedDate_asTxt(dateNow_txt, deltaDays) {
   newDate.setDate(newDate.getDate() + deltaDays)
   return dateToTxt(newDate)
 }
+
+export const getLastDateOfDutchWeek = (weekString) => {
+  const [year, week] = weekString.split('_').map(Number);
+
+  // Eerste dag van het jaar
+  const firstDayOfYear = new Date(year, 0, 1);
+  
+  // Vind de eerste maandag van het jaar
+  const firstMonday = new Date(firstDayOfYear);
+  firstMonday.setDate(firstDayOfYear.getDate() + ((1 - firstDayOfYear.getDay() + 7) % 7));
+
+  // Bereken de laatste dag van de opgegeven week
+  const lastDayOfWeek = new Date(firstMonday);
+  lastDayOfWeek.setDate(firstMonday.getDate() + (week * 7));
+
+  return lastDayOfWeek.toISOString().split('T')[0]; // Format YYYY-MM-DD
+};

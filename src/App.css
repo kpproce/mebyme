@@ -10,13 +10,13 @@
 
 body {
     align-content: flex-start;
-    background-color: #18bbdc;
-    padding-left: 0;
+    background-color: #0b6274;
+    padding-left: 3px;
     margin-left: 0;
   } 
 
 .fitIn {
-  width: 90% !important;
+  width: 100% !important;
 }
 
 .logo {
@@ -54,6 +54,22 @@ body {
 
 .css-13cymwt-control {   /* this is de dropdown, to align vertical */
   flex-direction: column;
+}
+
+.text-overlay {
+  white-space: nowrap;  /* Prevent the text from breaking into a new line */
+}
+
+.overlay-cell {
+  position: relative;
+}
+
+.overlay-cell::after {
+  position: absolute;
+  top: 0;
+  left: 0;
+  white-space: nowrap; /* Prevent the text from breaking into a new line */
+  z-index: 1;
 }
 
 .edit_waardeDagDeel_header {
@@ -175,6 +191,10 @@ body {
 
 .redBorder {
   border: solid 2px red;
+}
+
+.tdBorder{
+  border : solid 1px rgb(22, 120, 28);
 }
 
 .nav a { 

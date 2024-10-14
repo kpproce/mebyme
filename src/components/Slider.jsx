@@ -5,8 +5,7 @@ import {useSwipeable} from 'react-swipeable';
 import Table          from 'react-bootstrap/Table';
 import Button         from 'react-bootstrap/Button';
 import propTypes      from 'prop-types'; // ES6
-import {dateToTxt}    from './utils.js'
-import {get_changedDate_asTxt} from './utils.js'
+import {dateToTxt, get_changedDate_asTxt} from './utils.js'
 //import {maandNamenKort} from './utils.js'
 import {maandNamenKort}        from './global_const.js'
 import {basic_API_url}         from './global_const.js'
@@ -14,6 +13,7 @@ import EditWaardeDagdelenModal from './EditWaardeDagdelenModal.jsx'
 import EditOpmerkingModal      from './EditOpmerkingModal.jsx'
 import SliderMonthsColored     from './SliderMonthsColored.jsx'
 import ChangeSliderVisibility  from './ChangeSliderVisibility.jsx'
+import {getLastDateOfDutchWeek} from './utils.js'
 
 import {v4 as uuidv4}  from 'uuid';
 import {FaRegEyeSlash} from "react-icons/fa";
@@ -45,7 +45,6 @@ const Slider = (props) => {
       return dateToTxt (new Date())
       //return "2024-06-26" 
   })
-
   
   const getPeriod = (width) => {
     if (width < 550) return 7;
@@ -62,6 +61,7 @@ const Slider = (props) => {
   const [monthRow, setMonthRow] = useState([])
 
   const [sliderData1, setSliderData1]               = useState([])
+  const [metaWeek, setMetaWeek]	                    = useState([])
   const [hghAspecten, setHghAspecten]               = useState([])
   const [opmerkingen, setOpmerkingen]               = useState([])
   const [hghOverigeAspecten, setHghOverigeAspecten] = useState([])
@@ -101,7 +101,6 @@ const Slider = (props) => {
     const dag     = datum.getDate()
     const formatter = new Intl.DateTimeFormat('nl-NL',{ weekday: 'short' });
     const weekdag = formatter.format(datum);
-
 
     if (vorm == 'dagNr') { return dag} 
     else 
@@ -323,7 +322,7 @@ const Slider = (props) => {
                 'waarde'              : 0,
                 'dagdelenInvullen'    : teTonenAspect.dagdelenInvullen, 
                 'dagwaardeBerekening' : teTonenAspect.dagwaardeBerekening,
-                'opmerking'        : null
+                'opmerking'           : null
               }
               hghData_alleDagen.push( dataObject )
             });
@@ -384,8 +383,6 @@ const Slider = (props) => {
           // console.log("371: gezocht: " + orgTeZoekenAspect +  " gebruikt: " + teZoekenAspect + " gevonden aspect_type: " + aspectData.aspect_type)
       
       })
-      console.log('379: ')
-      console.log(hghData_alleDagen_alleAspecten)
       setSliderData1 (hghData_alleDagen_alleAspecten)  
       // console.log("376: hghData_alleDagen_alleAspecten:" ) 
       // hghData_alleDagen_alleAspecten.forEach(dat => {
@@ -413,7 +410,16 @@ const Slider = (props) => {
   }
 
   const setSliderDateToNow = () => {  
+
     setSliderEndDate_asTxt(dateToTxt (new Date()))
+
+  }
+  
+  const metaWekenTerug = () => {  
+    if (width < 550) return 13;
+    if (width < 850) return 26;
+    if (width < 1050) return 39;
+    else return 52
   }
 
   async function getData() {
@@ -424,6 +430,8 @@ const Slider = (props) => {
     postData.append('apikey', apikey);
     postData.append('startDate', get_changedDate_asTxt(sliderEndDate_asTxt, ((period*-1)+1)));
     postData.append('endDate', sliderEndDate_asTxt);
+    postData.append('wekenTerug', metaWekenTerug());
+    
     postData.append('action', 'get_HGH_period');
 
     let requestOptions = {
@@ -441,7 +449,9 @@ const Slider = (props) => {
     .then ((res) => {
       setMessage(res['hghPeriod']['messages'][0])
       createSliderWeek(res['hghPeriod']['dataPerAspect'], res['hghPeriod']['teTonenAspecten']) // with hghData
-      setHghData(res['hghPeriod']['dataPerAspect'])    
+      setHghData(res['hghPeriod']['dataPerAspect'])
+      setMetaWeek(res['hghPeriod']['metaWeek']['data_alleWeken_inPeriode'])
+
       setHghAspecten(res['hghPeriod']['teTonenAspecten'])
       setHghOverigeAspecten(res['hghPeriod']['overigeAspecten'])
       setAspectTypes(res['hghPeriod']['teTonenAspectTypes'])
@@ -478,6 +488,11 @@ const Slider = (props) => {
       setHasToReloadData(true) 
   },[])
 
+  const callBack_changePeriod  = useCallback((year_week) => {
+    setSliderEndDate_asTxt(getLastDateOfDutchWeek(year_week))
+    setHasToReloadData(true) 
+  },[])
+
   const callBackSetWaardeEnOpmerking = useCallback((aspect, datum, oudeWaarde, nieuweWaarde, oudeOpmerking, nieuweOpmerking) => {
     if (oudeWaarde===nieuweWaarde) {
        // console.log ('callBackSetOpmerking: Opmerking NIET veranderd' + oudeOpmerking + ' --> ' + nieuweOpmerking)
@@ -495,8 +510,6 @@ const Slider = (props) => {
   },[])
 
   const handleSwipe = (eventData, direction) => {
-     console.log ('498:  eventData')
-     console.log (eventData)
     const screenWidth = window.innerWidth;
     const startX = eventData.initial[0]; // X-coordinate of where the swipe started
     const deltaY = eventData.deltaY // Y-distance of the swipe
@@ -513,7 +526,7 @@ const Slider = (props) => {
       }
     }
   
-  };
+  };	  
   
 
   // Wrapper functions to call handleSwipe with the correct direction
@@ -534,8 +547,14 @@ const Slider = (props) => {
     props.logged_in?
     <div className=" w3-center w3-animate-zoom fitIn">
        <div> width: {width} period: {period} </div>
-      < SliderMonthsColored />
-
+       {metaWeek.length>0 &&  (
+          <SliderMonthsColored 
+            metaWeek              = {metaWeek} 
+            aspect                = {'benauwd'}
+            callBack_changePeriod = {callBack_changePeriod}
+          />
+        )}
+ 
       <Table key="slidermenu" striped bordered hover  size="sm"> 
         <thead>
         </thead>
@@ -563,7 +582,7 @@ const Slider = (props) => {
               </select>
             </td>
                     
-            <td key="slider_dateMenuRow_date" style={{ fontSize: 'small', paddingTop: '0.8rem'  }}>{sliderEndDate_asTxt}</td> 
+            <td key="slider_dateMenuRow_date" style={{ paddingTop: '0.8rem'  }}>{sliderEndDate_asTxt}</td> 
             
             <td key="slider_dateMenuRow_now">
               <Button onClick={ () => setSliderDateToNow()}> nu </Button>
@@ -755,10 +774,6 @@ const Slider = (props) => {
                       {dataRow.data.map( (dagData, dagDataIndex) => // per button van links naar rechts ..
    
                           <td key = {uuidv4()}>                          
-                            { console.log('745: a: ' + dagData.waarde?dagData.waarde:' dagwaarde null of undefined' )}
-                            { console.log('745: b: ' + dagData.waarde?typeof(dagData.waarde): ' dagwaarde null of undefined' )}
-                            { console.log(typeof(dagData.waarde)=='string'?" 747: STRING ": '' )}
-                            { console.log(JSON.stringify(dagData))}
                             {/* { console.log(dagData.dagwaardeBerekening + '  ' + dagData.aspect + '  ' + dagData.waarde +  ' waardeDagdelen: ' + dagData.waardeDagdelen)} */}
                             {dagData.waarde>=0 
                              // {dagData.waarde>=0 && dagData.waarde // nog maken wel of geen 0 waardes tonn
@@ -779,8 +794,6 @@ const Slider = (props) => {
                                   fetchURL                  = { fetchURL }
                                   callBack_set_hgh_details  = { callBack_set_hgh_details }
                                 />
-                                { console.log('745: c: ' + dagData.waarde?dagData.waarde:' dagwaarde null of undefined' )}
-                              
                                 </>                              
                               : 
                                 ""
