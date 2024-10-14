@@ -137,7 +137,7 @@ const handleTap = (wekenData, e) => {
           </tr>   
           <tr key={"sliderMonthsDataRow"}>  
             <td key='sliderMontsSettingCell_1'>
-                < SliderMonthsSettings/>
+                <SliderMonthsSettings/>
             </td>    
             { props.metaWeek.map((wekenData, index) => (
                   wekenData.data.length>0?
