@@ -78,7 +78,6 @@ const  SliderMonthsSettings = (props) => {
       setShow(false); 
     }
 
-  
     return (
       <div>
         <Button size="sm" >  <IoSettingsOutline/> </Button>

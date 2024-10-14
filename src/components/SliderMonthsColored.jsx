@@ -97,6 +97,10 @@ const handleMouseLeave = () => {
     setIsHovered(false); // Hide tooltip
 };
 
+const handleTouchEnd = () => {
+  setIsHovered(false);
+};
+
 const handleTap = (wekenData, e) => {
   e.preventDefault(); // Prevent default touch behavior
   if (!e.currentTarget) return; // Ensure currentTarget is available
@@ -114,8 +118,6 @@ const handleTap = (wekenData, e) => {
   setTooltipContent(wekenData.week); // Set tooltip content
   setIsHovered(true); // Show tooltip
 };
-
-
 
   return (
     <div className='fitIn'>
@@ -149,6 +151,7 @@ const handleTap = (wekenData, e) => {
                       onClick={() => props.callBack_changePeriod(wekenData.yearWeek)}
                       onMouseEnter={(e) => handleMouseEnter(wekenData, e)} // Show tooltip on hover
                       onMouseLeave={handleMouseLeave} // Hide tooltip on mouse leave
+                      onTouchEnd={handleTouchEnd} // Hide tooltip on touch end
                     > 
                       {wekenData.data[0].maxWaarde} 
                     </td>
