@@ -1,4 +1,4 @@
-import {React, useState, useEffect, useCallback  } from 'react';
+import {React, useState, useEffect, useRef, useCallback  } from 'react';
 import PropTypes from 'prop-types'
 import Table from 'react-bootstrap/Table';
 import {getLastDateOfDutchWeek} from './utils.js'
@@ -24,6 +24,7 @@ const SliderMonthsColored = (props) => {
   const [isHovered, setIsHovered] = useState(false);
   const [tooltipContent, setTooltipContent] = useState('');
   const [tooltipStyle, setTooltipStyle] = useState({});
+  const timeoutRef = useRef(null); // Ref to store the timeout ID to remove it after x seconds
  
   const [isMobile, setIsMobile] = useState(false); // State to track mobile status
 
@@ -81,7 +82,7 @@ const SliderMonthsColored = (props) => {
     const rect = e.currentTarget.getBoundingClientRect();
     const tooltipWidth = 150; // Set a static width for the tooltip
     let left = rect.left + window.scrollX; // Align with the cell
-    let top = rect.bottom + window.scrollY + 5; // Position below the cell
+    let top = rect.bottom + window.scrollY-2; // Position below the cell
 
     // Check if tooltip goes off the right side of the screen
     if (left + tooltipWidth > window.innerWidth) {
@@ -93,8 +94,16 @@ const SliderMonthsColored = (props) => {
     setIsHovered(true); // Show tooltip
 };
 
+const clearTimeoutIfExists = () => {
+  if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+      timeoutRef.current = null; // Reset the timeout ID
+  }
+};
+
 const handleMouseLeave = () => {
-    setIsHovered(false); // Hide tooltip
+  clearTimeoutIfExists(); // Cancel any existing timeout
+  setIsHovered(false);
 };
 
 const handleTouchEnd = () => {
@@ -148,7 +157,23 @@ const handleTap = (wekenData, e) => {
                       key={ index + "weekDataMaxWaarde"} 
                       className={"color_" + wekenData.data[0].maxWaarde + " tdBorder" }
                       //onClick={() => alert(wekenData.yearWeek + ": " + getLastDateOfDutchWeek(wekenData.yearWeek))}
-                      onClick={() => props.callBack_changePeriod(wekenData.yearWeek)}
+                      onClick={(e) => {
+                        // Call the existing callback function
+                        props.callBack_changePeriod(wekenData.yearWeek);
+                    
+                        // Show the tooltip with timeout (assuming handleMouseEnter is adapted for click)
+                        handleMouseEnter(wekenData, e);
+                        if (timeoutRef.current) {
+                          clearTimeout(timeoutRef.current);
+                        }
+                    
+                        // Set a new timeout to hide the tooltip after x seconds (e.g., 3 seconds)
+                        timeoutRef.current = setTimeout(() => {
+                          handleMouseLeave(); // Hide the tooltip
+                        }, 3000); // Adjust the timeout duration (3000ms = 3 seconds)
+                      }}
+
+                     
                       onMouseEnter={(e) => handleMouseEnter(wekenData, e)} // Show tooltip on hover
                       onMouseLeave={handleMouseLeave} // Hide tooltip on mouse leave
                       onTouchEnd={handleTouchEnd} // Hide tooltip on touch end
@@ -169,7 +194,7 @@ const handleTap = (wekenData, e) => {
                 left: tooltipStyle.left,
                 backgroundColor: '#333',
                 color: '#fff',
-                padding: '5px 10px',
+                padding: '5px 6px',
                 borderRadius: '5px',
                 zIndex: 100,
                 whiteSpace: 'nowrap',
