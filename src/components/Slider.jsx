@@ -464,25 +464,33 @@ const Slider = (props) => {
     })
   }, [sliderEndDate_asTxt, period, hasToReloadData] ) 
 
-  useEffect(() => { 
-    const handleResize = () => {
+  useEffect(() => {
+    const handleOrientationChange = () => {
+      const orientation = screen.orientation || screen.mozOrientation || screen.msOrientation;
+  
+      if (orientation.type.includes("portrait")) {
+        // Portretmodus
+        console.log("Portrait mode detected");
+      } else if (orientation.type.includes("landscape")) {
+        // Landschapsmodus
+        console.log("Landscape mode detected");
+      }
+  
       const newWidth = window.innerWidth;
-      
       setWidth(newWidth);
       setPeriod(getPeriod(newWidth));
     };
-
-    // Attach the event listener on mount
-    window.addEventListener('resize', handleResize);
-    window.addEventListener('orientationchange', handleResize);
-
+  
+    // Attach the event listeners on mount
+    window.addEventListener('resize', handleOrientationChange);
+    window.addEventListener('orientationchange', handleOrientationChange);
+  
     // Clean up the event listener on unmount
     return () => {
-      window.removeEventListener('resize', handleResize);
-      window.removeEventListener('orientationchange', handleResize);
+      window.removeEventListener('resize', handleOrientationChange);
+      window.removeEventListener('orientationchange', handleOrientationChange);
     };
   }, []);
-
 
   const callBack_set_hgh_details  = useCallback(() => {
       setHasToReloadData(true) 
