@@ -17,7 +17,7 @@ const  SliderMonthsSettings = (props) => {
     // const [title, setTitle] =  useState("this song");
   const [show, setShow] = useState(false);
 
-
+  const [selectedOption, setSelectedOption] = useState(props.useMaxOrGem);
   
     async function update_or_create_hgh_waarneming_via_API(waardeDagdelenArray, opmerking1) { // dit zijn de aspect buttons, met een waarde
       
@@ -78,10 +78,20 @@ const  SliderMonthsSettings = (props) => {
       setShow(false); 
     }
 
+    const handleChange = (e) => {
+      setSelectedOption(e.target.value);
+      props.callBack_from_settings(e.target.value)
+      console.log("Selected:", e.target.value); // This will be your constant value
+    };
+
     return (
       <div>
-        <Button size="sm" >  <IoSettingsOutline/> </Button>
-        
+        <Button   
+          size="sm" 
+          onClick={ () => handleShow()}
+        >  
+          <IoSettingsOutline/> 
+        </Button>
         <Modal contentClassName='modalBody' show={show} onHide={handleClose} active="true" centered backdrop={false}>
           <Modal.Header>
             <Modal.Title>
@@ -91,12 +101,18 @@ const  SliderMonthsSettings = (props) => {
           </Modal.Header>
           <Modal.Body> 
             In de sliderbalk wordt: 
-            <br/> -- het aspect benauwd weergegeven <b>per week</b>.
-            <br/> -- de maanden staan er boven.
-
-            <br/> -- de <b>hoogste waarde</b> van die week getoond. 
+            <br/> -- het aspect benauwd weergegeven <b>per week:</b>. (kun je op klikken)
             <br/>
-            <br/>Klik op een blokje om naar die week te gaan.           
+            <br/> -- De Waarde is de max waarde van die week 
+            <br/> -- De Kleur is gebaseerd op max of gem: 
+            <br/> 
+               {/* Dropdown for selecting between two options */}
+              <select value={selectedOption} className='large' onChange={handleChange}>
+                <option value="max">max</option>
+                <option value="gem">gem</option>
+              </select>
+            <br/>
+    
           </Modal.Body>
           <Modal.Footer>     
 
@@ -118,8 +134,7 @@ const  SliderMonthsSettings = (props) => {
   SliderMonthsSettings.propTypes = {
     //callBackWaarde: propTypes.number.isRequired
     callBack_from_settings: propTypes.func,    
-    username              : propTypes.string, 
-    apikey 	              : propTypes.string, 
+    useMaxOrGem           : propTypes.string,
     fetchURL              : propTypes.string 
   }
   export default SliderMonthsSettings; 

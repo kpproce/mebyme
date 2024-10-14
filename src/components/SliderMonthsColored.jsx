@@ -26,6 +26,9 @@ const SliderMonthsColored = (props) => {
   const [tooltipStyle, setTooltipStyle] = useState({});
   const timeoutRef = useRef(null); // Ref to store the timeout ID to remove it after x seconds
  
+  const [useMaxOrGem, setUseMaxOrGem] = useState('gem');
+  
+
   const [isMobile, setIsMobile] = useState(false); // State to track mobile status
 
   // Check if the device is mobile
@@ -94,6 +97,11 @@ const SliderMonthsColored = (props) => {
     setIsHovered(true); // Show tooltip
 };
 
+const callBack_from_settings = (waarde) => {
+  setUseMaxOrGem(waarde)
+}
+
+
 const clearTimeoutIfExists = () => {
   if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
@@ -131,12 +139,6 @@ const handleTap = (wekenData, e) => {
   return (
     <div className='fitIn'>
       <Table striped bordered hover size="sm">
-      {/*   <tr>          
-          <th>week</th>            
-          <th>vanaf</th>            
-          <th>gem</th>            
-          <th>max</th>  
-        </tr> */}
         <tbody>      
           <tr>           
             <td key='sliderMonthsSettingCell_0'></td>
@@ -148,14 +150,18 @@ const handleTap = (wekenData, e) => {
           </tr>   
           <tr key={"sliderMonthsDataRow"}>  
             <td key='sliderMontsSettingCell_1'>
-                <SliderMonthsSettings/>
+                <SliderMonthsSettings
+                  useMaxOrGem = {useMaxOrGem}
+                  callBack_from_settings = {callBack_from_settings}
+                />
             </td>    
             { props.metaWeek.map((wekenData, index) => (
                   wekenData.data.length>0?
                     <> 
                     <td 
                       key={ index + "weekDataMaxWaarde"} 
-                      className={"color_" + wekenData.data[0].maxWaarde + " tdBorder" }
+                      //className={"color_" + Math.round(wekenData.data[0].maxWaarde) + " tdBorder" }
+                      className={"color_" + Math.round(useMaxOrGem === 'max' ? wekenData.data[0].maxWaarde : wekenData.data[0].gemWaarde) + " tdBorder" }
                       //onClick={() => alert(wekenData.yearWeek + ": " + getLastDateOfDutchWeek(wekenData.yearWeek))}
                       onClick={(e) => {
                         // Call the existing callback function
@@ -178,7 +184,8 @@ const handleTap = (wekenData, e) => {
                       onMouseLeave={handleMouseLeave} // Hide tooltip on mouse leave
                       onTouchEnd={handleTouchEnd} // Hide tooltip on touch end
                     > 
-                      {wekenData.data[0].maxWaarde} 
+                     {/* {Math.round(useMaxOrGem === 'max' ? wekenData.data[0].maxWaarde : wekenData.data[0].gemWaarde)} */}
+                     <span className='x-small'> {wekenData.data[0].maxWaarde} </span>
                     </td>
                     </>
                   : <td key={ index + "weekDataMaxWaarde"} className='color_0 tdBorder'> 
