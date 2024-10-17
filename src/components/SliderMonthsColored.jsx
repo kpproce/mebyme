@@ -184,8 +184,20 @@ const handleTap = (wekenData, e) => {
                       onMouseLeave={handleMouseLeave} // Hide tooltip on mouse leave
                       onTouchEnd={handleTouchEnd} // Hide tooltip on touch end
                     > 
-                     {/* {Math.round(useMaxOrGem === 'max' ? wekenData.data[0].maxWaarde : wekenData.data[0].gemWaarde)} */}
-                     <span className='x-small'> {wekenData.data[0].maxWaarde} </span>
+                    {/* {Math.round(useMaxOrGem === 'max' ? wekenData.data[0].maxWaarde : wekenData.data[0].gemWaarde)} */}
+                    {wekenData.data[0].meta_symbool_aspect &&
+                      wekenData.data[0].meta_symbool_last_calc_waarde > 2.5 ? (
+                        <span className="large">
+                          {wekenData.data[0].meta_symbool_aspect.substr(0, 1)}
+                        </span>
+                      ) : wekenData.data[0].meta_symbool_aspect ? (
+                        <span className="x-small" >
+                          {wekenData.data[0].meta_symbool_aspect.substr(0, 1)}
+                        </span>
+                      ) : (
+                        ""
+                      )
+                    }
                     </td>
                     </>
                   : <td key={ index + "weekDataMaxWaarde"} className='color_0 tdBorder'> 
