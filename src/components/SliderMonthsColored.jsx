@@ -163,7 +163,7 @@ const handleTap = (wekenData, e) => {
                       //className={"color_" + Math.round(wekenData.data[0].maxWaarde) + " tdBorder" }
                       className={"color_" + Math.round(useMaxOrGem === 'max' 
                         ? wekenData.data[0].maxWaarde 
-                        : (wekenData.data[0].gemWaarde/2 + wekenData.data[0].maxWaarde/2) 
+                        : ((wekenData.data[0].gemWaarde*20 + wekenData.data[0].maxWaarde*30)/50) 
                       ) + " tdBorder" }
                       //onClick={() => alert(wekenData.yearWeek + ": " + getLastDateOfDutchWeek(wekenData.yearWeek))}
                       onClick={(e) => {
