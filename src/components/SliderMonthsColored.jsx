@@ -161,7 +161,10 @@ const handleTap = (wekenData, e) => {
                     <td 
                       key={ index + "weekDataMaxWaarde"} 
                       //className={"color_" + Math.round(wekenData.data[0].maxWaarde) + " tdBorder" }
-                      className={"color_" + Math.round(useMaxOrGem === 'max' ? wekenData.data[0].maxWaarde : wekenData.data[0].gemWaarde) + " tdBorder" }
+                      className={"color_" + Math.round(useMaxOrGem === 'max' 
+                        ? wekenData.data[0].maxWaarde 
+                        : (wekenData.data[0].gemWaarde/2 + wekenData.data[0].maxWaarde/2) 
+                      ) + " tdBorder" }
                       //onClick={() => alert(wekenData.yearWeek + ": " + getLastDateOfDutchWeek(wekenData.yearWeek))}
                       onClick={(e) => {
                         // Call the existing callback function
@@ -179,7 +182,6 @@ const handleTap = (wekenData, e) => {
                         }, 3000); // Adjust the timeout duration (3000ms = 3 seconds)
                       }}
 
-                     
                       onMouseEnter={(e) => handleMouseEnter(wekenData, e)} // Show tooltip on hover
                       onMouseLeave={handleMouseLeave} // Hide tooltip on mouse leave
                       onTouchEnd={handleTouchEnd} // Hide tooltip on touch end
