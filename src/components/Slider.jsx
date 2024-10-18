@@ -47,9 +47,11 @@ const Slider = (props) => {
   })
   
   const getPeriod = (width) => {
-    if (width < 550) return 7;
-    if (width < 850) return 14;
-    if (width < 1050) return 21;
+    if (width < 700) return 7;
+    if (width < 850) return 11;
+    if (width < 1100) return 14;
+    if (width < 1400) return 18;
+    if (width < 1600) return 21;
     return 28;
   };
   

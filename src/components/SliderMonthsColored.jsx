@@ -171,7 +171,7 @@ const handleTap = (wekenData, e) => {
                       className={"color_" + Math.round(useMaxOrGem === 'max' 
                         ? wekenData.data[0].maxWaarde 
                         : ((wekenData.data[0].gemWaarde*20 + wekenData.data[0].maxWaarde*30)/50) 
-                      ) + " tdBorder sliderWeek_tdWidth_mobilePortrait" }
+                      ) + " tdBorder sliderWeek_tdWidth" }
                       //onClick={() => alert(wekenData.yearWeek + ": " + getLastDateOfDutchWeek(wekenData.yearWeek))}
                       onClick={(e) => {
                         // Call the existing callback function
@@ -209,7 +209,7 @@ const handleTap = (wekenData, e) => {
                     }
                     </td>
                     </>
-                  : <td key={ index + "weekDataMaxWaarde"} className='color_0 tdBorder sliderWeek_tdWidthMobilePortrait'> 
+                  : <td key={ index + "weekDataMaxWaarde"} className='color_0 tdBorder sliderWeek_tdWidth'> 
                       - 
                     </td>
                   

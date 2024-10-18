@@ -91,8 +91,9 @@ body {
 
 .perc12 {width: 11% !important}
 
-.sliderWeek_tdWidth_mobilePortrait {width:40px !important}
+.sliderWeek_tdWidth {width:40px !important}
 .sliderWeek_first_tdWidth_mobilePortrait {display: flex; }
+
 
 .linksRechtContent {
   display: flex;
