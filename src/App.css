@@ -91,8 +91,8 @@ body {
 
 .perc12 {width: 11% !important}
 
-.sliderWeek_tdWidthMobilePortrait {width:45px !important}
-
+.sliderWeek_tdWidth_mobilePortrait {width:40px !important}
+.sliderWeek_first_tdWidth_mobilePortrait {display: flex; }
 
 .linksRechtContent {
   display: flex;
@@ -172,8 +172,6 @@ body {
 .bootstrap-select .dropdown-toggle .dropdown-toggle-icon {
   margin-bottom: 2px; /* Adjust spacing between icon and arrow */
 }
-
-
 
 /* Ensure icon and arrow are in column layout on mobile */
 @media (max-width: 768px) {

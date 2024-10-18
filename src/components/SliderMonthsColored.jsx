@@ -101,6 +101,9 @@ const callBack_from_settings = (waarde) => {
   setUseMaxOrGem(waarde)
 }
 
+const handle_weekSliderChange_averagingMethod = (e) => {
+  setUseMaxOrGem(e.target.value);
+};
 
 const clearTimeoutIfExists = () => {
   if (timeoutRef.current) {
@@ -141,15 +144,19 @@ const handleTap = (wekenData, e) => {
       <Table striped bordered hover size="sm">
         <tbody>      
           <tr>           
-            <td key='sliderMonthsSettingCell_0'></td>
-            {  create_montNameRow_fromWeeknumbers().map((item, index) => (
+            <td key='sliderMonthsSettingCell_0' className='sliderWeek_first_tdWidth_mobilePortrait'></td>
+            { create_montNameRow_fromWeeknumbers().map((item, index) => (
               <td key={"weekdat" + index} className='tdBorder' colSpan={item.count}>
                 {item.count>1?item.monthName:""}
               </td>
             ))}
           </tr>   
           <tr key={"sliderMonthsDataRow"}>  
-            <td key='sliderMontsSettingCell_1'>
+            <td key='sliderMontsSettingCell_1' className='sliderWeek_first_tdWidth_mobilePortrait'>
+                <select value={useMaxOrGem} className='small' onChange={handle_weekSliderChange_averagingMethod}>
+                  <option value="max">max</option>
+                  <option value="gem">gem</option>
+                </select>
                 <SliderMonthsSettings
                   useMaxOrGem = {useMaxOrGem}
                   callBack_from_settings = {callBack_from_settings}
@@ -164,7 +171,7 @@ const handleTap = (wekenData, e) => {
                       className={"color_" + Math.round(useMaxOrGem === 'max' 
                         ? wekenData.data[0].maxWaarde 
                         : ((wekenData.data[0].gemWaarde*20 + wekenData.data[0].maxWaarde*30)/50) 
-                      ) + " tdBorder sliderWeek_tdWidthMobilePortrait" }
+                      ) + " tdBorder sliderWeek_tdWidth_mobilePortrait" }
                       //onClick={() => alert(wekenData.yearWeek + ": " + getLastDateOfDutchWeek(wekenData.yearWeek))}
                       onClick={(e) => {
                         // Call the existing callback function
