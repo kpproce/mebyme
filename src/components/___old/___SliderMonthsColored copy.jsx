@@ -11,7 +11,6 @@ import { v4 as uuidv4 } from 'uuid';
 // import EditUser from './editUser.jsx';
 // import EditRole from './editRole.jsx';
 
-
 const SliderMonthsColored = (props) => { 
 
   // console.log('15: SliderMonthsColored aangeroepen')
@@ -140,7 +139,7 @@ const handleTap = (wekenData, e) => {
     <div className='fitIn'>
       <Table striped bordered hover size="sm">
         <tbody>      
-          <tr>           
+          <tr className='sliderWeekTr'>           
             <td key='sliderMonthsSettingCell_0'></td>
             {  create_montNameRow_fromWeeknumbers().map((item, index) => (
               <td key={"weekdat" + index} className='tdBorder' colSpan={item.count}>
@@ -148,7 +147,7 @@ const handleTap = (wekenData, e) => {
               </td>
             ))}
           </tr>   
-          <tr key={"sliderMonthsDataRow"}>  
+          <tr key={"sliderMonthsDataRow"} className='sliderWeekTr'>  
             <td key='sliderMontsSettingCell_1'>
                 <SliderMonthsSettings
                   useMaxOrGem = {useMaxOrGem}
@@ -163,8 +162,8 @@ const handleTap = (wekenData, e) => {
                       //className={"color_" + Math.round(wekenData.data[0].maxWaarde) + " tdBorder" }
                       className={"color_" + Math.round(useMaxOrGem === 'max' 
                         ? wekenData.data[0].maxWaarde 
-                        : ((wekenData.data[0].gemWaarde*20 + wekenData.data[0].maxWaarde*30)/50) 
-                      ) + " tdBorder sliderWeek_tdWidthMobilePortrait" }
+                        : ((wekenData.data[0].gemWaarde*2 + wekenData.data[0].maxWaarde*2)/4) 
+                      ) + " tdBorder sliderWeeksTd"  }
                       //onClick={() => alert(wekenData.yearWeek + ": " + getLastDateOfDutchWeek(wekenData.yearWeek))}
                       onClick={(e) => {
                         // Call the existing callback function
@@ -189,20 +188,20 @@ const handleTap = (wekenData, e) => {
                     {/* {Math.round(useMaxOrGem === 'max' ? wekenData.data[0].maxWaarde : wekenData.data[0].gemWaarde)} */}
                     {wekenData.data[0].meta_symbool_aspect &&
                       wekenData.data[0].meta_symbool_last_calc_waarde > 2.5 ? (
-                        <span className="large">
+                        <span className="large bk_color_5" >
                           {wekenData.data[0].meta_symbool_aspect.substr(0, 1)}
                         </span>
                       ) : wekenData.data[0].meta_symbool_aspect ? (
-                        <span className="x-small" >
+                        <div className="x-small bk_color_3 tdBorder" >
                           {wekenData.data[0].meta_symbool_aspect.substr(0, 1)}
-                        </span>
+                        </div>
                       ) : (
                         ""
                       )
                     }
                     </td>
                     </>
-                  : <td key={ index + "weekDataMaxWaarde"} className='color_0 tdBorder sliderWeek_tdWidthMobilePortrait'> 
+                  : <td key={ index + "weekDataMaxWaarde"} className='color_0 tdBorder sliderWeekTr'> 
                       - 
                     </td>
                   

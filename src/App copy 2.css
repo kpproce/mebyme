@@ -91,8 +91,6 @@ body {
 
 .perc12 {width: 11% !important}
 
-.sliderWeek_tdWidthMobilePortrait {width:45px !important}
-
 
 .linksRechtContent {
   display: flex;
@@ -260,7 +258,9 @@ body {
 .slider-button {
   padding: 10px;
 }
-
+.sliderWeekTr {display: flex; width: 100%; justify-content: space-between;}
+.sliderWeeksTd { width: 100%;  text-align: center; padding: 4px} */
+/* .sliderWeeksTd { flex: 1; text-align: center; } */
 .buttonRight {position: absolute; right: 1rem;}
 
 .width3px  { width: 3px }
@@ -297,12 +297,12 @@ body {
 .fg_color_4 { color: rgb(255, 132, 1)   !important }  
 .fg_color_5 { color: rgb(236, 24, 140)  !important }  
 
-.bk_color_0 { background-color: rgb(99, 97, 97, 0.2)    !important }  
+.bk_color_0 { background-color: rgba(99, 97, 97, 0.2)   !important }  
 .bk_color_1 { background-color: rgba(0, 255, 38, 0.2)   !important }   
-.bk_color_2 { background-color: rgba(0, 164, 101, 0.2)   !important }  
-.bk_color_3 { background-color: rgb(207, 197, 22, 0.2)  !important }  
-.bk_color_4 { background-color: rgba(225, 255, 1, 0.2)   !important }  
-.bk_color_5 { background-color: rgb(236, 24, 140, 0.2)  !important }  
+.bk_color_2 { background-color: rgba(0, 164, 101, 0.2)  !important }  
+.bk_color_3 { background-color: rgba(207, 197, 22, 0.2) !important }  
+.bk_color_4 { background-color: rgba(225, 255, 1, 0.2)  !important }  
+.bk_color_5 { background-color: rgba(236, 24, 140, 0.2) !important }  
 
 .med_icon_5 { color: rgb(228, 10, 228)  !important } 
 
@@ -348,8 +348,9 @@ body {
   }
 }
 
-@media (min-width: 750px) {
-  #root {  padding: 1rem }
+@media (min-width: 600px) {
+  #root {  padding: 2rem;
+  }
 }
 
 .card {
