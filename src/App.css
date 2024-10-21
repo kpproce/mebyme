@@ -91,6 +91,9 @@ body {
 
 .perc12 {width: 11% !important}
 
+.sliderWeek_td { 
+  overflow: hidden; 
+}
 .sliderWeek_tdWidth {width:40px !important}
 .sliderWeek_first_tdWidth_mobilePortrait {display: flex; }
 
@@ -296,11 +299,22 @@ body {
 .fg_color_4 { color: rgb(255, 132, 1)   !important }  
 .fg_color_5 { color: rgb(236, 24, 140)  !important }  
 
+.fg_color_oneLetter_low  { color: rgb(168, 237, 99) !important }  
+.fg_color_oneLetter_norm { color: rgb(218, 248, 49)  !important }  
+.fg_color_oneLetter_high { color: rgb(248, 105, 205)  !important }  
+
+.oneLetterInSpan {
+  display: inline-block;
+  line-height: 10px;
+  vertical-align: middle;
+}
+
+
 .bk_color_0 { background-color: rgb(99, 97, 97, 0.2)    !important }  
 .bk_color_1 { background-color: rgba(0, 255, 38, 0.2)   !important }   
-.bk_color_2 { background-color: rgba(0, 164, 101, 0.2)   !important }  
+.bk_color_2 { background-color: rgba(0, 164, 101, 0.2)  !important }  
 .bk_color_3 { background-color: rgb(207, 197, 22, 0.2)  !important }  
-.bk_color_4 { background-color: rgba(225, 255, 1, 0.2)   !important }  
+.bk_color_4 { background-color: rgba(225, 255, 1, 0.2)  !important }  
 .bk_color_5 { background-color: rgb(236, 24, 140, 0.2)  !important }  
 
 .med_icon_5 { color: rgb(228, 10, 228)  !important } 

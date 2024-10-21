@@ -20,13 +20,8 @@ import {FaRegEyeSlash} from "react-icons/fa";
 import {AiOutlineEdit} from "react-icons/ai";
 import {AiOutlineClose, AiOutlineArrowLeft, AiOutlineArrowRight } from "react-icons/ai";
 
-// import DeleteUser from './deleteUser.jsx';
-// import EditUser from './editUser.jsx';
-// import EditRole from './editRole.jsx';
 
-const Slider = (props) => { 
-
-  // console.log('15: slider aangeroepen')
+const Slider = (props) => { // the component starts here
 
   const fetchURL =   basic_API_url() + "php/mebyme.php"
 
@@ -56,20 +51,26 @@ const Slider = (props) => {
   };
   
   const [width, setWidth] = useState(window.innerWidth);
+  const [height, setHeight] = useState(window.innerHeight);
   const [period, setPeriod] = useState(() => getPeriod(window.innerWidth));
 
-  const [repeatDatesRow, setRepeatDatesRow] = useState(true)
+  const [repeatDatesRow, setRepeatDatesRow] = useState(() => {
+    const screenHeight = window.innerHeight;
+    return screenHeight > 950;  
+  });
 
   const [monthRow, setMonthRow] = useState([])
 
-  const [sliderData1, setSliderData1]               = useState([])
-  const [metaWeek, setMetaWeek]	                    = useState([])
-  const [hghAspecten, setHghAspecten]               = useState([])
-  const [opmerkingen, setOpmerkingen]               = useState([])
-  const [hghOverigeAspecten, setHghOverigeAspecten] = useState([])
-  const [aspectTypes, setAspectTypes]               = useState([])
+  const [sliderData1, setSliderData1]                 = useState([])
+  const [metaWeek, setMetaWeek]	                      = useState([])
+  const [hghAspecten, setHghAspecten]                 = useState([])
+  const [aspect_meta_bron, setAspect_meta_bron]       = useState("") // for moths weeks color 
+  const [aspect_meta_symbool, setAspect_meta_symbool] = useState("") // for moths weeks letter or symbol 
+  const [opmerkingen, setOpmerkingen]                 = useState([])
+  const [hghOverigeAspecten, setHghOverigeAspecten]   = useState([])
+  const [aspectTypes, setAspectTypes]                 = useState([])
   const [available_images, setAvailable_images]       = useState([])
-  const [berekenmethodes, setBerekenmethodes]       = useState([])
+  const [berekenmethodes, setBerekenmethodes]         = useState([])
   const [apikey, setApikey] = useState(() => {
     // let apikey = window.localStorage.getItem('apikey')
     let apikey = props.apikey
@@ -457,6 +458,8 @@ const Slider = (props) => {
       setHghAspecten(res['hghPeriod']['teTonenAspecten'])
       setHghOverigeAspecten(res['hghPeriod']['overigeAspecten'])
       setAspectTypes(res['hghPeriod']['teTonenAspectTypes'])
+      setAspect_meta_bron(res['hghPeriod']['aspect_meta_bron'])    
+      setAspect_meta_symbool(res['hghPeriod']['aspect_meta_symbool'])    
       setOpmerkingen(res['hghPeriod']['opmerkingen'])
       setBerekenmethodes(res['hghPeriod']['berekenmethodes'])
       // console.log('350: opmerkingen from API:')
@@ -475,11 +478,11 @@ const Slider = (props) => {
         console.log("Portrait mode detected");
       } else if (orientation.type.includes("landscape")) {
         // Landschapsmodus
-        console.log("Landscape mode detected");
+        console.log("Landscape mode detected")
       }
   
-      const newWidth = window.innerWidth;
-      setWidth(newWidth);
+      const newWidth = window.innerWidth; setWidth(newWidth)
+      setHeight(window.innerHeight)
       setPeriod(getPeriod(newWidth));
     };
   
@@ -487,6 +490,8 @@ const Slider = (props) => {
     window.addEventListener('resize', handleOrientationChange);
     window.addEventListener('orientationchange', handleOrientationChange);
   
+    handleOrientationChange();
+
     // Clean up the event listener on unmount
     return () => {
       window.removeEventListener('resize', handleOrientationChange);
@@ -555,13 +560,22 @@ const Slider = (props) => {
 
   return (
     props.logged_in?
+ 
     <div className=" w3-center w3-animate-zoom fitIn">
-       <div> width: {width} period: {period} </div>
+      {console.log('560')}
+      <div> width: {width} height: {height} period: {period} </div>
        {metaWeek.length>0 &&  (
           <SliderMonthsColored 
-            metaWeek              = {metaWeek} 
-            aspect                = {'benauwd'}
-            callBack_changePeriod = {callBack_changePeriod}
+            username                 = { username }
+            apikey                   = { apikey }           
+            metaWeek                 = { metaWeek } 
+            aspect                   = { 'benauwd' }          // het aspect waarop de kleuren zijn gebaseerd in de eerste rij
+            hghAspecten              = { hghAspecten }
+            aspect_meta_bron         = { aspect_meta_bron?aspect_meta_bron:''} // het aspect waarop de letter in 2e rij is gebaseerd
+            aspect_meta_symbool      = { aspect_meta_symbool?aspect_meta_symbool:''} // het aspect waarop de letter in 2e rij is gebaseerd
+            callBack_changePeriod    = { callBack_changePeriod }
+            callBack_set_hgh_details = { callBack_set_hgh_details }
+            fetchURL                 = { fetchURL }
           />
         )}
  
@@ -630,14 +644,14 @@ const Slider = (props) => {
                 </div>
                 <div>
                   <EditOpmerkingModal 
-                    username          = { username }
-                    apikey            = { apikey }                      
-                    datum_start       = { get_changedDate_asTxt(sliderEndDate_asTxt, ((period*-1)+1)) } 
-                    datum_einde       = { sliderEndDate_asTxt}  
-                    aspect            = { "opmerking" }
-                    opmerking         = { "" } 
-                    fetchURL          = { fetchURL }
-                    callBack_set_hgh_details = { callBack_set_hgh_details }
+                    username                 = { username }
+                    apikey                   = { apikey }                      
+                    datum_start              = { get_changedDate_asTxt(sliderEndDate_asTxt, ((period*-1)+1)) } 
+                    datum_einde              = { sliderEndDate_asTxt}  
+                    aspect                   = { "opmerking" }
+                    opmerking                = { "" } 
+                    fetchURL                 = { fetchURL }
+                    callBack_set_hgh_details = { callBack_set_hgh_details}
                   />
                 </div>               
               </div>

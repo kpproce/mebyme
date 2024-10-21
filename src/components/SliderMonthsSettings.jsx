@@ -135,6 +135,6 @@ const  SliderMonthsSettings = (props) => {
     //callBackWaarde: propTypes.number.isRequired
     callBack_from_settings: propTypes.func,    
     useMaxOrGem           : propTypes.string,
-    fetchURL              : propTypes.string 
+    fetchURL              : propTypes.string
   }
   export default SliderMonthsSettings; 
