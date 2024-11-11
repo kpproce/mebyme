@@ -8,7 +8,6 @@ import { Container} from 'react-bootstrap';
 
 import './App.css'
 
-
 function App() {
 
   const [darkMode, setDarkMode] = useState(true);
@@ -21,13 +20,8 @@ function App() {
 
   return (
     <div className={`App ${darkMode ? 'theme-dark' : 'theme-light'}`}>
-   
-    < MyNavbar /> 
-    {/* <TestComponent/> */}
-
-  </div>
-
-
+      < MyNavbar /> 
+    </div>
    
   )
 }

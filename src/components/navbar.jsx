@@ -20,9 +20,12 @@ const MyNavbar = () => {
     })
 
     const [apikey, setApikey] = useState(() => {
-        let apikey = window.localStorage.getItem('apikey')
-        return apikey ? apikey : 'no_apikey' // standaard 
-    })
+        let apikey = window.localStorage.getItem('apikey');
+        apikey = (apikey === null || apikey === 'null') ? 'no_apikey_saved' : apikey;
+        // alert('-' + apikey + '-');
+        console.log('26: apikey: ' + apikey)
+        return apikey;
+    });
     
     // const [sitename, setSitename] = useState(() => {
     //     return username? username : 'astma' // standaard 
@@ -40,10 +43,11 @@ const MyNavbar = () => {
     };
 
     // CALBACK 
-    const callBackNavBarFromLogin = useCallback((username, apikey, logged_in_result) => {
+    const callBackNavBarFromLogin = useCallback((username, newApikey, logged_in_result) => {
         // console.log('31: callBack FromLogin')
         // console.log(username + "  apikey: " + apikey + "  logged_in_result: " + logged_in_result)
-        setApikey(apikey)
+        setApikey(newApikey)
+        console.log('50: new apikey: ' + newApikey + " old: " + apikey)
         setUsername(username)
         // setSitename(username)
         setLogged_in(logged_in_result)
@@ -64,6 +68,8 @@ const MyNavbar = () => {
 
       // END CALLBACK
     return <>
+     
+        {'apikey: ' + apikey}
         <HashRouter>
             <div
                 style={{
@@ -143,12 +149,13 @@ const MyNavbar = () => {
                     element={<MyUsers username={username} apikey={apikey}/>}
                 />
             </Routes> */}
-
+            {console.log('148 apikey: ' + apikey)}
             <Routes>
                 {/* Redirect from the root path to /mebyme/slider */}
                 <Route path="/" element={<Navigate to="/mebyme/slider" replace />} />
                 <Route
                 path="/mebyme/slider"
+        
                 element={<Slider username={username} apikey={apikey} logged_in={logged_in} />}
                 />
                 

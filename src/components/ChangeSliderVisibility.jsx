@@ -35,7 +35,7 @@ const  ChangeSliderVisibility = (props) => {
       postData.append('bijInvoerTonen',   bijInvoerTonen);
       console.log('36: ' + action )
       if (action=="koppel")    
-        postData.append('action',  'koppel_aspect_aan_1User')
+        postData.append('action',  'koppel_aspect_aan_1user')
       else 
         postData.append('action',  'update_aspect_bijInvoerTonen_1User');
   

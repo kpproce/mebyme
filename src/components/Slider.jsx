@@ -11,6 +11,7 @@ import {maandNamenKort}        from './global_const.js'
 import {basic_API_url}         from './global_const.js'
 import EditWaardeDagdelenModal from './EditWaardeDagdelenModal.jsx'
 import EditOpmerkingModal      from './EditOpmerkingModal.jsx'
+import NewAspectModal          from './NewAspectModal.jsx'
 import SliderMonthsColored     from './SliderMonthsColored.jsx'
 import ChangeSliderVisibility  from './ChangeSliderVisibility.jsx'
 import {getLastDateOfDutchWeek} from './utils.js'
@@ -19,7 +20,6 @@ import {v4 as uuidv4}  from 'uuid';
 import {FaRegEyeSlash} from "react-icons/fa";
 import {AiOutlineEdit} from "react-icons/ai";
 import {AiOutlineClose, AiOutlineArrowLeft, AiOutlineArrowRight } from "react-icons/ai";
-
 
 const Slider = (props) => { // the component starts here
 
@@ -605,7 +605,7 @@ const Slider = (props) => { // the component starts here
                 <option value="31"> 31 dagen</option>
               </select>
             </td>
-                    
+   
             <td key="slider_dateMenuRow_date" style={{ paddingTop: '0.8rem'  }}>{sliderEndDate_asTxt}</td> 
             
             <td key="slider_dateMenuRow_now">
@@ -746,7 +746,7 @@ const Slider = (props) => { // the component starts here
               <React.Fragment key={teTonenAspectIndex}>
                 <tr key={uuidv4()}>
                   <td colSpan={1} key="slider_period_visibility"></td>
-                  <td colSpan={period + 1} >
+                  <td colSpan={period-1} >
                     {teTonenAspectType}
                     <span className='space'></span>
                     <ChangeSliderVisibility 
@@ -758,6 +758,17 @@ const Slider = (props) => { // the component starts here
                       overigeAspecten   = { hghOverigeAspecten }
                       fetchURL          = { fetchURL }
                       callBack_changeSliderVisibility = { callBack_changeSliderVisibility }
+                    />
+                  </td>
+                  <td >
+                    <NewAspectModal
+                      username          = { username }
+                      apikey            = { apikey }  
+                      aspectType        = { teTonenAspectType }
+                      berekenmethodes   = { berekenmethodes }                  
+                      fetchURL          = { fetchURL }
+                      callBack_changeSliderVisibility = { callBack_changeSliderVisibility }
+
                     />
                   </td>
                 </tr>
@@ -855,7 +866,6 @@ const Slider = (props) => { // the component starts here
 }
 
 Slider.propTypes = {
-
   apikey:   propTypes.string.isRequired,
   username: propTypes.string.isRequired,
   logged_in: propTypes.bool.isRequired

@@ -123,7 +123,7 @@ const MyUsers = (props) => {
 
   return (
     <>
-      <p>Versie 1.35.01 aspecten kunnen kiezen voor weekoverzicht</p>
+      <p>Versie 1.4.01 apikey expired deels werkend</p>
       {/* {console.log('142:')} */}
       {/* {console.log(data)} */}
       <h2 className="smallTitle"> usergegevens, opgevraagd door {props.username}</h2> 
