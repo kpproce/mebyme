@@ -667,10 +667,11 @@ const Slider = (props) => { // the component starts here
                     <AiOutlineClose /> 
                   </Button>
                   <span className='x-small leftSpace' >
-                    {opm.datum_start.substring(opm.datum_start.length - 2)}
+                    {new Intl.DateTimeFormat('nl-NL', { day: 'numeric', month: 'short' }).format(new Date(opm.datum_start))}
                     {opm.datum_einde? 
                       <> 
-                        - {opm.datum_einde.substring(opm.datum_einde.length - 2)} 
+                        - {new Intl.DateTimeFormat('nl-NL', { day: 'numeric', month: 'short' }).format(new Date(opm.datum_einde))}
+                     
                       </>
                     : ""
                     }
