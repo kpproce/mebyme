@@ -6,6 +6,7 @@ import Slider from './Slider.jsx';
 import { Button } from 'react-bootstrap';
 import { MdOutlineWbSunny } from "react-icons/md";
 import { MdNightsStay } from "react-icons/md";
+import mebymeImage from '../mebymeIcon2.png';
 
 // import UploadFile from './uploadFileV1.jsx';
 
@@ -82,6 +83,8 @@ const MyNavbar = () => {
                     boxSizing: "border-box", // Still helpful to include this
                 }}
                 >
+               <img src={mebymeImage} alt="Mebyme" width="50px"  height="50px" margin-top="5px"/>
+               
                 <div style={{ margin: "6px" }}>
                     <NavLink
                         to="/mebyme/slider"
@@ -118,7 +121,7 @@ const MyNavbar = () => {
                                 : "rgb(80, 112, 131)",
                         })}
                     >
-                        userinfo
+                        user
                     </NavLink>
                 </div>
                 <div style={{ margin: "6px" }}>
