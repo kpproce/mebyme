@@ -80,12 +80,8 @@ function LoginModal(props) {
     setLoginIcon_style('loginIcon_alertStyle')
   }
 
-
   const handleShow = () => setShow(true)
-
   const handleClose = () => { setShow(false)}
-
-
   
   const login = () => {
     const postData = new FormData();

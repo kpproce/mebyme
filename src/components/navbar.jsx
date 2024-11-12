@@ -69,21 +69,20 @@ const MyNavbar = () => {
 
       // END CALLBACK
     return <>
-     
-        {'apikey: ' + apikey}
+
         <HashRouter>
             <div
                 style={{
                     display: "flex",
-                    width: "97%",
+                    
                     background: "rgb(187, 206, 224)",
-                    padding: "2px 5px 5px 5px",
+                    padding: "2px 3px 3px 3px",
                     margin: "3px",
                     fontSize: "19px",
                     boxSizing: "border-box", // Still helpful to include this
                 }}
                 >
-               <img src={mebymeImage} alt="Mebyme" width="50px"  height="50px" margin-top="5px"/>
+               <img src={mebymeImage} alt="Mebyme" width="45px"  height="45px"/>
                
                 <div style={{ margin: "6px" }}>
                     <NavLink
