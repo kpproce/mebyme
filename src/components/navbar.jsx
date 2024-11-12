@@ -82,7 +82,12 @@ const MyNavbar = () => {
                     boxSizing: "border-box", // Still helpful to include this
                 }}
                 >
-               <img src={mebymeImage} alt="Mebyme" width="45px"  height="45px"/>
+                <img src={mebymeImage} 
+                    title   = "Versie 1.4.06 apikey en kleine aanpasingen" 
+                    alt     = "Mebyme" 
+                    width   = "45px"  
+                    height  = "45px"
+                />
                
                 <div style={{ margin: "6px" }}>
                     <NavLink
