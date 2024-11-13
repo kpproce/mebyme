@@ -6,7 +6,7 @@ import Slider from './Slider.jsx';
 import { Button } from 'react-bootstrap';
 import { MdOutlineWbSunny } from "react-icons/md";
 import { MdNightsStay } from "react-icons/md";
-import mebymeImage from '../mebymeIcon2.png';
+import mebymeImage from '../mebymeIcon3.png';
 
 // import UploadFile from './uploadFileV1.jsx';
 
