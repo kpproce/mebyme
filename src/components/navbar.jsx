@@ -90,7 +90,7 @@ const MyNavbar = () => {
                     alt="Mebyme"
                     width="45px"
                     height="45px"
-                    onClick={() => alert("meByMe Versie 1.5.01 maand kalender overzicht")} // Toon de title bij een klik
+                    onClick={() => alert("meByMe Versie 1.5.03 maand kalender overzicht")} // Toon de title bij een klik
                 />
                
                 <div style={{ margin: "6px" }}>

@@ -564,7 +564,7 @@ const Slider = (props) => { // the component starts here
   return (
     props.logged_in?
  
-    <div className=" w3-center w3-animate-zoom fitIn " style={{ width: "60%" }}
+    <div className=" w3-center w3-animate-zoom fitIn " style={{ width: "400px" }}
     >
       {console.log('560')}
       <div> width: {width} height: {height} period: {period} </div>
@@ -813,8 +813,7 @@ const Slider = (props) => { // the component starts here
                             {/* { console.log(dagData.dagwaardeBerekening + '  ' + dagData.aspect + '  ' + dagData.waarde +  ' waardeDagdelenString: ' + dagData.waardeDagdelenString)} */}
                             {dagData.waarde>=0 
                              // {dagData.waarde>=0 && dagData.waarde // nog maken wel of geen 0 waardes tonn
-                             ? <>
-                                <EditWaardeDagdelenModal 
+                             ? <> <EditWaardeDagdelenModal 
                                   username                  = { username }
                                   apikey                    = { apikey }                      
                                   datum                     = { dagData.datum  } 
@@ -822,6 +821,7 @@ const Slider = (props) => { // the component starts here
                                   waarde                    = { dagData.waarde }
                                   callBack_set_hgh_details  = { callBack_set_hgh_details }
                                 />
+                               
                                 </>                              
                               : 
                                 ""

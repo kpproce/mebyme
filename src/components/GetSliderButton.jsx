@@ -55,8 +55,8 @@ const GetSliderButton = (props) => {
   }
   style={{
     margin: '3px',
-    padding: '30px',
-    fontSize: props.size === 'x-large' ? '20px' : '14px',
+    padding: '3px',
+    fontSize: props.size === 'x-large' ? '12px' : '14px',
     display: 'flex', // Flexbox for alignment
     alignItems: 'center', // Vertical centering
     justifyContent: 'center', // Horizontal centering
