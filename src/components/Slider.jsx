@@ -564,7 +564,8 @@ const Slider = (props) => { // the component starts here
   return (
     props.logged_in?
  
-    <div className=" w3-center w3-animate-zoom fitIn">
+    <div className=" w3-center w3-animate-zoom fitIn " style={{ width: "60%" }}
+    >
       {console.log('560')}
       <div> width: {width} height: {height} period: {period} </div>
        {metaWeek.length>0 &&  (
@@ -582,7 +583,7 @@ const Slider = (props) => { // the component starts here
           />
         )}
  
-      <Table key="slidermenu" striped bordered hover size="sm"> 
+      <Table key="slidermenu" striped bordered hover size="sm" style={{ width: "inherit" }}> 
         <thead>
         </thead>
         <tbody>

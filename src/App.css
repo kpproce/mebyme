@@ -16,7 +16,8 @@ body {
   } 
 
 .fitIn {
-  width: 100% !important;
+  /* display: flex !important;*/
+    width: 81% !important;
 }
 
 .logo {
@@ -381,7 +382,7 @@ body {
 .bk_strong_color_4 { background-color: rgb(255, 132, 1)   !important }  
 .bk_strong_color_5 { background-color: rgb(192, 10, 10)  !important }  
 
-* colors for normal range low - high */
+/* colors for normal range low - high */
 .fg_color_0 { color: rgb(99, 97, 97)    !important }  
 .fg_color_1 { color: rgb(68, 242, 94)    !important }   
 .fg_color_2 { color: rgb(160, 198, 4)   !important }  

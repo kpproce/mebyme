@@ -198,7 +198,7 @@ const handleTap = (wekenData, e) => {
 };
 
   return (
-    <div className='fitIn'>
+    <div className='fitIn' style={{ width: "inherit" }}>
     
       <Table striped bordered hover size="sm">
           <tbody>      
