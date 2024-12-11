@@ -1,8 +1,6 @@
-// import {useState, useEffect, useCallback  } from 'react'
 import PropTypes from 'prop-types'
 import {Button} from "react-bootstrap";
-import GetIcon from './GetIcon.jsx'
-import {imageUrl} from './global_const.js'
+
 
 //import inspanning_2 from 'https://www.kimproce.nl/mebyme/images/biking_easy.png';
 //import inspanning_4 from 'https://www.kimproce.nl/mebyme/images/mountain-bicyclist-small.png';
@@ -32,7 +30,7 @@ const GetSliderButton = (props) => {
     waarde = "" + waarde
     switch (waarde) {
       case "0": return 'rgb(114, 136, 156)';
-      case "1": return 'rgb(105, 250, 127)';
+      case "1": return 'rgb(1, 250, 127)';
       case "2": return 'rgb(156, 216, 59)';
       case "3": return 'rgb(247, 232, 92)';
       case "4": return 'rgb(251, 164, 34)';
@@ -42,36 +40,47 @@ const GetSliderButton = (props) => {
     }
   }  
 
-  const getWidthFromSize = () => {
-    switch (props.size) {
-      case 'large'   : return '4rem';
-      case 'x-large' : return '5rem';  
-      default        : return '3rem'
-    }
-  }
-
   return (
    /*  <Button onClick={ () => props.callBack(props.waarde)} className={`slider-button size-${props.size}`}>
       {props.icon}
     </Button>
     */
-    <Button 
-      onClick={() => props.callBack(props.waarde)} 
-      className={`slider-button btn-primary bk_color_${props.waarde} Button_${props.size === 'x-large' ? 'x-large' : props.size}`}>
-      {props.icon} {/* Render the dynamic icon */}
-    </Button>
-
+   
+<Button 
+  onClick={() => props.callBack(props.waarde)} 
+  className={`
+    slider-button btn-primary 
+    bk_color_${props.waarde} 
+    Button_${props.size === 'x-large' ? 'x-large' : props.size}`
+  }
+  style={{
+    margin: '3px',
+    padding: '30px',
+    fontSize: props.size === 'x-large' ? '20px' : '14px',
+    display: 'flex', // Flexbox for alignment
+    alignItems: 'center', // Vertical centering
+    justifyContent: 'center', // Horizontal centering
+    overflow: 'visible', // Ensure content is not hidden
+  }}
+>
+  <span 
+    style={{ 
+      fontSize: '1.5rem', 
+      display: 'inline-block' 
+    }}>
+    {props.icon} {/* Render the dynamic icon */}
+  </span>
+</Button>
+ 
   )
 
-  
 }
 
-GetSliderButton.propTypes = {
-  aspect_type      : PropTypes.string.isRequired,
+GetSliderButton.propTypes = {  
+  icon             : PropTypes.any.isRequired,
   size             : PropTypes.string.isRequired,
-  available_images : PropTypes.array.isRequired,
   waarde           : PropTypes.any.isRequired,
-  callBack         : PropTypes.func.isRequired
+
 
 // callBack_myUsers_from_editRole: propTypes.func.isRequired
 }

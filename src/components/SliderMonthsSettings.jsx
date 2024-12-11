@@ -33,7 +33,6 @@ const  SliderMonthsSettings = (props) => {
       postData.append('apikey'              , props.apikey);
       postData.append('datum'               , props.datum);
       postData.append('aspect'              , props.aspect);
-      postData.append('dagwaardeBerekening' , props.dagwaardeBerekening);
       postData.append('waardeDagdelen'      , waardeDagdelenString);
       postData.append('opmerking'           , opmerking1);
 
@@ -51,7 +50,7 @@ const  SliderMonthsSettings = (props) => {
     const slaop = () => { 
       // props.callBack();
       // if (!opmerking.localeCompare(props.opmerking)==0) {
-      update_or_create_hgh_waarneming_via_API(waardeDagdelen, opmerking)
+      update_or_create_hgh_waarneming_via_API(waardeDagdelen, opmerking) // WEG??
     }
     
     const handleShow = () => setShow(true)

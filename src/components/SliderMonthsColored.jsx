@@ -244,8 +244,7 @@ const handleTap = (wekenData, e) => {
                   <> 
                   <td 
                     key={ index + "weekDataMaxWaarde1"} 
-                    //className={"color_" + Math.round(wekenData.data[0].maxWaarde) + " tdBorder" }
-                    className={"color_" + Math.round(useMaxOrGem === 'max' 
+                     className={"bk_strong_color_" + Math.round(useMaxOrGem === 'max' 
                       ? wekenData.data[0].maxWaarde 
                       : ((wekenData.data[0].gemWaarde*20 + wekenData.data[0].maxWaarde*30)/50) 
                     ) + " tdBorder sliderWeek_tdWidth" }
@@ -319,53 +318,51 @@ const handleTap = (wekenData, e) => {
                   />
               </td>    
               { props.metaWeek.map((wekenData, index) => (
-                    wekenData.data.length>0?
-                      <> 
-                      <td className='color_0 tdBorder sliderWeek_tdWidth'
-                        key={ index + "welkeVoorLetter"} 
-                        //className={"color_" + Math.round(wekenData.data[0].maxWaarde) + " tdBorder" }
-                      
-                        //onClick={() => alert(wekenData.yearWeek + ": " + getLastDateOfDutchWeek(wekenData.yearWeek))}
-                        onClick={(e) => {
-                          // Call the existing callback function
-                          props.callBack_changePeriod(wekenData.yearWeek);
-                      
-                          // Show the tooltip with timeout (assuming handleMouseEnter is adapted for click)
-                          handleMouseEnter(wekenData, e);
-                          if (timeoutRef.current) {
-                            clearTimeout(timeoutRef.current);
-                          }
-                      
-                          // Set a new timeout to hide the tooltip after x seconds (e.g., 3 seconds)
-                          timeoutRef.current = setTimeout(() => {
-                            handleMouseLeave(); // Hide the tooltip
-                          }, 3000); // Adjust the timeout duration (3000ms = 3 seconds)
-                        }}
-
-                        onMouseEnter={(e) => handleMouseEnter(wekenData, e)} // Show tooltip on hover
-                        onMouseLeave={handleMouseLeave} // Hide tooltip on mouse leave
-                        onTouchEnd={handleTouchEnd} // Hide tooltip on touch end
-                      > 
-                      {/* {Math.round(useMaxOrGem === 'max' ? wekenData.data[0].maxWaarde : wekenData.data[0].gemWaarde)} */}
-                      {wekenData.data[0].meta_symbool_aspect &&
-                        wekenData.data[0].meta_symbool_last_calc_waarde > 2.5 
-                        ? <span className="x-large fg_color_oneLetter_high oneLetterInSpan">
-                            {wekenData.data[0].meta_symbool_aspect.substr(0, 1)}
-                          </span>
-                        : wekenData.data[0].meta_symbool_aspect 
-                          ? <span className="large fg_color_oneLetter_low oneLetterInSpan" >
-                              {wekenData.data[0].meta_symbool_aspect.substr(0, 1)}
-                            </span>
-                          : (
-                          ""
-                        )
+                wekenData.data.length>0?
+                  <> 
+                  <td className='bk_strong_color_0 tdBorder sliderWeek_tdWidth'
+                    key={ index + "welkeVoorLetter"} 
+                    //className={"color_" + Math.round(wekenData.data[0].maxWaarde) + " tdBorder" }
+                  
+                    //onClick={() => alert(wekenData.yearWeek + ": " + getLastDateOfDutchWeek(wekenData.yearWeek))}
+                    onClick={(e) => {
+                      // Call the existing callback function
+                      props.callBack_changePeriod(wekenData.yearWeek);
+                  
+                      // Show the tooltip with timeout (assuming handleMouseEnter is adapted for click)
+                      handleMouseEnter(wekenData, e);
+                      if (timeoutRef.current) {
+                        clearTimeout(timeoutRef.current);
                       }
-                      </td>
-                      </>
-                    : <td key={ index + "weekDataMaxWaarde2"} className='color_0 tdBorder sliderWeek_tdWidth sliderWeek_td'> 
-                        
-                      </td>
-                    
+                  
+                      // Set a new timeout to hide the tooltip after x seconds (e.g., 3 seconds)
+                      timeoutRef.current = setTimeout(() => {
+                        handleMouseLeave(); // Hide the tooltip
+                      }, 3000); // Adjust the timeout duration (3000ms = 3 seconds)
+                    }}
+
+                    onMouseEnter={(e) => handleMouseEnter(wekenData, e)} // Show tooltip on hover
+                    onMouseLeave={handleMouseLeave} // Hide tooltip on mouse leave
+                    onTouchEnd={handleTouchEnd} // Hide tooltip on touch end
+                  > 
+                  {/* {Math.round(useMaxOrGem === 'max' ? wekenData.data[0].maxWaarde : wekenData.data[0].gemWaarde)} */}
+                  {wekenData.data[0].meta_symbool_aspect &&
+                    wekenData.data[0].meta_symbool_last_calc_waarde > 2.5 
+                    ? <span className="x-large fg_color_oneLetter_high oneLetterInSpan">
+                        {wekenData.data[0].meta_symbool_aspect.substr(0, 1)}
+                      </span>
+                    : wekenData.data[0].meta_symbool_aspect 
+                      ? <span className="large fg_color_oneLetter_low oneLetterInSpan" >
+                          {wekenData.data[0].meta_symbool_aspect.substr(0, 1)}
+                        </span>
+                      : (
+                      ""
+                    )
+                  }
+                  </td>
+                  </>
+                : <td key={ index + "weekDataMaxWaarde2"} className='bk_strong_color_0 tdBorder sliderWeek_tdWidth sliderWeek_td'>  
+                  </td>
               ))}
             </tr>  
           </tbody>

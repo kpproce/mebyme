@@ -3,6 +3,7 @@ import { useState, useEffect, useCallback  } from 'react';
 import LoginModal from './loginModal.jsx';
 import MyUsers from './myUsers_info.jsx';
 import Slider from './Slider.jsx';
+import Overzichten from './Overzichten.jsx';
 import { Button } from 'react-bootstrap';
 import { MdOutlineWbSunny } from "react-icons/md";
 import { MdNightsStay } from "react-icons/md";
@@ -111,7 +112,7 @@ const MyNavbar = () => {
 
                 <div style={{ margin: "6px" }}>
                     <NavLink
-                        to="/mebyme/myUsers"
+                        to="/mebyme/overzichten"
                         style={({ isActive }) => ({
                             margin: "5px",
                             padding: "5px",
@@ -125,7 +126,7 @@ const MyNavbar = () => {
                                 : "rgb(80, 112, 131)",
                         })}
                     >
-                        user
+                        Rap
                     </NavLink>
                 </div>
                 <div style={{ margin: "6px" }}>
@@ -167,8 +168,8 @@ const MyNavbar = () => {
                 />
                 
                 <Route
-                path="/mebyme/myUsers"
-                element={<MyUsers username={username} apikey={apikey} />}
+                path="/mebyme/overzichten"
+                element={<Overzichten username={username} apikey={apikey} yearMonth='2024-11' />}
                 />
             </Routes>
 

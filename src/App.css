@@ -89,7 +89,7 @@ body {
 .x-large   { font-size: x-large !important}
 .xx-large  { font-size: xx-large !important}
 
-.perc12 {width: 11% !important}
+.perc12 {width: 10% !important}
 
 .sliderWeek_td { 
   overflow: hidden; 
@@ -134,11 +134,9 @@ body {
   padding: 2px 10px !important
 }
 
-
 .smallMargin {
   margin: 2px !important
 }
-
 
 .opmerking_kol1 {
   font-size: small  !important;
@@ -170,6 +168,12 @@ body {
     background-color: rgb(191, 225, 225) !important; /* Ensure background color is applied */
     color: black; /* Change text color for visibility */
   }
+
+  .kalenderDag {
+    /* background-color: rgb(220, 244, 244) !important; Ensure background color is applied */
+    color: rgb(183, 210, 31) !important; /* Change text color for visibility */
+  }
+
   .invoerBC{
     background-color: #d0e0f1; color:black;
   }
@@ -187,6 +191,12 @@ body {
     background-color: rgb(25, 87, 87) !important; /* Ensure background color is applied */
     color: rgb(209, 203, 203); /* Change text color for visibility */
   }
+  
+  .kalenderDag {
+    background-color: rgb(25, 87, 87) ; /* Ensure background color is applied */
+    color: rgb(209, 203, 203); /* Change text color for visibility */
+  }
+
   .invoerBC{
     background-color: #154170;
   }
@@ -218,7 +228,14 @@ body {
   color: rgb(255, 32, 32);
 }
 
+.dagdeelSelect {
+  width: 20%;
+}
 
+.full-width-table {
+  width: 100%;
+  box-sizing: border-box;
+}
 
 /* Example CSS classes for background colors */
 .custom-select .select__control {
@@ -233,8 +250,6 @@ body {
 .select__control.color_1 {
   background-color: rgb(20, 244, 54); /* Adjust or override based on your classes */
 }
-
-
 
 .bootstrap-select .dropdown-toggle {
   display: flex;
@@ -325,7 +340,9 @@ body {
 .sliderDatumClass { font-size: x-small; }
 
 .slider-button {
-  padding: 10px;
+  padding: 1px;
+  width: 2rem;
+  height: 3rem;
 }
 
 .buttonRight {position: absolute; right: 1rem;}
@@ -333,36 +350,45 @@ body {
 .width3px  { width: 3px }
 .space { padding-right: 4px;}
 
-.welzijn_color_0 {  background-color: rgb(99, 97, 97, 0.4)   !important; color: rgb(99, 97, 97)   !important }  
-.welzijn_color_1 {  background-color: rgb(30, 255, 0, 0.4)   !important; color: rgb(30, 255, 0)   !important }
-.welzijn_color_2 {  background-color: rgb(108, 150, 30, 0.4) !important; color: rgb(108, 150, 30) !important }
-.welzijn_color_3 {  background-color: rgb(207, 197, 22, 0.4) !important; color: rgb(207, 197, 22) !important }
-.welzijn_color_4 {  background-color: rgb(255, 115, 1, 0.4)  !important; color: rgb(255, 115, 1)  !important }
-.welzijn_color_5 {  background-color: rgb(236, 24, 140, 0.4) !important; color: rgb(236, 24, 140) !important }
 
-.med_color_0     {  background-color: rgb(99, 97, 97, 0.4)   !important; color: rgb(99, 97, 97)   !important }  
-.med_color_1     {  background-color: rgb(207, 197, 22, 0.4) !important; color: rgb(207, 197, 22) !important }
-.med_color_2     {  background-color: rgb(108, 150, 30, 0.4) !important; color: rgb(108, 150, 30) !important }
-.med_color_3     {  background-color: rgb(30, 255, 0, 0.4)   !important; color: rgb(30, 255, 0)   !important }
-.med_color_4     {  background-color: rgb(207, 197, 22, 0.4) !important; color: rgb(207, 197, 22) !important }
-.med_color_5     {  background-color: rgb(255, 115, 1, 0.4)  !important; color: rgb(255, 115, 1)  !important }
+.welzijn_color_0 {  background-color: rgba(99, 97, 97, 0.4)   !important; color: rgb(99, 97, 97)   !important }  
+.welzijn_color_1 {  background-color: rgba(30, 255, 0, 0.4)   !important; color: rgb(30, 255, 0)   !important }
+.welzijn_color_2 {  background-color: rgba(108, 150, 30, 0.4) !important; color: rgb(108, 150, 30) !important }
+.welzijn_color_3 {  background-color: rgba(207, 197, 22, 0.4) !important; color: rgb(207, 197, 22) !important }
+.welzijn_color_4 {  background-color: rgba(255, 115, 1, 0.4)  !important; color: rgb(255, 115, 1)  !important }
+.welzijn_color_5 {  background-color: rgba(236, 24, 140, 0.4) !important; color: rgb(236, 24, 140) !important }
 
+.med_color_0     {  background-color: rgba(99, 97, 97, 0.4)   !important; color: rgb(99, 97, 97)   !important }  
+.med_color_1     {  background-color: rgba(207, 197, 22, 0.4) !important; color: rgb(207, 197, 22) !important }
+.med_color_2     {  background-color: rgba(108, 150, 30, 0.4) !important; color: rgb(108, 150, 30) !important }
+.med_color_3     {  background-color: rgba(30, 255, 0, 0.4)   !important; color: rgb(30, 255, 0)   !important }
+.med_color_4     {  background-color: rgba(207, 197, 22, 0.4) !important; color: rgb(207, 197, 22) !important }
+.med_color_5     {  background-color: rgba(244, 219, 198, 0.4)  !important; color: rgb(255, 115, 1)  !important }
 
+/* dit is de achtergrond van de eerste rij in EditWaardeDagdelenModal */
+.bk_color_0 { background-color: rgba(152, 150, 150, 0.352)    !important }  
+.bk_color_1 { background-color: rgba(6, 110, 12, 0.427)   !important }   
+.bk_color_2 { background-color: rgba(243, 235, 187, 0.995)  !important }  
+.bk_color_3 { background-color: rgb(147, 147, 138)  !important }  
+.bk_color_4 { background-color: rgb(248, 216, 167)  !important }  
+.bk_color_5 { background-color: rgb(255, 200, 200)  !important }  
 
-.color_0 { background-color: rgb(99, 97, 97)    !important }  
-.color_1 { background-color: rgb(30, 255, 0)    !important }  
-.color_2 { background-color: rgb(108, 150, 30)  !important }  
-.color_3 { background-color: rgb(207, 197, 22)  !important }  
-.color_4 { background-color: rgb(255, 115, 1)   !important }  
-.color_5 { background-color: rgb(236, 24, 140)  !important }  
+/* background colors for normal range low - high */
+.bk_strong_color_0 { background-color: rgb(99, 97, 97)    !important }  
+.bk_strong_color_1 { background-color: rgb(68, 242, 94)    !important }   
+.bk_strong_color_2 { background-color: rgb(160, 198, 4)   !important }  
+.bk_strong_color_3 { background-color: rgb(236, 233, 84)  !important }  
+.bk_strong_color_4 { background-color: rgb(255, 132, 1)   !important }  
+.bk_strong_color_5 { background-color: rgb(192, 10, 10)  !important }  
 
-/* colors for norma range low - high */
+* colors for normal range low - high */
 .fg_color_0 { color: rgb(99, 97, 97)    !important }  
-.fg_color_1 { color: rgb(0, 255, 38)    !important }   
-.fg_color_2 { color: rgb(104, 164, 0)   !important }  
-.fg_color_3 { color: rgb(207, 197, 22)  !important }  
+.fg_color_1 { color: rgb(68, 242, 94)    !important }   
+.fg_color_2 { color: rgb(160, 198, 4)   !important }  
+.fg_color_3 { color: rgb(236, 233, 84)  !important }  
 .fg_color_4 { color: rgb(255, 132, 1)   !important }  
-.fg_color_5 { color: rgb(236, 24, 140)  !important }  
+.fg_color_5 { color: rgb(192, 10, 10)  !important }  
+
 
 .fg_color_oneLetter_low  { color: rgb(168, 237, 99) !important }  
 .fg_color_oneLetter_norm { color: rgb(218, 248, 49)  !important }  
@@ -374,13 +400,23 @@ body {
   vertical-align: middle;
 }
 
+.bk_select__single-value svg {
+  font-size: 24px; /* Pas de grootte aan zoals nodig */
+}
 
-.bk_color_0 { background-color: rgb(99, 97, 97, 0.2)    !important }  
-.bk_color_1 { background-color: rgba(0, 255, 38, 0.2)   !important }   
-.bk_color_2 { background-color: rgba(0, 164, 101, 0.2)  !important }  
-.bk_color_3 { background-color: rgb(207, 197, 22, 0.2)  !important }  
-.bk_color_4 { background-color: rgba(225, 255, 1, 0.2)  !important }  
-.bk_color_5 { background-color: rgb(236, 24, 140, 0.2)  !important }  
+.noStyle {
+
+}
+
+
+.bk_select__control:hover {
+  background-color: rgba(124, 134, 123, 0.6); /* Hover-styling */
+}
+
+.bk_select__menu {
+  background-color: rgba(124, 134, 123, 0.6);; /* Achtergrondkleur van het menu */
+}
+
 
 .med_icon_5 { color: rgb(228, 10, 228)  !important } 
 

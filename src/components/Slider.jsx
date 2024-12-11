@@ -264,15 +264,14 @@ const Slider = (props) => { // the component starts here
         datesRow.forEach(date => {
           if (date == hghRow.data[loopRowIndex].datum) {
             let dataObject = {
-              'datum'               : date, 
-              'aspect'              : hghRow.data[0].aspect,
-              'waarde'              : hghRow.data[loopRowIndex].waarde,
-              'waardeDagdelen'      : hghRow.data[loopRowIndex].waardeDagdelen,
-              'dagdelenInvullen'    : hghRow.data[loopRowIndex].dagdelenInvullen,
-              'dagwaardeBerekening' : hghRow.data[loopRowIndex].dagwaardeBerekening,
-              'opmerking'           : hghRow.data[loopRowIndex].opmerking
+              'datum'                : date, 
+              'aspect'               : hghRow.data[0].aspect,
+              'waarde'               : hghRow.data[loopRowIndex].waarde,
+              'waardeDagdelenString' : hghRow.data[loopRowIndex].waardeDagdelen,
+              'dagdelenInvullen'     : hghRow.data[loopRowIndex].dagdelenInvullen,
+              'dagwaardeBerekening'  : hghRow.data[loopRowIndex].dagwaardeBerekening,
+              'opmerking'            : hghRow.data[loopRowIndex].opmerking
             }
-         
             hghData_alleDagen.push( dataObject )
 
             let len = Object.keys(hghRow.data).length
@@ -280,17 +279,21 @@ const Slider = (props) => { // the component starts here
           
           } else {
             let dataObject = {
-              'datum'               : date, 
-              'aspect'              : hghRow.data[0].aspect,
-              'waarde'              : 0,
-              'waardeDagdelen'      : "00000",
-              'dagdelenInvullen'    : hghRow.data[0].dagdelenInvullen,
-              'dagwaardeBerekening' : hghRow.data[0].dagwaardeBerekening,
-              'opmerking'           : null
+              'datum'                 : date, 
+              'aspect'                : hghRow.data[0].aspect,
+              'waarde'                : 0,
+              'waardeDagdelenString'  : "00000",
+              'dagdelenInvullen'      : hghRow.data[0].dagdelenInvullen,
+              'dagwaardeBerekening'   : hghRow.data[0].dagwaardeBerekening,
+              'opmerking'             : null
             }
             hghData_alleDagen.push( dataObject )
           }
         })
+
+        console.log('294: a hghData_alleDagen: ')
+        console.log(hghData_alleDagen)
+        console.log('294: b')
 
         hghData_alleDagen_alleAspecten.push({
           'aspect'      : hghRow.data[0].aspect , 
@@ -769,7 +772,6 @@ const Slider = (props) => { // the component starts here
                       berekenmethodes   = { berekenmethodes }                  
                       fetchURL          = { fetchURL }
                       callBack_changeSliderVisibility = { callBack_changeSliderVisibility }
-
                     />
                   </td>
                 </tr>
@@ -785,7 +787,6 @@ const Slider = (props) => { // the component starts here
                           </th>
                     )}
                   </tr>
-                  
                   : ""
                 }
                 { sliderData1.filter(aspect => aspect.aspect_type === teTonenAspectType).map(
@@ -806,11 +807,9 @@ const Slider = (props) => { // the component starts here
                         />
                       </td>                      
 
-
                       {dataRow.data.map( (dagData, dagDataIndex) => // per button van links naar rechts ..
-   
                           <td key = {uuidv4()}>                          
-                            {/* { console.log(dagData.dagwaardeBerekening + '  ' + dagData.aspect + '  ' + dagData.waarde +  ' waardeDagdelen: ' + dagData.waardeDagdelen)} */}
+                            {/* { console.log(dagData.dagwaardeBerekening + '  ' + dagData.aspect + '  ' + dagData.waarde +  ' waardeDagdelenString: ' + dagData.waardeDagdelenString)} */}
                             {dagData.waarde>=0 
                              // {dagData.waarde>=0 && dagData.waarde // nog maken wel of geen 0 waardes tonn
                              ? <>
@@ -819,15 +818,7 @@ const Slider = (props) => { // the component starts here
                                   apikey                    = { apikey }                      
                                   datum                     = { dagData.datum  } 
                                   aspect                    = { dagData.aspect }
-                                  icon                      = { dataRow.icon }
-                                  available_images          = { available_images }
-                                  aspect_type               = { teTonenAspectType}
-                                  waarde                    = { dagData.waarde} 
-                                  dagdelenInvullen          = { dagData.dagdelenInvullen }
-                                  dagwaardeBerekening       = { dagData.dagwaardeBerekening}
-                                  waardeDagdelen            = { maakIndividueleDagWaardes(dagData.waardeDagdelen)} 
-                                  opmerking                 = { dagData.opmerking? dagData.opmerking : "" } 
-                                  fetchURL                  = { fetchURL }
+                                  waarde                    = { dagData.waarde }
                                   callBack_set_hgh_details  = { callBack_set_hgh_details }
                                 />
                                 </>                              

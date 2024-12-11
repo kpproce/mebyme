@@ -30,13 +30,17 @@ const  EditWaardeDagdelenModal = (props) => {
     
 
     const [waarde, setWaarde] = useState(props.waarde);
+    const [teller, setTeller] = useState(0);
+    const [waardeDagdelenArray, setWaardeDagdelenArray] = useState(['0','0','0','0','0']) // standaard 
     const [selectedValue, setSelectedValue] = useState(3)
     const [dagdelenInvullen, setDagdelenInvullen] = useState("ja")
-    const [dagwaardeBerekening, setDagwaardeBerekening] = useState("max_weegt_iets_meer") // kan weg --> naar php 
+    const [dagwaardeBerekening, setDagwaardeBerekening] = useState("max_weegt_iets_meer") // standaard 
     const [aspect_type, setAspect_type] = useState("welzijn") // standaard 
     const [opmerking, setOpmerking] = useState("");
   
     const [dag_Aspect_data, setDag_Aspect_data] = useState([])
+
+   
 
     const icons = {
       welzijn: {
@@ -73,55 +77,66 @@ const  EditWaardeDagdelenModal = (props) => {
         5: <FaAngry className="fg_color_5" />,
       }
     };
-    
-    function createWaardeDagdelenString() { // dagdelen => string, bijv: "34561" 
-      // Join the array into a string and ensure it's exactly 5 characters long with `padEnd`
-      return dagdelen
-        .map((dagdeel) => dagdeel.waarde || 0)
-        .join('')
-        .padEnd(5, '0'); // Ensure the string is at least 5 characters
-    }
 
-    function createUpdatedDagdelen(newWaardeAsString) { // in: string bijv: ('34125') => actie, update dagdelen
-      if (!newWaardeAsString || newWaardeAsString.length !== 5 || !/^\d{5}$/.test(newWaardeAsString)) {
-       console.log(newWaardeAsString)
-        console.error('Invalid newWaardeAsString: it must be a string with exactly 5 digits.');
-        
-        return dagdelen; // Return the existing state if invalid
+    const getIcon1 = (aspect_type, waarde) => {
+      if (icons[aspect_type] && icons[aspect_type][waarde]) {
+        return icons[aspect_type][waarde];
+      } else {
+        console.log('193: geen icon gevonden voor ' + aspect_type + ' met waarde ' + JSON.stringify(waarde))
+        return  <span className="fg_color_0">X</span>
       }
-      return dagdelen.map((dagdeel, index) => ({
-        ...dagdeel,
-        waarde: parseInt(newWaardeAsString[index], 10)
-      }));
-    }
-        
-    // function updateDagdelen(nieuweWaardes) {
-    //    // Controleer of nieuweWaardes precies 5 elementen bevat
-    //   if (nieuweWaardes.length == 5) {
-    
-    //     // Maak een nieuwe array gebaseerd op dagDelen, met bijgewerkte waardes
-    //     const bijgewerkteDagdelen = dagdelen.map((dagdeel, index) => ({
-    //       ...dagdeel,
-    //       waarde: nieuweWaardes[index] // Vervang de huidige waarde door de nieuwe
-    //     }));
-    //     // Werk de state bij
-    //     console.log('100: bijgewerkteDagdelen')
-    //     setDagdelen(bijgewerkteDagdelen);
-    //   }
-    // }
+    };
 
-    async function update_or_create_hgh_waarneming_via_API() { // dit zijn de aspect buttons, met een waarde
-        
+    
+    
+   /*  updateDagdelen(nieuweWWaardes) {
+      nieuweWaardes ziet er zo uit [0,2,3,1,2] altijd 5 waardes. 
+      1) start met de huidige dagdelen,   
+        const [dagDelen, setDagDelen] = useState([
+          { dagdeel: 'nacht', waarde: 0 },
+          { dagdeel: 'opstaan', waarde: 0 },
+          { dagdeel: 'morgen', waarde: 0 },
+          { dagdeel: 'middag', waarde: 0 },
+          { dagdeel: 'avond', waarde: 0 }
+        ]);
+      2) pas de waardes aan in dagdelen, op basis van de array nieuweWaardes 
+      3) gebruik setDagdelen om dagdelen bij te werken, zodat deze opnieuw gerendered RiFileWordLine.
+    } */
+
+    
+    function updateDagdelen(nieuweWaardes) {
+       // Controleer of nieuweWaardes precies 5 elementen bevat
+      if (nieuweWaardes.length == 5) {
+    
+        // Maak een nieuwe array gebaseerd op dagDelen, met bijgewerkte waardes
+        const bijgewerkteDagdelen = dagdelen.map((dagdeel, index) => ({
+          ...dagdeel,
+          waarde: nieuweWaardes[index] // Vervang de huidige waarde door de nieuwe
+        }));
+        // Werk de state bij
+        console.log('100: ')
+        console.log(bijgewerkteDagdelen)
+        setDagdelen(bijgewerkteDagdelen);
+      }
+    }
+
+    async function update_or_create_hgh_waarneming_via_API(waardeDagdelenArray, opmerking1) { // dit zijn de aspect buttons, met een waarde
+      
+      // waardeDagdelenArray is een array [1,4,5,3,2]
+      console.log('140: ')
+      console.log(waardeDagdelenArray)
+      const waardeDagdelenString = waardeDagdelenArray.map(digit => digit || 0).join('').padEnd(5, '0');
+      
       const postData = new FormData();
 
-      console.log('139  ', createWaardeDagdelenString())   
+            //console.log('100 myUsers useffect 1 .. ')   
       postData.append('username'            , props.username);
       postData.append('apikey'              , props.apikey);
       postData.append('datum'               , props.datum);
       postData.append('aspect'              , props.aspect);
-     
-      postData.append('waardeDagdelen', createWaardeDagdelenString()); // like "23234"
-      postData.append('opmerking'           , opmerking);
+      postData.append('dagwaardeBerekening' , dagwaardeBerekening); 
+      postData.append('waardeDagdelen'      , waardeDagdelenString);
+      postData.append('opmerking'           , opmerking1);
 
       postData.append('action',  'update_or_create_hgh_waarneming_dagdelen');
   
@@ -135,7 +150,7 @@ const  EditWaardeDagdelenModal = (props) => {
     } 
 
     const slaop = () => { 
-      update_or_create_hgh_waarneming_via_API()
+      update_or_create_hgh_waarneming_via_API(waardeDagdelenArray, opmerking)
       
     }
 
@@ -163,9 +178,17 @@ const  EditWaardeDagdelenModal = (props) => {
       if (show) {
         get_dag_Aspect_data_from_api()
           .then((res) => {
+            console.log('195')
+            console.log(res.data)
+            setWaardeDagdelenArray (res.data.waardeDagdelen.split('').map(Number)) 
             setWaarde(res.data.waarde)
             setAspect_type(res.data.aspect_type)
-            setDagdelen(createUpdatedDagdelen(res.data.waardeDagdelen))
+            console.log('198:')
+            // console.log(waardeDagdelenArray)
+            console.log(res.data.waardeDagdelen.split('').map(Number))
+            console.log(waarde)
+             
+              // setWaardeDagdelenString (res.data.waardeDagdelen)
           })
           .catch((error) => {
             console.error('Error fetching data:', error);
@@ -183,13 +206,7 @@ const  EditWaardeDagdelenModal = (props) => {
     }, [icons, aspect_type]);
 
 
-    const getIcon1 = (aspect_type, waarde, id) => {
-      if (icons[aspect_type] && icons[aspect_type][waarde]) {
-        return icons[aspect_type][waarde];
-      } else {
-        return  <span className="fg_color_0">X</span>
-      }
-    };
+  
 
     const handleClose = () => { 
       slaop()
@@ -213,31 +230,29 @@ const  EditWaardeDagdelenModal = (props) => {
     },[])
 
     // Handle change in a select option
-    const handleSelectChange = (selectedDagdeelIndex, newValue) => {
-      // pas dagWaarde aan
-
-      console.log('215 handleSelectChange selected: ', selectedDagdeelIndex , 'newValue: ', newValue) 
-      setDagdelen(prevDagdelen => 
-        prevDagdelen.map((dagdeel, i) => i === selectedDagdeelIndex ? { ...dagdeel, waarde: newValue } : dagdeel)
-      );
-
-
+    const handleSelectChange = (selected, waardeIndex) => {
+   
     };
 
     const callBack_handleChangeWaarde = useCallback((nieuweWaarde) => {
-      setDagdelen(createUpdatedDagdelen(String(nieuweWaarde).repeat(5)))
-      console.log('220: wijzig alle dagdeelwaardes naar ' +  nieuweWaarde + ' -> ' + (String(nieuweWaarde).repeat(5))) 
+      
     },[])
 
-    function getValueDagdeel(dagdeel) {//value={options.find(option => option.value === dagdeel.waarde)} // Vind het juiste object
-      let value =  options.find(option => String(option.value) === String(dagdeel.waarde)) || { value: '', label: 'Geen keuze' }
-      //console.log('228')
-
-      //console.log(dagdeel)
+    function getValueDagdeel(options1, dagdeel) {//value={options.find(option => option.value === dagdeel.waarde)} // Vind het juiste object
+      let value =  options1.find(option => String(option.value) === String(dagdeel.waarde)) || { value: '', label: 'Geen keuze' }
+      console.log('228')
+      console.log(options1)
+      console.log(dagdeel)
 
       return value
     }
     
+    
+
+    useEffect(() => {
+      const defaultValue = options[3]; // 4e optie (index is 3)
+    }, []);
+
     useEffect(() => { 
       // 
     }, [show, waarde]) 
@@ -245,29 +260,30 @@ const  EditWaardeDagdelenModal = (props) => {
     return (
       <>        
         <GetSliderButton 
-          icon              = {getIcon1(aspect_type, waarde, 1 )} // Dynamically passing the icon
+          icon              = {getIcon1(aspect_type, waarde)} // Dynamically passing the icon
           waarde            = {waarde} 
-          size              = {'x-large'} 
+          size              = {'basic'} 
           callBack          = {callBack_handleShow}
         />
         {opmerking
         ? <div className = "xx-small" >
-            {opmerking.substring(0,5)}
+            {opmerking.substr(0,5)}
           </div>
         : ""
         }
         <Modal contentClassName='modalBody' show={show} onHide={handleClose} active="true" centered backdrop={false}>
           <Modal.Header>
             <Modal.Title>
-              {getIcon1(aspect_type, waarde, 2)}
+              {getIcon1(aspect_type, waarde)}
+              {'teller'} {teller}
 
               {props.aspect} {props.datum}  {'-'}  {aspect_type} {'-'} {waarde}  
               <span className='space'></span> <span className='space'></span> 
               <GetSliderButton  
-                icon             = {getIcon1(aspect_type, waarde,3)} // Dynamically passing the icon
+                icon             = {getIcon1(aspect_type, waarde)} // Dynamically passing the icon
                 waarde           = {waarde} 
                 size             = {'large'} 
-                callBack         = {null}
+                callBack         = {callBack_handleChangeWaarde}
               />
             </Modal.Title>  
           </Modal.Header>
@@ -275,19 +291,18 @@ const  EditWaardeDagdelenModal = (props) => {
          {dagdelenInvullen=='ja'?
           <>
 
-            // het bovenste deel met een select voor alle 5 de dagdelen.
-
             <p> 
               Waarde per dagdeel:   
               <span className='space'></span>  
-              {createWaardeDagdelenString(dagdelen) }
+              {waardeDagdelenArray.map(digit => digit || 0).join('').padEnd(5, '0') // de dagwaardes in getallen 
+              }
             </p> 
           
             <p> 
               Dagwaarde berekend: -+
             </p>
           
-            <table size="sm" className='full-width-table'>
+            <table size="sm" >
               <thead>
                 <tr key={'waardeDagdeel_edit_row_header'}>
                 {dagdelen.map(dagdeel  => 
@@ -299,35 +314,19 @@ const  EditWaardeDagdelenModal = (props) => {
               <tbody>
                 <tr key={'waardeDagdeel_edit_row'}>
                   {dagdelen.map((dagdeel, dagdeelIndex) => (
-                     <td key={`wdd_td_${dagdeel.naam}`} className={`bk_color_${dagdeel.waarde} `}>
-                        <Select
-                          key={`wdd_${dagdeelIndex}`}
-                          isSearchable={false}
-                          options={options}
-                          value={options[dagdeel.waarde] || null}
-                          placeholder="kies"
-                          onChange={(selectedOption) => handleSelectChange(dagdeelIndex, selectedOption.value)}
-                          classNamePrefix="bk_select"
-                          className={`bk_color_${dagdeel.waarde}`}
-                          styles={{
-                            dropdownIndicator: (base) => ({
-                              ...base,
-                              display: "none", // Verwijder de dropdown-indicator volledig
-                            }),
-                            indicatorsContainer: (base) => ({
-                              ...base,
-                              display: "none", // Verwijder ook de container van de indicatoren
-                            }),
-                            control: (base) => ({
-                              ...base,
-                              display: "flex",
-                              alignItems: "center",
-                              justifyContent: "space-between",
-                              backgroundColor: "yourColorHere", // Voeg hier de gewenste achtergrondkleur toe
-                            }),
-                          }}
-                        />
-                   </td>
+                    <td key={`wdd_td_${dagdeel.naam}`} className={`color_${dagdeel.waarde}`}>                    
+                    {/* {console.log("301:",  dagdeel) } */}
+                
+                      <Select
+                        key={"wdd_" + dagdeelIndex}
+                        isSearchable={false}      
+                        options={options}
+                        //value={options.find(option => option.value === dagdeel.waarde)} // Vind het juiste object
+                        // value={options.find(option => String(option.value) === String(dagdeel.waarde)) || { value: '', label: 'Geen keuze' }}
+                        value = {getValueDagdeel(options, dagdeel)}
+                        placeholder="Select an option"
+                      />
+                    </td>
                   ))}
                 </tr>
               </tbody>
@@ -336,9 +335,6 @@ const  EditWaardeDagdelenModal = (props) => {
           </>
           : ""
           }
-
-          // het onderste deel met 1 klik alle 5 de dagwaardes vullen.
-
           <br/>
           <div> 
             Dagdelen Invullen: {dagdelenInvullen}
@@ -349,20 +345,27 @@ const  EditWaardeDagdelenModal = (props) => {
           {dagdelenInvullen=='ja'? ' Of wijzig hier alle dagdelen naar' : 'Geef de waarde voor de hele dag op'}
           </div>
           <Table striped bordered hover variant="light" size="sm" >
-            <tbody className='noStyle'>
             <tr key={uuidv4()}>  
-              {[1,2,3,4,5,0].map((dagdeelIndex, index) => 
-                  <td key={index} >         
+              {/* {console.log('135: ' + aspect_type + '  ' + icon)}          */}
+              {dagdelen.map((waarde, index) => 
+                  <td className='perc12' key={index}>         
                       <GetSliderButton 
-                        icon             ={getIcon1(aspect_type, dagdeelIndex, 4)}  // Dynamically get the icon based on aspect_type and waarde
-                        waarde          = {dagdeelIndex} 
+                        icon             ={getIcon1(aspect_type, waarde)}  // Dynamically get the icon based on aspect_type and waarde
+                        waarde          = {waarde} 
                         size            = {'x-large'} 
                         callBack        = {callBack_handleChangeWaarde}
                       />
                   </td>
               )}
+              <td className='perc12' key={uuidv4()}>
+                <GetSliderButton 
+                  icon             = {"X"} 
+                  waarde           = {0} 
+                  size             = {'x_large'} 
+                  callBack         = {callBack_handleChangeWaarde}
+                />
+              </td>
             </tr>
-            </tbody>
           </Table>     
           <div style={{'fontSize': 'large', 'fontWeight': '500','paddingBottom': '0.3rem'} }> Opmerking: </div>
           <input type="text" 

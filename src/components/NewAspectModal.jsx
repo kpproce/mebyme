@@ -14,7 +14,6 @@ const  newAspectModal = (props) => {
     const [dagdelenInvullen, setDagdelenInvullen] = useState("ja");
     const [mainMessage, setMainMessage] = useState("");
     const [error, setError] = useState('');
-    console.log ("16")
 
     // de datums worden aangeleverd, die zijn ingevuld als beginen ne einddatum op je scherm
    
@@ -49,7 +48,6 @@ const  newAspectModal = (props) => {
 
       const res = await fetch(props.fetchURL, requestOptions);   
       if (!res.ok) { throw res;}
-      console.log('52')
 
       const jsonData = await res.json();
       if (!jsonData.toegevoegd) alert(jsonData.mainMessage)
