@@ -83,11 +83,14 @@ const MyNavbar = () => {
                     boxSizing: "border-box", // Still helpful to include this
                 }}
                 >
-                <img src={mebymeImage} 
-                    title   = "Versie 1.4.06 apikey en kleine aanpasingen" 
-                    alt     = "Mebyme" 
-                    width   = "45px"  
-                    height  = "45px"
+
+                <img 
+                    src={mebymeImage}
+                    title="Versie 1.5 agenda"
+                    alt="Mebyme"
+                    width="45px"
+                    height="45px"
+                    onClick={() => alert("meByMe Versie 1.5.01 maand kalender overzicht")} // Toon de title bij een klik
                 />
                
                 <div style={{ margin: "6px" }}>
@@ -143,20 +146,7 @@ const MyNavbar = () => {
                 </div>
 
             </div>
-          {/*   <Routes>
-                <Route path="/" element={<Navigate to="/mebyme/slider" replace />} />
-            
-                <Route
-                    exact
-                    path="/mebyme/slider"
-                    element={<Slider username={username} apikey={apikey} logged_in={logged_in} />}
-                />                
-                <Route
-                    exact
-                    path="/mebyme/myUsers"
-                    element={<MyUsers username={username} apikey={apikey}/>}
-                />
-            </Routes> */}
+        
             {console.log('148 apikey: ' + apikey)}
             <Routes>
                 {/* Redirect from the root path to /mebyme/slider */}
