@@ -15,6 +15,10 @@ body {
     margin-left: 0;
   } 
 
+  .test {
+    color: #09505f
+  }
+
 .fitIn {
   /* display: flex !important;*/
     width: 100% !important;

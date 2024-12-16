@@ -11,6 +11,10 @@ function Overzichten({ username, apikey, yearMonth}) {
   const [loading, setLoading] = useState(true); // Om te controleren of de data geladen is
   const [error, setError] = useState(null); // Om eventuele fouten bij het ophalen van data op te vangen
 
+  const [hoofdAspect, setHoofdAspect]  = useState("")
+  const [bijAspect1,  setBijAspect1]   = useState("")
+  const [bijAspect2,  setBijAspect2]   = useState("")
+
   const fetchURL =   basic_API_url() + "php/mebyme.php"
   // Functie om de maand te updaten
   const updateMonth = (direction) => {
@@ -19,6 +23,27 @@ function Overzichten({ username, apikey, yearMonth}) {
     const newYearMonth = `${newDate.getFullYear()}-${String(newDate.getMonth() + 1).padStart(2, "0")}`;
     setSelectedMonthYear(newYearMonth);
   };
+
+  const selectStyle = {
+    width: '13rem',
+    border: '1px solid #ddd',
+    padding: '0.25rem',
+  };
+  
+  const labelStyle = {
+    width: '10rem',
+    textAlign: 'right',
+    marginRight: '1rem',
+    backgroundColor: '#A1eb9'
+  };
+  
+  const bovenDivStyle ={ 
+    display: 'flex', 
+    flexDirection: 'column', 
+    gap: '0.5rem', 
+    backgroundColor: '#09505f',
+    padding: '10px 0'  
+  }
 
   // Functie om de aspectenlijst op te halen via de API
   const getData = async () => {
@@ -54,7 +79,6 @@ function Overzichten({ username, apikey, yearMonth}) {
     }
   };
 
-
   const getMonthName = (yearMonth) => {
     const date = new Date(yearMonth + "-01"); // Maak een datum van de eerste dag van de maand
     return new Intl.DateTimeFormat('nl-NL', { month: 'long' }).format(date); // Gebruik Intl.DateTimeFormat voor de maandnaam
@@ -84,44 +108,82 @@ function Overzichten({ username, apikey, yearMonth}) {
   return (
     <div>
 
+      <div style={bovenDivStyle}>
+       
+  {/* Eerste rij */}
+  <div style={{ display: 'flex', alignItems: 'center' }}>
+      <label style={labelStyle}>Hoofd Aspect (kleur):</label>
+      <select
+        style={selectStyle}
+        value={hoofdAspect} // De geselecteerde waarde is gekoppeld aan hoofdAspect state
+        onChange={(e) => setHoofdAspect(e.target.value)} // Bij wijziging wordt hoofdAspect bijgewerkt
+      >
+        {/* Opties */}
+        {aspectenLijst.map((item, index) => (
+          <option key={index} value={item.aspect}>
+            {item.aspect}
+          </option>
+        ))}
+      </select>
+    </div>
 
-      {/* Selecteer aspect */}
-  {/* Navigatie voor maand */}
-      <div style={{ display: "flex", alignItems: "center", margin: "20px 0" }}>
-        <button onClick={() => updateMonth(-1)}>&lt;</button>
-        <label 
-          htmlFor="aspect-select"
-          style={{
-            margin: "0 1rem"
-          }}
-        >
+    {/* Tweede rij */}
+    <div style={{ display: 'flex', alignItems: 'center' }}>
+      <label style={labelStyle}>Links Onder:</label>
+      <select
+        style={selectStyle}
+        value={bijAspect1} // De geselecteerde waarde is gekoppeld aan bijAspect1 state
+        onChange={(e) => setBijAspect1(e.target.value)} // Bij wijziging wordt bijAspect1 bijgewerkt
+      >
+        {/* Opties */}
+        {aspectenLijst.map((item, index) => (
+          <option key={index} value={item.aspect}>
+            {item.aspect}
+          </option>
+        ))}
+      </select>
+    </div>
+
+    {/* Derde rij */}
+    <div style={{ display: 'flex', alignItems: 'center' }}>
+      <label style={labelStyle}>Rechts Onder:</label>
+      <select
+        style={selectStyle}
+        value={bijAspect2} // De geselecteerde waarde is gekoppeld aan bijAspect2 state
+        onChange={(e) => setBijAspect2(e.target.value)} // Bij wijziging wordt bijAspect2 bijgewerkt
+      >
+        {/* Opties */}
+        {aspectenLijst.map((item, index) => (
+          <option key={index} value={item.aspect}>
+            {item.aspect}
+          </option>
+        ))}
+      </select>
+    </div>
+      </div>
+  
+        {/* Navigatie voor maand */}
+        <div style={{ 
+            display: "flex", 
+            alignItems: "center", 
+            margin: "20px 10px", 
+            justifyContent: "space-between"
+            
+          }}>
+          <button onClick={() => updateMonth(-1)}>&lt;</button>
+          <label 
+            htmlFor="aspect-select"
+            
+          >
         </label>
-        <select 
-          style={{
-            width: "8rem",
-            border: "1px solid #ddd",
-            margin: "0 1rem"
-          }}
-          
-          id="aspect-select"
-          value={selectedAspect}
-          onChange={(e) => setSelectedAspect(e.target.value)}
-        >
-          
-          {aspectenLijst.map((item, index) => (
-            <option key={index} value={item.aspect}>
-              {item.aspect} {/* Display a human-readable label */}
-            </option>
-          ))}
-        </select>
-        <span style={{ margin: "0 10px" }}>{getMonthNameWithYear(selectedMonthYear)}</span>
+       
+        <span style={{ margin: "5px 10px" }}>{getMonthNameWithYear(selectedMonthYear)}</span>
         <button onClick={() => updateMonth(1)}>&gt;</button>
       </div>
 
-      {console.log('94: aspect_type')}
-      {console.log(selectedAspect.aspect)}
 
 
+      <br/>
       {/* Agenda component aanroepen */}
       <Kalender
         username    = {username}
