@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
+import Kalender from "./Kalender"; // Zorg ervoor dat je Agenda importeert
 import Agenda from "./Agenda"; // Zorg ervoor dat je Agenda importeert
 import {basic_API_url}         from './global_const.js'
 
@@ -53,6 +54,20 @@ function Overzichten({ username, apikey, yearMonth}) {
     }
   };
 
+
+  const getMonthName = (yearMonth) => {
+    const date = new Date(yearMonth + "-01"); // Maak een datum van de eerste dag van de maand
+    return new Intl.DateTimeFormat('nl-NL', { month: 'long' }).format(date); // Gebruik Intl.DateTimeFormat voor de maandnaam
+  };
+
+  const getMonthNameWithYear = (yearMonth) => {
+    const date = new Date(yearMonth + "-01"); // Maak een datum van de eerste dag van de maand
+    const monthName = new Intl.DateTimeFormat('nl-NL', { month: 'long' }).format(date); // Verkrijg de maandnaam
+    const year = date.getFullYear().toString().slice(-2); // Verkrijg de laatste twee cijfers van het jaar
+    return `${monthName} ${year}`; // Combineer maandnaam en jaar
+  };
+
+
   // Gebruik useEffect om de data op te halen wanneer de component geladen wordt
   useEffect(() => {
     getData();
@@ -80,7 +95,6 @@ function Overzichten({ username, apikey, yearMonth}) {
             margin: "0 1rem"
           }}
         >
-          Aspect: 
         </label>
         <select 
           style={{
@@ -100,7 +114,7 @@ function Overzichten({ username, apikey, yearMonth}) {
             </option>
           ))}
         </select>
-        <span style={{ margin: "0 10px" }}>{selectedMonthYear}</span>
+        <span style={{ margin: "0 10px" }}>{getMonthNameWithYear(selectedMonthYear)}</span>
         <button onClick={() => updateMonth(1)}>&gt;</button>
       </div>
 
@@ -109,7 +123,7 @@ function Overzichten({ username, apikey, yearMonth}) {
 
 
       {/* Agenda component aanroepen */}
-      <Agenda
+      <Kalender
         username    = {username}
         apikey      = {apikey}
         yearMonth   = {selectedMonthYear}

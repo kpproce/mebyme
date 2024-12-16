@@ -207,8 +207,7 @@ const handleTap = (wekenData, e) => {
                   <select value={useMaxOrGem} className='small' onChange={handle_weekSliderChange_averagingMethod}>
                     <option value="max">max</option>
                     <option value="gem">gem</option>
-                  </select>   <span className='space'></span> 
-                
+                  </select> <span className='space'></span> 
               </td>           
 
               { create_montNameRow_fromWeeknumbers().map((item, index) => (

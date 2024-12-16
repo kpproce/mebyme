@@ -260,22 +260,17 @@ const  EditWaardeDagdelenModal = (props) => {
           <Modal.Header>
             <Modal.Title>
               {getIcon1(aspect_type, waarde, 2)}
-
-              {props.aspect} {props.datum}  {'-'}  {aspect_type} {'-'} {waarde}  
-              <span className='space'></span> <span className='space'></span> 
-              <GetSliderButton  
-                icon             = {getIcon1(aspect_type, waarde,3)} // Dynamically passing the icon
-                waarde           = {waarde} 
-                size             = {'large'} 
-                callBack         = {null}
-              />
+              <span className='space'/>
+              <span className='small'>
+                {props.aspect} {props.datum}  {'-'}  {aspect_type} {'-'} {waarde}  
+              </span>
             </Modal.Title>  
           </Modal.Header>
           <Modal.Body> 
          {dagdelenInvullen=='ja'?
           <>
 
-            // het bovenste deel met een select voor alle 5 de dagdelen.
+            {/* het bovenste deel met een select voor alle 5 de dagdelen. */}
 
             <p> 
               Waarde per dagdeel:   
@@ -283,9 +278,6 @@ const  EditWaardeDagdelenModal = (props) => {
               {createWaardeDagdelenString(dagdelen) }
             </p> 
           
-            <p> 
-              Dagwaarde berekend: -+
-            </p>
           
             <table size="sm" className='full-width-table'>
               <thead>
@@ -332,15 +324,13 @@ const  EditWaardeDagdelenModal = (props) => {
                 </tr>
               </tbody>
             </table>
-            <br></br>
           </>
           : ""
           }
 
-          // het onderste deel met 1 klik alle 5 de dagwaardes vullen.
+            {/* het onderste deel met 1 klik alle 5 de dagwaardes vullen. */}
 
-          <br/>
-          <div> 
+          <div className="x-small"> 
             Dagdelen Invullen: {dagdelenInvullen}
           </div>
           <br/>

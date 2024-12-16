@@ -197,7 +197,7 @@ body {
     background-color: rgb(25, 87, 87) ; /* Ensure background color is applied */
     color: rgb(209, 203, 203); /* Change text color for visibility */
   }
-
+   
   .invoerBC{
     background-color: #154170;
   }
@@ -209,10 +209,9 @@ body {
     background-color: rgba(74, 58, 4, 0.4); 
     color: rgb(245, 246, 239) ; 
   }
-  .messageALertStyle { background-color: #700000; color:rgb(255, 255, 255) }
+  .messageALertStyle { background-color: #b52eae; color:rgb(255, 255, 255) }
   .messageOkayStyle { background-color: #014732; color:rgb(255, 255, 255) }
 }
-
 
 .loginIcon_okayStyle {
   border-color: rgb(6, 79, 6);
@@ -269,11 +268,6 @@ body {
 /* Adjust styles for the SVG or icon within the dropdown toggle */
 .bootstrap-select .dropdown-toggle .dropdown-toggle-icon {
   margin-bottom: 2px; /* Adjust spacing between icon and arrow */
-}
-
-/* Ensure icon and arrow are in column layout on mobile */
-@media (max-width: 768px) {
- 
 }
 
 .buttonBasis {

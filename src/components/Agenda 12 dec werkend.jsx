@@ -7,7 +7,6 @@ function Agenda({ username, apikey, yearMonth, aspect_type }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [agendaData, setAgendaData] = useState(null);
-  const [agendaData1, setAgendaData1] = useState(null);
 
   const [selectedDayData, setSelectedDayData] = useState(null);
 
@@ -44,7 +43,6 @@ function Agenda({ username, apikey, yearMonth, aspect_type }) {
       try {
         const data = await getData(username, apikey, yearMonth);
         setAgendaData(data.resultData); 
-        setAgendaData1(data.resultData1);
       } catch (err) {
         setError("Failed to load data.");
         console.error(err);
