@@ -1,0 +1,1 @@
+export const version =  "meByMe Versie 1.5.2 kalender verbeterd" 
