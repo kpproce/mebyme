@@ -61,7 +61,7 @@ function LoginModal(props) {
   const saveApikey = (apikey_value) => {
     
 
-    console.log("61 in: apikey_value: "+ apikey_value + " const apikey: " + apikey)
+    // console.log("61 in: apikey_value: "+ apikey_value + " const apikey: " + apikey)
     window.localStorage.setItem('apikey', apikey_value)
     setApikey(apikey_value)
 }
@@ -110,8 +110,8 @@ function LoginModal(props) {
       try {
         const response = await fetch(fetchURL, requestOptions);
         const data = await response.json();
-        console.log('113: data received')
-        console.log(data)
+        // console.log('113: data received')
+        // console.log(data)
         // console.log('103: data.username: ' , data.username +  ' data.apikey: ' + data.apikey + '{data.logged_in}' )
         saveUsername(data.username)
         setUsernameOrg(data.username)
@@ -120,8 +120,10 @@ function LoginModal(props) {
         setUsername_password_correct(data.username_password_correct)
         setAskForNewApi(data.askForNewApi)
         setUserMessage(data.userMessage)
-        console.log('123: ' + (data.username_password_correct?'username_password_correct':'username_password NOT correct'))
-        console.log('124: data.apikey_fromDB: ' + data.apikey_fromDB )
+        // console.log('123: ' + (data.username_password_correct
+        //   ?'username_password_correct'
+        //   :data.logged_in?'apiKey used, not loged in via username/password': 'username_password NOT correct'))
+        // console.log('124: data.apikey_fromDB: ' + data.apikey_fromDB )
        
         if (data.logged_in) {
           setUserMessageStyle ('messageOkayStyle')
@@ -145,8 +147,8 @@ function LoginModal(props) {
           setLoginIcon_style('loginIcon_falseStyle')
           setUserMessageStyle ('messageALertStyle')
         }
-        console.log('140: data')
-        console.log(data)
+        // console.log('140: data')
+        // console.log(data)
 
         props.callBackNavBarFromLogin(data.username, data.apikey_fromRequest, data.logged_in)
 

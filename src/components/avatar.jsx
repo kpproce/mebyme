@@ -21,9 +21,9 @@ function Avatar(props) {
 
   function handleFileChoosen(event) {
     setFile(event.target.files[0])
-    console.log('tst 20: target en file:')
-    console.log(event.target.files[0])
-    console.log(file)
+    // console.log('tst 20: target en file:')
+    // console.log(event.target.files[0])
+    // console.log(file)
     // setFile("test")
     // console.log(file)
     setAvatarUrl(avatarUrlPath + username + ".png" + "?" + new Date().getTime()) 
@@ -41,8 +41,8 @@ function Avatar(props) {
     formData.append('action', 'setAvatar');
     // formData.append('rename', username);
     
-    console.log('tst 37: file:')
-    console.log(file)
+    // console.log('tst 37: file:')
+    // console.log(file)
 
     const requestOptions = {
       method: 'POST',
@@ -62,11 +62,9 @@ function Avatar(props) {
           setAvatar_uploadMessage_className('messageNotOkay small_italic')
         }
         setUserMessage(response.userMessage)
-        console.log('tst 50: ')
-        console.log(response)
-        
+                
       } catch (error) {
-        console.log("tst 50: error", error);
+        console.log("Avatar ophalen", error);
       }
 
     }
@@ -76,9 +74,9 @@ function Avatar(props) {
   }
   
   useEffect (() => { //
-    console.log ('60: file or username changed.. ') 
-    console.log(file)
-    console.log(username)
+    // console.log ('60: file or username changed.. ') 
+    // console.log(file)
+    // console.log(username)
 
     handleUpload()
 
@@ -86,15 +84,14 @@ function Avatar(props) {
 
   return (
       <>
-        {console.log(" 95: props.avatarName:" +  props.avatarName + " avatarName:" +  avatarName)}
         <img className='smallImg'
           key={filename}
           src={avatarUrlPath + avatarName }
           
           onError={({ currentTarget }) => {
-            console.log('92: file load error' )
-            console.log(currentTarget)
-            console.log(" avatarUrl: " + avatarUrl)
+            // console.log('92: file load error' )
+            // console.log(currentTarget)
+            // console.log(" avatarUrl: " + avatarUrl)
           
 
             currentTarget.onerror = null; // prevents looping

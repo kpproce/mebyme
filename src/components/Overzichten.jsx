@@ -4,8 +4,25 @@ import Kalender from "./Kalender"; // Zorg ervoor dat je Agenda importeert
 import Agenda from "./Agenda"; // Zorg ervoor dat je Agenda importeert
 import {basic_API_url}         from './global_const.js'
 
-function Overzichten({ username, apikey, yearMonth}) {
-  const [selectedMonthYear, setSelectedMonthYear] = useState(yearMonth);
+function Overzichten({ setActiveMenu, username, apikey, yearMonth}) {
+  const [selectedMonthYear, setSelectedMonthYear] = useState(() => {
+
+      const today = new Date();
+      const currentYear = today.getFullYear();
+      const currentMonth = today.getMonth(); // 0-indexed (Jan = 0)
+      // console.log('13', today.getDate())
+      if (today.getDate() > 13) {
+        // Huidige maand
+        return `${currentYear}-${String(currentMonth + 1).padStart(2, "0")}`;
+      } else {
+        // Vorige maand
+        const previousMonth = currentMonth === 0 ? 11 : currentMonth - 1;
+        const year = currentMonth === 0 ? currentYear - 1 : currentYear;
+        return `${year}-${String(previousMonth + 1).padStart(2, "0")}`;
+      }
+      
+
+  })
   const [selectedAspect, setSelectedAspect] = useState("");
   const [aspectenLijst, setAspectenLijst] = useState([]);
   const [loading, setLoading] = useState(true); // Om te controleren of de data geladen is
@@ -46,7 +63,7 @@ function Overzichten({ username, apikey, yearMonth}) {
   }
 
   // Functie om de aspectenlijst op te halen via de API
-  const getData = async () => {
+  const get_userAspects_data = async () => {
     setLoading(true);
     try {
       const postData = new FormData();
@@ -67,10 +84,11 @@ function Overzichten({ username, apikey, yearMonth}) {
       
       if (data && data.resultData && Array.isArray(data.resultData)) {
         setAspectenLijst(data.resultData); // Gegevens uit API opslaan
-
-        setSelectedAspect(data.toonAspect); // Zet het geselecteerde aspect
+        setHoofdAspect(data.rapportSettings.hoofd_aspect)
+        setBijAspect1(data.rapportSettings.bij_aspect_1)
+        setBijAspect2(data.rapportSettings.bij_aspect_2)
       } else {
-        throw new Error("Geen geldige data ontvangen");
+        throw new Error("Geen geldige rapport data ontvangen, check of gebruiker settings goed zijn ingevoerd");
       }
     } catch (error) {
       setError(error.message);
@@ -78,6 +96,44 @@ function Overzichten({ username, apikey, yearMonth}) {
       setLoading(false);
     }
   };
+
+  // Functie om de aspectenlijst op te halen via de API
+  const set_userAspects_data = async (hasp, asp1, asp2) => {
+    setLoading(true);  
+    try {
+      const postData = new FormData();
+      postData.append("username", username);
+      postData.append("apikey", apikey);
+      postData.append("action", "set_userAspects_data");
+  
+      postData.append("hoofdAspect", hasp);
+      postData.append("bijAspect1", asp1);
+      postData.append("bijAspect2", asp2);
+  
+      const response = await fetch(fetchURL, {
+        method: "POST",
+        body: postData,
+      });
+  
+      if (!response.ok) {
+        throw new Error("API response was not ok");
+      }
+  
+      const data = await response.json();
+  
+      if (!data.updated) {
+                // Geen exception gooien, maar een melding geven
+        alert("Update mislukt: geen wijzigingen doorgevoerd.");
+        console.log('112: data:' , data)
+      }
+    } catch (error) {
+      // Toon de foutmelding aan de gebruiker
+      alert(`Er is een fout opgetreden: ${error.message}`);
+    } finally {
+      setLoading(false); // Zorg ervoor dat de loading state altijd wordt bijgewerkt
+    }
+  };
+
 
   const getMonthName = (yearMonth) => {
     const date = new Date(yearMonth + "-01"); // Maak een datum van de eerste dag van de maand
@@ -91,10 +147,9 @@ function Overzichten({ username, apikey, yearMonth}) {
     return `${monthName} ${year}`; // Combineer maandnaam en jaar
   };
 
-
   // Gebruik useEffect om de data op te halen wanneer de component geladen wordt
   useEffect(() => {
-    getData();
+    get_userAspects_data();
   }, [username, apikey, fetchURL]); // Voeg afhankelijkheden toe zodat de data opnieuw wordt opgehaald als een van deze verandert
 
   if (loading) {
@@ -107,60 +162,71 @@ function Overzichten({ username, apikey, yearMonth}) {
 
   return (
     <div>
-
       <div style={bovenDivStyle}>
-       
-  {/* Eerste rij */}
-  <div style={{ display: 'flex', alignItems: 'center' }}>
-      <label style={labelStyle}>Hoofd Aspect (kleur):</label>
-      <select
-        style={selectStyle}
-        value={hoofdAspect} // De geselecteerde waarde is gekoppeld aan hoofdAspect state
-        onChange={(e) => setHoofdAspect(e.target.value)} // Bij wijziging wordt hoofdAspect bijgewerkt
-      >
-        {/* Opties */}
-        {aspectenLijst.map((item, index) => (
-          <option key={index} value={item.aspect}>
-            {item.aspect}
-          </option>
-        ))}
-      </select>
-    </div>
-
-    {/* Tweede rij */}
-    <div style={{ display: 'flex', alignItems: 'center' }}>
-      <label style={labelStyle}>Links Onder:</label>
-      <select
-        style={selectStyle}
-        value={bijAspect1} // De geselecteerde waarde is gekoppeld aan bijAspect1 state
-        onChange={(e) => setBijAspect1(e.target.value)} // Bij wijziging wordt bijAspect1 bijgewerkt
-      >
-        {/* Opties */}
-        {aspectenLijst.map((item, index) => (
-          <option key={index} value={item.aspect}>
-            {item.aspect}
-          </option>
-        ))}
-      </select>
-    </div>
-
-    {/* Derde rij */}
-    <div style={{ display: 'flex', alignItems: 'center' }}>
-      <label style={labelStyle}>Rechts Onder:</label>
-      <select
-        style={selectStyle}
-        value={bijAspect2} // De geselecteerde waarde is gekoppeld aan bijAspect2 state
-        onChange={(e) => setBijAspect2(e.target.value)} // Bij wijziging wordt bijAspect2 bijgewerkt
-      >
-        {/* Opties */}
-        {aspectenLijst.map((item, index) => (
-          <option key={index} value={item.aspect}>
-            {item.aspect}
-          </option>
-        ))}
-      </select>
-    </div>
+      {/* Eerste rij */}
+      <div style={{ display: 'flex', alignItems: 'center' }}>
+        <label style={labelStyle}>Hoofd Aspect (kleur):</label>
+        <select
+          style={selectStyle}
+          value={hoofdAspect} // De geselecteerde waarde is gekoppeld aan hoofdAspect state
+          onChange={(e) => {
+            setHoofdAspect(e.target.value) // Bij wijziging wordt hoofdAspect bijgewerkt
+            console.log('172: hoofdAspect na change:' ,e.target.value, hoofdAspect)
+            set_userAspects_data(e.target.value, bijAspect1, bijAspect2)
+            }
+          }
+        >
+          {/* Opties */}
+          {aspectenLijst.map((item, index) => (
+            <option key={index} value={item.aspect}>
+              {item.aspect}
+            </option>
+          ))}
+        </select>
       </div>
+
+      {/* Tweede rij */}
+      <div style={{ display: 'flex', alignItems: 'center' }}>
+        <label style={labelStyle}>Rechts onder:</label>
+        <select
+          style={selectStyle}
+          value={bijAspect1} // De geselecteerde waarde is gekoppeld aan bijAspect1 state
+          onChange={(e) => {
+            setBijAspect1(e.target.value) // Bij wijziging wordt bijAspect1 bijgewerkt
+            set_userAspects_data(hoofdAspect, e.target.value, bijAspect2)
+            }
+          }
+        >
+          {/* Opties */}
+          {aspectenLijst.map((item, index) => (
+            <option key={index} value={item.aspect}>
+              {item.aspect}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      {/* Derde rij */}
+      <div style={{ display: 'flex', alignItems: 'center' }}>
+        <label style={labelStyle}>Links onder:</label>
+        <select
+          style={selectStyle}
+          value={bijAspect2} // De geselecteerde waarde is gekoppeld aan bijAspect2 state         
+          onChange={(e) => {
+            setBijAspect1(e.target.value) // Bij wijziging wordt bijAspect1 bijgewerkt
+            set_userAspects_data(hoofdAspect, bijAspect1, e.target.value)
+            }
+          }
+        >
+          {/* Opties */}
+          {aspectenLijst.map((item, index) => (
+            <option key={index} value={item.aspect}>
+              {item.aspect}
+            </option>
+          ))}
+        </select>
+      </div>
+    </div>
   
         {/* Navigatie voor maand */}
         <div style={{ 
@@ -181,15 +247,15 @@ function Overzichten({ username, apikey, yearMonth}) {
         <button onClick={() => updateMonth(1)}>&gt;</button>
       </div>
 
-
-
       <br/>
       {/* Agenda component aanroepen */}
+
       <Kalender
-        username    = {username}
-        apikey      = {apikey}
-        yearMonth   = {selectedMonthYear}
-        aspect_type = {selectedAspect.aspect}
+        setActiveMenu = {setActiveMenu} // Geef setActiveMenu door
+        username      = {username}
+        apikey        = {apikey}
+        yearMonth     = {selectedMonthYear}
+        aspect_type   = {selectedAspect.aspect}
       />
     </div>
   );

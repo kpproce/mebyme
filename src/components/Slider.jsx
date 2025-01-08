@@ -37,8 +37,13 @@ const Slider = (props) => { // the component starts here
   })
 
   const [sliderEndDate_asTxt, setSliderEndDate_asTxt] = useState(() => {
-      return dateToTxt (new Date())
-      //return "2024-06-26" 
+      let newDate = window.localStorage.getItem('lastDateInSlider')
+      if (newDate === null) { 
+        newDate = dateToTxt(new Date())
+        window.localStorage.setItem('lastDateInSlider', newDate)
+      }
+      return newDate
+      //return "2025-06-26" 
   })
   
   const getPeriod = (width) => {
@@ -208,14 +213,14 @@ const Slider = (props) => { // the component starts here
 
   const handleClick_aspect_eye_out = (aspect) => {
     let result = update_bijInvoerTonen_naar_kan_via_API(aspect) 
-    console.log('206: eye uit geklikt van aspect: ' + aspect)
+    //console.log('206: eye uit geklikt van aspect: ' + aspect)
     
     setHasToReloadData(true);
   }
 
   const handleClickDeleteOpmerkingViaApi = (opm_id) => {
     let result = deleteOpmerkingViaApi(opm_id) 
-    console.log('187: delete opmerking met id: ' + opm_id)
+    // console.log('187: delete opmerking met id: ' + opm_id)
     
     setHasToReloadData(true);
   }
@@ -291,9 +296,9 @@ const Slider = (props) => { // the component starts here
           }
         })
 
-        console.log('294: a hghData_alleDagen: ')
-        console.log(hghData_alleDagen)
-        console.log('294: b')
+        // console.log('294: a hghData_alleDagen: ')
+        // console.log(hghData_alleDagen)
+        // console.log('294: b')
 
         hghData_alleDagen_alleAspecten.push({
           'aspect'      : hghRow.data[0].aspect , 
@@ -401,7 +406,9 @@ const Slider = (props) => { // the component starts here
   const changeSliderDate = (deltaDays) => {
     // console.log('391: sliderEndDate_asTxt: ' + sliderEndDate_asTxt +  ' deltaDays: '+ deltaDays)
     // console.log(get_changedDate_asTxt(sliderEndDate_asTxt, deltaDays))
-    setSliderEndDate_asTxt(get_changedDate_asTxt(sliderEndDate_asTxt, (deltaDays*1)))
+    let newDate = get_changedDate_asTxt(sliderEndDate_asTxt, (deltaDays*1))
+    setSliderEndDate_asTxt(newDate)
+    window.localStorage.setItem('lastDateInSlider', newDate)
   }
   
   const maakIndividueleDagWaardes = (waardesAsString) => {
@@ -534,7 +541,7 @@ const Slider = (props) => { // the component starts here
   
     // Example: Only trigger if the swipe starts on the left part of the screen
     if (startX < screenWidth / 1.5) {
-      console.log(`504: Swipe detected in the left part of the screen, direction: ${direction}`);
+      // console.log(`504: Swipe detected in the left part of the screen, direction: ${direction}`);
   
       // Different logic based on direction
       if (direction === 'right') {
@@ -566,7 +573,7 @@ const Slider = (props) => { // the component starts here
  
     <div className=" w3-center w3-animate-zoom fitIn " style={{ width: "400px" }}
     >
-      {console.log('560')}
+
       <div> width: {width} height: {height} period: {period} </div>
        {metaWeek.length>0 &&  (
           <SliderMonthsColored 
@@ -688,7 +695,7 @@ const Slider = (props) => { // the component starts here
           </tr>
          
 
-          {/* **** 1a: de maanden boven de datum rij **** */}
+          {/* **** 1a: deafkorting van de maand boven de rij met dagen van de week **** */}
           <tr key={uuidv4()}>  
             <td className='striped small' key={uuidv4()}>
               maand:

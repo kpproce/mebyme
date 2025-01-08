@@ -2,8 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { basic_API_url } from "./global_const.js";
 import PropTypes from "prop-types";
 import './Kalender.css';
+import { useNavigate } from "react-router-dom";
 
-const Kalendar = ({ username, apikey, yearMonth }) => {
+const Kalendar = ({ setActiveMenu, username, apikey, yearMonth }) => {
+  const navigate = useNavigate();
   const [kalenderData, setKalenderData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -41,7 +43,7 @@ const Kalendar = ({ username, apikey, yearMonth }) => {
       setError(null);
       try {
         const data = await getData(username, apikey, yearMonth);
-        setKalenderData(data.resultData1 || []);
+        setKalenderData(data.kalender_data || []);
       } catch (err) {
         setError("Failed to load data.");
       } finally {
@@ -53,30 +55,25 @@ const Kalendar = ({ username, apikey, yearMonth }) => {
   }, [username, apikey, yearMonth]);
 
   const days = (kalenderData || []).map((item) => {
+    
     if (!item || !item.datum) return null;
 
-    const waarde = parseInt(item.hoofdaspect_last_calc_waarde, 10) || 0;
-    const bijAspect1Value = parseInt(item.bij_aspect_1_last_calc_waarde, 10) || 0;
-    const bijAspect1Letter = bijAspect1Value > 0 ? item.bij_aspect_1.charAt(0).toLowerCase() : '';
+    const hoofd_aspect_data = item.hoofd_aspect
+    const hoofd_aspect_waarde = parseInt(hoofd_aspect_data.waarde, 10) || 0;
+    
+    const bij_aspect1_data = item.bij_aspect1
+    const bijAspect1Value = parseInt(bij_aspect1_data.waarde, 10) || 0;
+    const bijAspect1Letter = bijAspect1Value > 0  ? bij_aspect1_data.letter.toLowerCase() : ""
     const bijAspect1Kleur = item.kleur_bij_aspect_1 || '';
 
-    // Nieuwe bij_aspect_2
-    //const bijAspect2Value = parseInt(item.bij_aspect_2_last_calc_waarde, 10) || 0;
-    //const bijAspect2Letter = bijAspect2Value > 0 ? item.bij_aspect_2.charAt(0).toLowerCase() : 'x';
-    //const bijAspect2Letter = item.bij_aspect_2 ? item.bij_aspect_2.charAt(0).toLowerCase() : '';
-    //const bijAspect2Kleur = item.bijAspect2Kleur || '#555'; // Standaard kleur
-
-    const bijAspect2Value = parseInt(item.bij_aspect_2_last_calc_waarde, 10) || 0;
-    const bijAspect2Letter = bijAspect2Value > 0 && item.bij_aspect_2 
-      ? item.bij_aspect_2.charAt(0).toLowerCase() 
-      : ''; // Geen letter als de waarde 0 of niet aanwezig is
-    const bijAspect2Kleur = item.bijAspect2Kleur || '#555'; // Standaard kleur
-
-
+    const bij_aspect2_data = item.bij_aspect2
+    const bijAspect2Value = parseInt(bij_aspect2_data.waarde, 10) || 0;
+    const bijAspect2Letter = bijAspect2Value > 0  ? bij_aspect2_data.letter.toLowerCase() : ""
+    const bijAspect2Kleur = item.kleur_bij_aspect_2 || '';
 
     return {
       datum: item.datum,
-      waarde,
+      hoofd_aspect_waarde,
       bijAspect1Letter,
       bijAspect1Kleur,
       bijAspect2Letter,
@@ -111,7 +108,17 @@ const Kalendar = ({ username, apikey, yearMonth }) => {
         {days.map((day) => (
           <div
             key={day.datum}
-            className={`calendar-day ${getBackgroundColorClass(day.waarde)}`}
+            onClick={ 
+              () => {
+                const date = new Date(day.datum);
+                date.setDate(date.getDate() + 2);
+                const twoDaysAfter = date.toISOString().split('T')[0];
+                window.localStorage.setItem('lastDateInSlider', twoDaysAfter)
+                setActiveMenu('data');
+                navigate("/mebyme/slider"); // Navigeren naar de route van de NavLink
+              }
+            }
+            className={`calendar-day ${getBackgroundColorClass(day.hoofd_aspect_waarde)}`}
           >
             <div className="day-number">{getDayOfMonth(day.datum)}</div>
 
