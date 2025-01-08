@@ -55,96 +55,31 @@ const Kalendar = ({ setActiveMenu, username, apikey, yearMonth }) => {
     fetchData();
   }, [username, apikey, yearMonth]);
 
-  const adjustColor_V_oud = (value, baseColor) => {
-    const adjust = (value < 3) ? 50 : -50;
-    const [r, g, b] = baseColor.match(/\d+/g).map(Number);
-  
-    const newR = Math.min(255, Math.max(0, r + adjust));
-    const newG = Math.min(255, Math.max(0, g + adjust));
-    const newB = Math.min(255, Math.max(0, b + adjust));
-    console.log('65: ', baseColor, `rgb(${newR}, ${newG}, ${newB})`)
-    return `rgb(${newR}, ${newG}, ${newB})`;
-  };
-  
-  const adjustColor = (value, baseColor) => {
-    // Remove the '#' and convert to RGB
-    const hex = baseColor.replace('#', '');
-    const r = parseInt(hex.substring(0, 2), 16);
-    const g = parseInt(hex.substring(2, 4), 16);
-    const b = parseInt(hex.substring(4, 6), 16);
-  
-    // Determine the adjustment value based on bijAspect1Value
-    const adjust = (value < 3) ? 50 : -50;
-  
-    // Adjust the RGB values, ensuring they stay within the valid range (0-255)
-    const newR = Math.min(255, Math.max(0, r + adjust));
-    const newG = Math.min(255, Math.max(0, g + adjust));
-    const newB = Math.min(255, Math.max(0, b + adjust));
-    let newColor = `#${((1 << 24) | (newR << 16) | (newG << 8) | newB).toString(16).slice(1).toUpperCase()}`
-    // Convert the adjusted RGB back to hex and return it as a string
-    console.log('85: ', value, baseColor, newColor)
-    return newColor;
-  };
-  
-  
+  const days = (kalenderData || []).map((item) => {
+    
+    if (!item || !item.datum) return null;
+    console.log('item (60:): ', item)
+    const hoofd_aspect_data = item.hoofd_aspect
+    const hoofd_aspect_waarde = parseInt(hoofd_aspect_data.waarde, 10) || 0;
+    const bij_aspect1_data = item.bij_aspect1
+    const bijAspect1Value = parseInt(bij_aspect1_data.waarde, 10) || 0;
+    const bijAspect1Letter = bijAspect1Value > 0  ? bij_aspect1_data.letter.toLowerCase() : ""
+    const bijAspect1Kleur = item.kleur || '';
+    console.log('item: ', item)
+    const bij_aspect2_data = item.bij_aspect2
+    const bijAspect2Value = parseInt(bij_aspect2_data.waarde, 10) || 0;
+    const bijAspect2Letter = bijAspect2Value > 0  ? bij_aspect2_data.letter.toLowerCase() : ""
+    const bijAspect2Kleur = item.kleur || '';
 
-  // Verwerk kalenderData en werk days bij
-  useEffect(() => {
-    if (!kalenderData) return;
-
-    const processedDays = kalenderData
-      .map((item) => {
-        if (!item || !item.datum) return null;
-
-        // Hoofd aspect
-        const hoofd_aspect_data = item.hoofd_aspect;
-        const hoofd_aspect_waarde =
-          parseInt(hoofd_aspect_data?.waarde, 10) || 0;
-
-        // Bij-aspect 1
-        const bij_aspect1_data = item.bij_aspect1 || {};
-        const bijAspect1Value = parseInt(bij_aspect1_data.waarde, 10) || 0;
-        const bijAspect1Letter =
-          bijAspect1Value > 0
-            ? bij_aspect1_data.letter?.toLowerCase() || ""
-            : "";
-        const bijAspect1Kleur = bijAspect1Value > 0
-            ? adjustColor(bijAspect1Value, bij_aspect1_data.kleur || "rgb(0, 255, 0)")
-            : { r: 255, g: 0, b: 0 };
-            // const bijAspect1Kleur = bijAspect1Value > 0 
-        //   ? bij_aspect1_data.kleur || "green" 
-        //   : "red";
-
-        // Bij-aspect 2
-        const bij_aspect2_data = item.bij_aspect2 || {};
-        const bijAspect2Value = parseInt(bij_aspect2_data.waarde, 10) || 0;
-        const bijAspect2Letter =
-          bijAspect2Value > 0
-            ? bij_aspect2_data.letter?.toLowerCase() || ""
-            : "";
-        // const bijAspect2Kleur =
-        //   bijAspect2Value > 0 ? bij_aspect2_data.kleur || "blue" : "gray";
-        const bijAspect2Kleur = bijAspect1Value > 0
-        ? adjustColor(bijAspect1Value, bij_aspect1_data.kleur || "rgb(0, 255, 0)")
-        : { r: 255, g: 0, b: 0 };
-
-        // Return de dag-data
-        return {
-          datum: item.datum,
-          hoofd_aspect_waarde,
-          bijAspect1Letter,
-          bijAspect1Kleur,
-          bijAspect2Letter,
-          bijAspect2Kleur,
-        };
-      })
-      .filter((day) => day !== null);
-
-    // Update de days state
-    setDays(processedDays);
-  }, [kalenderData]);
-
-
+    return {
+      datum: item.datum,
+      hoofd_aspect_waarde,
+      bijAspect1Letter,
+      bijAspect1Kleur,
+      bijAspect2Letter,
+      bijAspect2Kleur,
+    };
+  }).filter(day => day !== null);
 
   const formatWeekday = (datum) =>
     new Intl.DateTimeFormat('nl-NL', { weekday: 'short' }).format(new Date(datum));
