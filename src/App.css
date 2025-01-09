@@ -365,13 +365,19 @@ body {
 .med_color_5     {  background-color: rgba(244, 219, 198, 0.4)  !important; color: rgb(255, 115, 1)  !important }
 
 /* dit is de achtergrond van de eerste rij in EditWaardeDagdelenModal */
-.bk_color_0 { background-color: rgba(152, 150, 150, 0.352)    !important }  
+/* .bk_color_0 { background-color: rgba(152, 150, 150, 0.352)    !important }  
 .bk_color_1 { background-color: rgba(6, 110, 12, 0.427)   !important }   
 .bk_color_2 { background-color: rgba(243, 235, 187, 0.995)  !important }  
 .bk_color_3 { background-color: rgb(147, 147, 138)  !important }  
 .bk_color_4 { background-color: rgb(248, 216, 167)  !important }  
-.bk_color_5 { background-color: rgb(255, 200, 200)  !important }  
+.bk_color_5 { background-color: rgb(255, 200, 200)  !important }  */ 
 
+.bk_color_0 { background-color: rgba(26, 24, 29, 0.352)    !important }  
+.bk_color_1 { background-color: rgba(10, 40, 10, 0.95)   !important; } /* Donkergroen voor fg_color_1 */
+.bk_color_2 { background-color: rgba(20, 20, 20, 1)      !important; } /* Donkergrijs voor fg_color_2 */
+.bk_color_3 { background-color: rgba(40, 40, 10, 0.95)   !important; } /* Olijfachtig voor fg_color_3 */
+.bk_color_4 { background-color: rgba(40, 10, 10, 0.95)   !important; } /* Dieprood voor fg_color_4 */
+.bk_color_5 { background-color: rgba(10, 10, 10, 0.95)   !important; } /* Zwartachtig voor fg_color_5 */
 /* background colors for normal range low - high */
 .bk_strong_color_0 { background-color: rgb(99, 97, 97)    !important }  
 .bk_strong_color_1 { background-color: rgb(68, 242, 94)    !important }   
@@ -382,9 +388,9 @@ body {
 
 /* colors for normal range low - high */
 .fg_color_0 { color: rgb(99, 97, 97)    !important }  
-.fg_color_1 { color: rgb(68, 242, 94)    !important }   
-.fg_color_2 { color: rgb(160, 198, 4)   !important }  
-.fg_color_3 { color: rgb(236, 233, 84)  !important }  
+.fg_color_1 { color: rgb(55, 255, 0)    !important }   
+.fg_color_2 { color: rgba(56, 169, 4, 0.986)   !important }  
+.fg_color_3 { color: rgb(255, 255, 20)  !important }  
 .fg_color_4 { color: rgb(255, 132, 1)   !important }  
 .fg_color_5 { color: rgb(192, 10, 10)  !important }  
 

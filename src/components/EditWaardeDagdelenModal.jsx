@@ -17,6 +17,8 @@ import Select from 'react-select';
 const  EditWaardeDagdelenModal = (props) => {
     // const [id, setId] =  useState(1);
     // const [title, setTitle] =  useState("this song");
+
+
     const [show, setShow] = useState(false);
     const fetchURL =   basic_API_url() + "php/mebyme.php"
     
@@ -84,7 +86,7 @@ const  EditWaardeDagdelenModal = (props) => {
 
     function createUpdatedDagdelen(newWaardeAsString) { // in: string bijv: ('34125') => actie, update dagdelen
       if (!newWaardeAsString || newWaardeAsString.length !== 5 || !/^\d{5}$/.test(newWaardeAsString)) {
-       console.log(newWaardeAsString)
+       console.log('87:', newWaardeAsString)
         console.error('Invalid newWaardeAsString: it must be a string with exactly 5 digits.');
         
         return dagdelen; // Return the existing state if invalid
@@ -165,9 +167,10 @@ const  EditWaardeDagdelenModal = (props) => {
           .then((res) => {
             setWaarde(res.data.waarde)
             setOpmerking(res.data.opmerking)
-            console.log('168: opmerking', res.data.opmerking)
             setAspect_type(res.data.aspect_type)
-            setDagdelen(createUpdatedDagdelen(res.data.waardeDagdelen))
+            console.log('169: waardeDagelen', res.data.waardeDagdelen)
+            setDagdelen(createUpdatedDagdelen(res.data.waardeDagdelen || "00000"));
+            console.log('171: createUpdatedDagdelen: ', createUpdatedDagdelen(res.data.waardeDagdelen || "00000"))
           })
           .catch((error) => {
             console.error('Error fetching data:', error);
@@ -186,6 +189,7 @@ const  EditWaardeDagdelenModal = (props) => {
 
 
     const getIcon1 = (aspect_type, waarde, id) => {
+      console.log('190: aspect_type, waarde: ', aspect_type, waarde)
       if (icons[aspect_type] && icons[aspect_type][waarde]) {
         return icons[aspect_type][waarde];
       } else {
@@ -251,6 +255,7 @@ const  EditWaardeDagdelenModal = (props) => {
           waarde            = {waarde} 
           size              = {'x-large'} 
           callBack          = {callBack_handleShow}
+          test              = {aspect_type + ' ' +  waarde}
         />
         {opmerking
         ? <div className = "xx-small" >
@@ -346,10 +351,12 @@ const  EditWaardeDagdelenModal = (props) => {
               {[1,2,3,4,5,0].map((dagdeelIndex, index) => 
                   <td key={index} >         
                       <GetSliderButton 
-                        icon             ={getIcon1(aspect_type, dagdeelIndex, 4)}  // Dynamically get the icon based on aspect_type and waarde
+                        icon             ={getIcon1('welzijn', dagdeelIndex, 4)}  // Dynamically get the icon based on aspect_type and waarde
+                        //dit nog oplossen, de juiste 'aspect_type als er geen data is.
                         waarde          = {dagdeelIndex} 
                         size            = {'x-large'} 
                         callBack        = {callBack_handleChangeWaarde}
+                        test              = {'2'}
                       />
                   </td>
               )}

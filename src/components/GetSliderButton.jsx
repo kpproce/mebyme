@@ -12,8 +12,7 @@ import {Button} from "react-bootstrap";
 
 const GetSliderButton = (props) => { 
   
-  //console.log('17: iconlist from API:')
-  //console.log(props.available_images)
+   //console.log(props.available_images)
  
   const getClassName = (my_waarde) => {
     if ( my_waarde >=0 && my_waarde<=5 ) 
@@ -45,33 +44,35 @@ const GetSliderButton = (props) => {
       {props.icon}
     </Button>
     */
+   <>
+   {console.log('49: props ', props)}
    
-<Button 
-  onClick={() => props.callBack(props.waarde)} 
-  className={`
-    slider-button btn-primary 
-    bk_color_${props.waarde} 
-    Button_${props.size === 'x-large' ? 'x-large' : props.size}`
-  }
-  style={{
-    margin: '3px',
-    padding: '3px',
-    fontSize: props.size === 'x-large' ? '12px' : '14px',
-    display: 'flex', // Flexbox for alignment
-    alignItems: 'center', // Vertical centering
-    justifyContent: 'center', // Horizontal centering
-    overflow: 'visible', // Ensure content is not hidden
-  }}
->
-  <span 
-    style={{ 
-      fontSize: '1.5rem', 
-      display: 'inline-block' 
-    }}>
-    {props.icon} {/* Render the dynamic icon */}
-  </span>
-</Button>
- 
+    <Button 
+      onClick={() => props.callBack(props.waarde)} 
+      className={`
+        slider-button btn-primary 
+        bk_color_${props.waarde} 
+        Button_${props.size === 'x-large' ? 'x-large' : props.size}`
+      }
+      style={{
+        margin: '3px',
+        padding: '3px',
+        fontSize: props.size === 'x-large' ? '12px' : '14px',
+        display: 'flex', // Flexbox for alignment
+        alignItems: 'center', // Vertical centering
+        justifyContent: 'center', // Horizontal centering
+        overflow: 'visible', // Ensure content is not hidden
+      }}
+    >
+      <span 
+        style={{ 
+          fontSize: '1.5rem', 
+          display: 'inline-block' 
+        }}>
+        {props.icon} {/* Render the dynamic icon */}
+      </span>
+    </Button>
+    </>
   )
 
 }
