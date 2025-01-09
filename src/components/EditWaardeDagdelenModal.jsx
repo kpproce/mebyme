@@ -34,7 +34,7 @@ const  EditWaardeDagdelenModal = (props) => {
     const [dagdelenInvullen, setDagdelenInvullen] = useState("ja")
     const [dagwaardeBerekening, setDagwaardeBerekening] = useState("max_weegt_iets_meer") // kan weg --> naar php 
     const [aspect_type, setAspect_type] = useState("welzijn") // standaard 
-    const [opmerking, setOpmerking] = useState("");
+    const [opmerking, setOpmerking] = useState(props.opmerking);
   
     const [dag_Aspect_data, setDag_Aspect_data] = useState([])
 
@@ -164,6 +164,8 @@ const  EditWaardeDagdelenModal = (props) => {
         get_dag_Aspect_data_from_api()
           .then((res) => {
             setWaarde(res.data.waarde)
+            setOpmerking(res.data.opmerking)
+            console.log('168: opmerking', res.data.opmerking)
             setAspect_type(res.data.aspect_type)
             setDagdelen(createUpdatedDagdelen(res.data.waardeDagdelen))
           })
@@ -252,7 +254,7 @@ const  EditWaardeDagdelenModal = (props) => {
         />
         {opmerking
         ? <div className = "xx-small" >
-            {opmerking.substring(0,5)}
+            {opmerking.substring(0,7)}
           </div>
         : ""
         }

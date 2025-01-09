@@ -826,6 +826,7 @@ const Slider = (props) => { // the component starts here
                                   datum                     = { dagData.datum  } 
                                   aspect                    = { dagData.aspect }
                                   waarde                    = { dagData.waarde }
+                                  opmerking                 = { dagData.opmerking }
                                   callBack_set_hgh_details  = { callBack_set_hgh_details }
                                 />
                                
