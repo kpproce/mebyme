@@ -1,1 +1,1 @@
-export const version =  "meByMe 1.6.1 kalender met groep en kleur in bij_aspect1 en 2" 
+export const version =  "meByMe 1.6.2 onfocus er uit" 

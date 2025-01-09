@@ -98,7 +98,7 @@ function Overzichten({ setActiveMenu, username, apikey, yearMonth}) {
   };
 
   // Functie om de aspectenlijst op te halen via de API
-  const set_userAspects_data = async (hasp, asp1, asp2) => {
+  const set_userAspects_data = async (hasp, aspRO, aspLO) => {
     setLoading(true);  
     try {
       const postData = new FormData();
@@ -107,8 +107,8 @@ function Overzichten({ setActiveMenu, username, apikey, yearMonth}) {
       postData.append("action", "set_userAspects_data");
   
       postData.append("hoofdAspect", hasp);
-      postData.append("bijAspect1", asp1);
-      postData.append("bijAspect2", asp2);
+      postData.append("bijAspect1", aspRO);
+      postData.append("bijAspect2", aspLO);
   
       const response = await fetch(fetchURL, {
         method: "POST",
@@ -239,7 +239,6 @@ function Overzichten({ setActiveMenu, username, apikey, yearMonth}) {
           <button onClick={() => updateMonth(-1)}>&lt;</button>
           <label 
             htmlFor="aspect-select"
-            
           >
         </label>
        

@@ -358,8 +358,6 @@ const  EditWaardeDagdelenModal = (props) => {
           <input type="text" 
             value    = {opmerking} 
             size     = '42'
-            onFocus={() => alert ('onFocus')}
-            onBlur={() => alert ('onBlur')}
             onChange = {((event) => {setOpmerking(event.target.value)})}>         
           </input>    
                   
