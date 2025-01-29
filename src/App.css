@@ -350,19 +350,34 @@ body {
 .space { padding-right: 4px;}
 
 
-.welzijn_color_0 {  background-color: rgba(99, 97, 97, 0.4)   !important; color: rgb(99, 97, 97)   !important }  
-.welzijn_color_1 {  background-color: rgba(30, 255, 0, 0.4)   !important; color: rgb(30, 255, 0)   !important }
-.welzijn_color_2 {  background-color: rgba(108, 150, 30, 0.4) !important; color: rgb(108, 150, 30) !important }
-.welzijn_color_3 {  background-color: rgba(207, 197, 22, 0.4) !important; color: rgb(207, 197, 22) !important }
-.welzijn_color_4 {  background-color: rgba(255, 115, 1, 0.4)  !important; color: rgb(255, 115, 1)  !important }
-.welzijn_color_5 {  background-color: rgba(236, 24, 140, 0.4) !important; color: rgb(236, 24, 140) !important }
+.welzijn_color_0   {  background-color: rgba(99, 97, 97, 0.4)    !important; color: rgb(99, 97, 97)   !important }  
+.welzijn_color_1   {  background-color: rgba(30, 255, 0, 0.4)    !important; color: rgb(30, 255, 0)   !important }
+.welzijn_color_2   {  background-color: rgba(108, 150, 30, 0.4)  !important; color: rgb(70, 150, 30) !important }
+.welzijn_color_3   {  background-color: rgba(207, 197, 22, 0.4)  !important; color: rgb(255, 251, 4) !important }
+.welzijn_color_4   {  background-color: rgba(255, 115, 1, 0.4)   !important; color: rgb(255, 115, 1)  !important }
+.welzijn_color_5   {  background-color: rgba(236, 24, 140, 0.4)  !important; color: rgb(236, 24, 140) !important }
 
-.med_color_0     {  background-color: rgba(99, 97, 97, 0.4)   !important; color: rgb(99, 97, 97)   !important }  
-.med_color_1     {  background-color: rgba(207, 197, 22, 0.4) !important; color: rgb(207, 197, 22) !important }
-.med_color_2     {  background-color: rgba(108, 150, 30, 0.4) !important; color: rgb(108, 150, 30) !important }
-.med_color_3     {  background-color: rgba(30, 255, 0, 0.4)   !important; color: rgb(30, 255, 0)   !important }
-.med_color_4     {  background-color: rgba(207, 197, 22, 0.4) !important; color: rgb(207, 197, 22) !important }
-.med_color_5     {  background-color: rgba(244, 219, 198, 0.4)  !important; color: rgb(255, 115, 1)  !important }
+.medicatie_color_0 {  background-color: rgba(99, 97, 97, 0.4)    !important; color: rgb(99, 97, 97)   !important }  
+.medicatie_color_1 {  background-color: rgba(207, 197, 22, 0.4)  !important; color: rgb(207, 197, 22) !important }
+.medicatie_color_2 {  background-color: rgba(108, 150, 30, 0.4)  !important; color: rgb(70, 150, 30) !important }
+.medicatie_color_3 {  background-color: rgba(30, 255, 0, 0.4)    !important; color: rgb(30, 255, 0)   !important }
+.medicatie_color_4 {  background-color: rgba(207, 197, 22, 0.4)  !important; color: rgb(207, 197, 22) !important }
+.medicatie_color_5 {  background-color: rgba(244, 219, 198, 0.4) !important; color: rgb(255, 115, 1)  !important }
+
+.gedaan_color_0    {  background-color: rgba(99, 97, 97, 0.4)    !important; color: rgb(93, 96, 114) !important }  
+.gedaan_color_1    {  background-color: rgba(207, 197, 22, 0.4)  !important; color: rgb(155, 210, 238)   !important }
+.gedaan_color_2    {  background-color: rgba(108, 150, 30, 0.4)  !important; color: rgb(72, 231, 19)   !important }
+.gedaan_color_3    {  background-color: rgba(30, 255, 0, 0.4)    !important; color: rgb(30, 255, 0)    !important }
+.gedaan_color_4    {  background-color: rgba(207, 197, 22, 0.4)  !important; color: rgb(95, 138, 16)  !important }
+.gedaan_color_5    {  background-color: rgba(244, 219, 198, 0.4) !important; color: rgb(255, 115, 1)   !important }
+
+
+.med_color_0     {  background-color: rgba(99, 97, 97, 0.4)    !important; color: rgb(99, 97, 97)   !important }  
+.med_color_1     {  background-color: rgba(207, 197, 22, 0.4)  !important; color: rgb(207, 197, 22) !important }
+.med_color_2     {  background-color: rgba(108, 150, 30, 0.4)  !important; color: rgb(108, 150, 30) !important }
+.med_color_3     {  background-color: rgba(30, 255, 0, 0.4)    !important; color: rgb(30, 255, 0)   !important }
+.med_color_4     {  background-color: rgba(207, 197, 22, 0.4)  !important; color: rgb(207, 197, 22) !important }
+.med_color_5     {  background-color: rgba(244, 219, 198, 0.4) !important; color: rgb(255, 115, 1)  !important }
 
 /* dit is de achtergrond van de eerste rij in EditWaardeDagdelenModal */
 /* .bk_color_0 { background-color: rgba(152, 150, 150, 0.352)    !important }  
@@ -372,7 +387,7 @@ body {
 .bk_color_4 { background-color: rgb(248, 216, 167)  !important }  
 .bk_color_5 { background-color: rgb(255, 200, 200)  !important }  */ 
 
-.bk_color_0 { background-color: rgba(26, 24, 29, 0.352)    !important }  
+.bk_color_0 { background-color: rgba(26, 24, 29, 0.352)  !important }  
 .bk_color_1 { background-color: rgba(10, 40, 10, 0.95)   !important; } /* Donkergroen voor fg_color_1 */
 .bk_color_2 { background-color: rgba(20, 20, 20, 1)      !important; } /* Donkergrijs voor fg_color_2 */
 .bk_color_3 { background-color: rgba(40, 40, 10, 0.95)   !important; } /* Olijfachtig voor fg_color_3 */
@@ -380,11 +395,11 @@ body {
 .bk_color_5 { background-color: rgba(10, 10, 10, 0.95)   !important; } /* Zwartachtig voor fg_color_5 */
 /* background colors for normal range low - high */
 .bk_strong_color_0 { background-color: rgb(99, 97, 97)    !important }  
-.bk_strong_color_1 { background-color: rgb(68, 242, 94)    !important }   
+.bk_strong_color_1 { background-color: rgb(68, 242, 94)   !important }   
 .bk_strong_color_2 { background-color: rgb(160, 198, 4)   !important }  
 .bk_strong_color_3 { background-color: rgb(236, 233, 84)  !important }  
 .bk_strong_color_4 { background-color: rgb(255, 132, 1)   !important }  
-.bk_strong_color_5 { background-color: rgb(192, 10, 10)  !important }  
+.bk_strong_color_5 { background-color: rgb(192, 10, 10)   !important }  
 
 /* colors for normal range low - high */
 .fg_color_0 { color: rgb(99, 97, 97)    !important }  

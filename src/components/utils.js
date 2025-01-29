@@ -30,4 +30,6 @@ export const getLastDateOfDutchWeek = (weekString) => {
   lastDayOfWeek.setDate(firstMonday.getDate() + (week * 7));
 
   return lastDayOfWeek.toISOString().split('T')[0]; // Format YYYY-MM-DD
+
 };
+

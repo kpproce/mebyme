@@ -1,0 +1,88 @@
+.dagAsp_contMain {
+    border: 0px solid;
+    margin: 3px;
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+
+  }
+  
+  .dagAsp_contMain_left {
+    border: solid 3px rgb(255, 115, 1); /* Dynamische borderkleur */
+    background-color: #f0f0f0;
+    flex: 1;
+    padding: 10px;
+    max-height: 100%; /* Zorgt ervoor dat het niet hoger wordt dan 160px */
+    max-width: 75%;
+    overflow: hidden; /* Zorgt ervoor dat de inhoud niet uit de container steekt */
+  }
+  
+  .dagAsp_cont_icon_and_text {
+    background-color: rgba(219, 239, 217, 0.4) !important;
+  }
+  
+  .dagAsp_cont_text {
+    /*border: solid 3px red; */
+    color: black;
+    border: solid 2px rgb(205, 194, 194);
+    background-color: rgba(254, 254, 254, 1) !important;
+    font-size: clamp(10px, 2vw, 24px); /* Dynamische font-size */
+    white-space: nowrap; /* Zorg dat de tekst op één regel blijft */
+    overflow: hidden; /* Verberg overlopende tekst */
+    text-overflow: ellipsis; /* Voeg "..." toe als de tekst te lang is */
+  }
+  
+  .dagAsp_cont_icon_ img {
+    width: 100%; /* Zorgt ervoor dat de afbeelding binnen de ruimte past */
+    height: auto;
+    max-height: 100%; /* Zorgt ervoor dat de afbeelding niet groter wordt dan de container */
+  }
+  
+  .dagAsp_contMain_right {
+    border: solid 6px rgb(142, 139, 139);
+    background-color: rgba(30, 255, 0, 0.4) !important;
+    flex: 1;
+    display: flex;
+    max-width: 25%;
+    max-height: 100%; /* Zorgt ervoor dat het niet hoger wordt dan 160px */
+  
+    flex-direction: column;
+  }
+  
+  .dagAsp_value_divjes_basis {
+    border: solid 2px rgb(218, 241, 243) !important;
+    font-weight: bolder;
+    height:15%;
+  }
+
+  .blackAshtray {
+    background-color: black;
+    border: solid rgb(73, 73, 73) 2px
+  }
+  
+  .bg_welzijn_color_0 { background-color: rgb(99, 97, 97) !important; }
+  .bg_welzijn_color_1 { background-color: rgb(30, 255, 0) !important; }
+  .bg_welzijn_color_2 { background-color: rgb(70, 150, 30) !important; }
+  .bg_welzijn_color_3 { background-color: rgb(255, 251, 4) !important; }
+  .bg_welzijn_color_4 { background-color: rgb(255, 115, 1) !important; }
+  .bg_welzijn_color_5 { background-color: rgb(251, 11, 11) !important; }
+  
+  .bg_medicatie_color_0 { background-color: rgb(99, 97, 97) !important; }
+  .bg_medicatie_color_1 { background-color: rgb(168, 208, 250) !important; }
+  .bg_medicatie_color_2 { background-color: rgb(99, 170, 241) !important; }
+  .bg_medicatie_color_3 { background-color: rgb(72, 117, 162) !important; }
+  .bg_medicatie_color_4 { background-color: rgb(241, 215, 187) !important; }
+  .bg_medicatie_color_5 { background-color: rgb(243, 146, 66) !important; }
+  
+  .bg_gedaan_color_0 { background-color: rgb(99, 97, 97) !important; }
+  .bg_gedaan_color_1 { background-color: rgb(224, 246, 163) !important; }
+  .bg_gedaan_color_2 { background-color: rgb(70, 251, 34) !important; }
+  .bg_gedaan_color_3 { background-color: rgb(27, 226, 5) !important; }
+  .bg_gedaan_color_4 { background-color: rgb(200, 245, 110) !important; }
+  .bg_gedaan_color_5 { background-color: rgb(243, 210, 50) !important; }
+  
+  .dagAsp_empty_waarde {
+    background-color: rgba(240, 240, 240, 0.915);
+    border: 1px solid rgba(200, 200, 200, 0.5);
+  }
+  

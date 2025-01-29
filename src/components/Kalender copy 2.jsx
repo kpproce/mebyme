@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { basic_API_url } from "./global_const.js";
-import propTypes from "prop-types";
+import PropTypes from "prop-types";
 import './Kalender.css';
 import { useNavigate } from "react-router-dom";
 import EditDagModal from "./EditDagModal.jsx";
@@ -34,6 +34,7 @@ const Kalendar = ({ setActiveMenu, username, apikey, yearMonth }) => {
     postData.append("action", "get_rapport_data");
 
     const requestOptions = { method: "POST", body: postData };
+
     try {
       const res = await fetch(fetchURL, requestOptions);
       if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
@@ -182,14 +183,17 @@ const Kalendar = ({ setActiveMenu, username, apikey, yearMonth }) => {
             className={`calendar-day ${getBackgroundColorClass(day.hoofd_aspect_waarde)}`}
           >
             <div className="day-number">
-              <EditDagModal 
+              <EditDagModal
                 username = {username}
                 apikey = {apikey}
+                dayOffMonth = {getDayOfMonth(day.datum)}
                 datum = {day.datum}
+                dagWaarde = {day.DateAspect_dagwaarde}
+                aspect={'benauwd'} // Pass the selected aspect as prop
+                aspect_type={"welzijn"}
               />
             </div>
-            {// console.log('191 day:', username, apikey, day.datum)
-            }
+            {console.log('124 day:', day)}
 
             {/* Rechts onder - bij_aspect_1 */}
             {day.bijAspect1Letter && (
@@ -222,9 +226,9 @@ const Kalendar = ({ setActiveMenu, username, apikey, yearMonth }) => {
 };
 
 Kalendar.propTypes = {
-  username: propTypes.string.isRequired,
-  apikey: propTypes.string.isRequired,
-  yearMonth: propTypes.string.isRequired,
+  username: PropTypes.string.isRequired,
+  apikey: PropTypes.string.isRequired,
+  yearMonth: PropTypes.string.isRequired,
 };
 
 export default Kalendar;
