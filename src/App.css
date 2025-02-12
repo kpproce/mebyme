@@ -8,12 +8,6 @@
   margin-bottom: 50px !important; 
 }
 
-body {
-    align-content: flex-start;
-    background-color: #0b6274;
-    padding-left: 3px;
-    margin-left: 0;
-  } 
 
   .test {
     color: #09505f
@@ -168,7 +162,16 @@ body {
 .modal1 {margin-inline: 5px;border: solid 3px rgba(6, 56, 174, 0.5) }
 
 /* Light mode styles */
+
+[data-bs-theme="light"] body {
+  background-color: #9ee1ef;
+  padding-left: 3px;
+  margin-left: 0;
+}
+
+
 [data-bs-theme="light"] {
+
   .plusButton {
     background-color: rgb(191, 225, 225) !important; /* Ensure background color is applied */
     color: black; /* Change text color for visibility */
@@ -191,30 +194,37 @@ body {
 }
 
 /* Dark mode styles */
+[data-bs-theme="dark"] body {
+    background-color: #177c90;
+    padding-left: 3px;
+    margin-left: 0;
+}
+
 [data-bs-theme="dark"]  {
-  .plusButton {
-    background-color: rgb(25, 87, 87) !important; /* Ensure background color is applied */
-    color: rgb(209, 203, 203); /* Change text color for visibility */
-  }
-  
-  .kalenderDag {
-    background-color: rgb(25, 87, 87) ; /* Ensure background color is applied */
-    color: rgb(209, 203, 203); /* Change text color for visibility */
-  }
-   
-  .invoerBC{
-    background-color: #154170;
-  }
-  .modal1 {  
-    background-color: rgba(5, 51, 126, 0.4); 
-    color: rgb(27, 5, 115) ; 
-  }
-  .modal2 {  
-    background-color: rgba(74, 58, 4, 0.4); 
-    color: rgb(245, 246, 239) ; 
-  }
-  .messageALertStyle { background-color: #b52eae; color:rgb(255, 255, 255) }
-  .messageOkayStyle { background-color: #014732; color:rgb(255, 255, 255) }
+
+      .plusButton {
+      background-color: rgb(25, 87, 87) !important; /* Ensure background color is applied */
+      color: rgb(209, 203, 203); /* Change text color for visibility */
+    }
+    
+    .kalenderDag {
+      background-color: rgb(25, 87, 87) ; /* Ensure background color is applied */
+      color: rgb(209, 203, 203); /* Change text color for visibility */
+    }
+    
+    .invoerBC{
+      background-color: #154170;
+    }
+    .modal1 {  
+      background-color: rgba(5, 51, 126, 0.4); 
+      color: rgb(27, 5, 115) ; 
+    }
+    .modal2 {  
+      background-color: rgba(74, 58, 4, 0.4); 
+      color: rgb(245, 246, 239) ; 
+    }
+    .messageALertStyle { background-color: #b52eae; color:rgb(255, 255, 255) }
+    .messageOkayStyle { background-color: #014732; color:rgb(255, 255, 255) }
 }
 
 .loginIcon_okayStyle {

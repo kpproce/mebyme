@@ -32,6 +32,8 @@ function Overzichten({ setActiveMenu, username, apikey, yearMonth}) {
   const [bijAspect1,  setBijAspect1]   = useState("")
   const [bijAspect2,  setBijAspect2]   = useState("")
 
+  const [instellingenDiv_zichtbaar, setInstellingenDiv_zichtbaar] = useState(false)
+
   const fetchURL =   basic_API_url() + "php/mebyme.php"
   // Functie om de maand te updaten
   const updateMonth = (direction) => {
@@ -42,9 +44,10 @@ function Overzichten({ setActiveMenu, username, apikey, yearMonth}) {
   };
 
   const selectStyle = {
-    width: '13rem',
+    width: '8rem',
     border: '1px solid #ddd',
     padding: '0.25rem',
+    marginLeft: '6px' 
   };
   
   const labelStyle = {
@@ -162,92 +165,101 @@ function Overzichten({ setActiveMenu, username, apikey, yearMonth}) {
 
   return (
     <div>
-      <div style={bovenDivStyle}>
-      {/* Eerste rij */}
-      <div style={{ display: 'flex', alignItems: 'center' }}>
-        <label style={labelStyle}>Hoofd Aspect (kleur):</label>
-        <select
-          style={selectStyle}
-          value={hoofdAspect} // De geselecteerde waarde is gekoppeld aan hoofdAspect state
-          onChange={(e) => {
-            setHoofdAspect(e.target.value) // Bij wijziging wordt hoofdAspect bijgewerkt
-            console.log('172: hoofdAspect na change:' ,e.target.value, hoofdAspect)
-            set_userAspects_data(e.target.value, bijAspect1, bijAspect2)
-            }
-          }
-        >
-          {/* Opties */}
-          {aspectenLijst.map((item, index) => (
-            <option key={index} value={item.aspect}>
-              {item.aspect}
-            </option>
-          ))}
-        </select>
-      </div>
-
-      {/* Tweede rij */}
-      <div style={{ display: 'flex', alignItems: 'center' }}>
-        <label style={labelStyle}>Rechts onder:</label>
-        <select
-          style={selectStyle}
-          value={bijAspect1} // De geselecteerde waarde is gekoppeld aan bijAspect1 state
-          onChange={(e) => {
-            setBijAspect1(e.target.value) // Bij wijziging wordt bijAspect1 bijgewerkt
-            set_userAspects_data(hoofdAspect, e.target.value, bijAspect2)
-            }
-          }
-        >
-          {/* Opties */}
-          {aspectenLijst.map((item, index) => (
-            <option key={index} value={item.aspect}>
-              {item.aspect}
-            </option>
-          ))}
-        </select>
-      </div>
-
-      {/* Derde rij */}
-      <div style={{ display: 'flex', alignItems: 'center' }}>
-        <label style={labelStyle}>Links onder:</label>
-        <select
-          style={selectStyle}
-          value={bijAspect2} // De geselecteerde waarde is gekoppeld aan bijAspect2 state         
-          onChange={(e) => {
-            setBijAspect1(e.target.value) // Bij wijziging wordt bijAspect1 bijgewerkt
-            set_userAspects_data(hoofdAspect, bijAspect1, e.target.value)
-            }
-          }
-        >
-          {/* Opties */}
-          {aspectenLijst.map((item, index) => (
-            <option key={index} value={item.aspect}>
-              {item.aspect}
-            </option>
-          ))}
-        </select>
-      </div>
+    {/* Titel + Pijltje */}
+    <div style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }} onClick={() => setInstellingenDiv_zichtbaar(!instellingenDiv_zichtbaar)}>
+      <h3 style={{ margin: 0, fontSize: 'large' }}>Instellingen kleuren en letters</h3>
+      <span style={{ marginLeft: '8px', fontSize : 'x-large' }}>{instellingenDiv_zichtbaar ? '▼' : '▶'}</span>
     </div>
+
+    {/* Uitklapbare sectie */}
+    {instellingenDiv_zichtbaar && (
+        <div style={bovenDivStyle}>
+        {/* Eerste rij */}
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <label style={labelStyle}>Hoofd Aspect (kleur):</label>
+            <select
+              style={selectStyle}
+              value={hoofdAspect} // De geselecteerde waarde is gekoppeld aan hoofdAspect state
+              onChange={(e) => {
+                setHoofdAspect(e.target.value) // Bij wijziging wordt hoofdAspect bijgewerkt
+                console.log('172: hoofdAspect na change:' ,e.target.value, hoofdAspect)
+                set_userAspects_data(e.target.value, bijAspect1, bijAspect2)
+                }
+              }
+            >
+              {/* Opties */}
+              {aspectenLijst.map((item, index) => (
+                <option key={index} value={item.aspect}>
+                  {item.aspect}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div style= {{'display': 'flex'}}>
+
+            <div >
+              <label >Links onder:</label>
+              <select
+                style={selectStyle}
+                value={bijAspect2} // De geselecteerde waarde is gekoppeld aan bijAspect2 state         
+                onChange={(e) => {
+                  setBijAspect1(e.target.value) // Bij wijziging wordt bijAspect1 bijgewerkt
+                  set_userAspects_data(hoofdAspect, bijAspect1, e.target.value)
+                  }
+                }
+              >
+                {/* Opties */}
+                {aspectenLijst.map((item, index) => (
+                  <option key={index} value={item.aspect}>
+                    {item.aspect}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div style={{'marginLeft':'8px'}}>
+              <label >Rechts onder:</label>
+              <select
+                style={selectStyle}
+                value={bijAspect1} // De geselecteerde waarde is gekoppeld aan bijAspect1 state
+                onChange={(e) => {
+                  setBijAspect1(e.target.value) // Bij wijziging wordt bijAspect1 bijgewerkt
+                  set_userAspects_data(hoofdAspect, e.target.value, bijAspect2)
+                  }
+                }
+              >
+                {/* Opties */}
+                {aspectenLijst.map((item, index) => (
+                  <option key={index} value={item.aspect}>
+                    {item.aspect}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+        </div>
+    )}
   
-        {/* Navigatie voor maand */}
-        <div style={{ 
-            display: "flex", 
-            alignItems: "center", 
-            margin: "20px 10px", 
-            justifyContent: "space-between"
-            
-          }}>
+      {/* Navigatie voor maand */}
+      <div style={{ 
+              display: "flex", 
+              alignItems: "center", 
+              margin: "20px 10px", 
+              justifyContent: "space-between"
+              
+            }}>
           <button onClick={() => updateMonth(-1)}>&lt;</button>
           <label 
             htmlFor="aspect-select"
           >
-        </label>
-       
+          </label>
+        
         <span style={{ margin: "5px 10px" }}>{getMonthNameWithYear(selectedMonthYear)}</span>
         <button onClick={() => updateMonth(1)}>&gt;</button>
       </div>
 
       <br/>
-      {/* Agenda component aanroepen */}
+        {/* Agenda component aanroepen */}
 
       <Kalender
         setActiveMenu = {setActiveMenu} // Geef setActiveMenu door

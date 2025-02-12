@@ -820,7 +820,8 @@ const Slider = (props) => { // the component starts here
                             {/* { console.log(dagData.dagwaardeBerekening + '  ' + dagData.aspect + '  ' + dagData.waarde +  ' waardeDagdelenString: ' + dagData.waardeDagdelenString)} */}
                             {dagData.waarde>=0 
                              // {dagData.waarde>=0 && dagData.waarde // nog maken wel of geen 0 waardes tonn
-                             ? <> <EditWaardeDagdelenModal 
+                             ? <> 
+                                <EditWaardeDagdelenModal 
                                   username                  = { username }
                                   apikey                    = { apikey }                      
                                   datum                     = { dagData.datum  } 
@@ -829,7 +830,6 @@ const Slider = (props) => { // the component starts here
                                   opmerking                 = { dagData.opmerking }
                                   callBack_set_hgh_details  = { callBack_set_hgh_details }
                                 />
-                               
                                 </>                              
                               : 
                                 ""
@@ -872,7 +872,5 @@ Slider.propTypes = {
   logged_in: propTypes.bool.isRequired
   // callBack_myUsers_from_editRole: propTypes.func.isRequired
   }
-
-  
 
 export default Slider;

@@ -8,8 +8,6 @@ import {Button} from "react-bootstrap";
 //import medicijn_basis_2 from 'https://www.kimproce.nl/mebyme/images/medicijn_standaard.jpg';
 //import medicijn_basis_4 from 'https://www.kimproce.nl/mebyme/images/medicijn_extra.jfif';
 
-
-
 const GetSliderButton = (props) => { 
   
    //console.log(props.available_images)
@@ -45,8 +43,7 @@ const GetSliderButton = (props) => {
     </Button>
     */
    <>
-   {console.log('49: props ', props)}
-   
+    
     <Button 
       onClick={() => props.callBack(props.waarde)} 
       className={`
@@ -74,15 +71,12 @@ const GetSliderButton = (props) => {
     </Button>
     </>
   )
-
 }
 
 GetSliderButton.propTypes = {  
   icon             : PropTypes.any.isRequired,
   size             : PropTypes.string.isRequired,
-  waarde           : PropTypes.any.isRequired,
-
-
+  waarde           : PropTypes.any.isRequired
 // callBack_myUsers_from_editRole: propTypes.func.isRequired
 }
 

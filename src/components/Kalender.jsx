@@ -1,22 +1,25 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef,  useCallback } from 'react';
 import { basic_API_url } from "./global_const.js";
 import propTypes from "prop-types";
 import './Kalender.css';
 import { useNavigate } from "react-router-dom";
 import EditDagModal from "./EditDagModal.jsx";
 
-const Kalendar = ({ setActiveMenu, username, apikey, yearMonth }) => {
+const Kalender = ({ setActiveMenu, username, apikey, yearMonth }) => {
   const navigate = useNavigate();
   const [kalenderData, setKalenderData] = useState([]);
   const [days, setDays] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
+  const [refresh, setRefresh] = useState(false);
+
+  const dayNumberRef = useRef(null);  // Maak de ref voor de container = useRef(null); // Maak de ref in de parent
+
   const handleChange = (event) => {
     alert('aanpassen van de dagwaarde')
 
   };
-
 
   const getBackgroundColorClass = (value) => {
     const numericValue =
@@ -44,6 +47,11 @@ const Kalendar = ({ setActiveMenu, username, apikey, yearMonth }) => {
     }
   };
 
+  const callBack_updateWaardes = useCallback((nieuweWaardes) => {
+    console.log("Wijzig waardes in Kalender:");
+  }, []);
+
+
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
@@ -51,15 +59,25 @@ const Kalendar = ({ setActiveMenu, username, apikey, yearMonth }) => {
       try {
         const data = await getData(username, apikey, yearMonth);
         setKalenderData(data.kalender_data || []);
+        setRefresh(false);
       } catch (err) {
         setError("Failed to load data.");
       } finally {
         setLoading(false);
+       
       }
     };
 
     fetchData();
-  }, [username, apikey, yearMonth]);
+   
+
+  }, [username, apikey, yearMonth, refresh]);
+  
+  function callBack_refresh() {
+    setRefresh(true)
+  } 
+
+
 
   const adjustColor_V_oud = (value, baseColor) => {
     const adjust = (value < 3) ? 50 : -50;
@@ -150,8 +168,6 @@ const Kalendar = ({ setActiveMenu, username, apikey, yearMonth }) => {
     setDays(processedDays);
   }, [kalenderData]);
 
-
-
   const formatWeekday = (datum) =>
     new Intl.DateTimeFormat('nl-NL', { weekday: 'short' }).format(new Date(datum));
 
@@ -186,6 +202,8 @@ const Kalendar = ({ setActiveMenu, username, apikey, yearMonth }) => {
                 username = {username}
                 apikey = {apikey}
                 datum = {day.datum}
+                containerRef = {dayNumberRef} 
+                callBack_refresh = {callBack_refresh}
               />
             </div>
             {// console.log('191 day:', username, apikey, day.datum)
@@ -220,11 +238,10 @@ const Kalendar = ({ setActiveMenu, username, apikey, yearMonth }) => {
     </div>
   );
 };
-
-Kalendar.propTypes = {
+Kalender.propTypes = {
   username: propTypes.string.isRequired,
   apikey: propTypes.string.isRequired,
   yearMonth: propTypes.string.isRequired,
 };
 
-export default Kalendar;
+export default Kalender;

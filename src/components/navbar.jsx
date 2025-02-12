@@ -6,20 +6,19 @@ import MyUsers from "./myUsers_info.jsx";
 import Slider from "./Slider.jsx";
 import Overzichten from "./Overzichten.jsx";
 import { Button } from "react-bootstrap";
-import { MdOutlineWbSunny, MdNightsStay } from "react-icons/md";
+import { Settings } from "lucide-react";
 import mebymeImage from "../mebymeIcon5.png";
+import Instellingen from "./Instellingen.jsx"; // Nieuw toegevoegd feb 2025
 
 const MyNavbar = () => {
   const [username, setUsername] = useState(() => {
     let username = window.localStorage.getItem("username");
-    return username ? username : "guest"; // standaard
+    return username ? username : "guest";
   });
 
   const [apikey, setApikey] = useState(() => {
     let apikey = window.localStorage.getItem("apikey");
-    apikey = apikey === null || apikey === "null" ? "no_apikey_saved" : apikey;
-    // console.log("26: apikey: " + apikey);
-    return apikey;
+    return apikey === null || apikey === "null" ? "no_apikey_saved" : apikey;
   });
 
   const [activeMenu, setActiveMenu] = useState("Rap");
@@ -35,7 +34,6 @@ const MyNavbar = () => {
   const callBackNavBarFromLogin = useCallback(
     (username, newApikey, logged_in_result) => {
       setApikey(newApikey);
-      //console.log("50: new apikey: " + newApikey + " old: " + apikey);
       setUsername(username);
       setLogged_in(logged_in_result);
     },
@@ -55,7 +53,7 @@ const MyNavbar = () => {
           padding: "2px 3px 3px 3px",
           margin: "3px",
           fontSize: "19px",
-          boxSizing: "border-box", // Still helpful to include this
+          boxSizing: "border-box",
         }}
       >
         <img
@@ -64,7 +62,7 @@ const MyNavbar = () => {
           alt="Mebyme"
           width="45px"
           height="45px"
-          onClick={() => alert(version)} // Toon de title bij een klik
+          onClick={() => alert(version)}
         />
 
         <div style={{ margin: "6px" }}>
@@ -104,6 +102,7 @@ const MyNavbar = () => {
             Rap
           </NavLink>
         </div>
+
         <div style={{ margin: "6px" }}>
           <LoginModal
             username={username}
@@ -111,20 +110,21 @@ const MyNavbar = () => {
             callBackNavBarFromLogin={callBackNavBarFromLogin}
           />
         </div>
+
         <div style={{ margin: "6px" }}>
-          <Button variant="primary" onClick={toggleTheme}>
-            {darkMode ? <MdNightsStay size="1.8rem" /> : <MdOutlineWbSunny size={29} />}
+          <Button variant="primary" as={NavLink} to="/mebyme/settings">
+            <Settings size={20} style={{ marginRight: "6px" }} />
           </Button>
         </div>
-        {activeMenu}
       </div>
 
       <Routes>
-        {/* Redirect from the root path to /mebyme/slider */}
         <Route path="/" element={<Navigate to="/mebyme/slider" replace />} />
         <Route
           path="/mebyme/slider"
-          element={<Slider username={username} apikey={apikey} logged_in={logged_in} />}
+          element={
+            <Slider username={username} apikey={apikey} logged_in={logged_in} />
+          }
         />
         <Route
           path="/mebyme/overzichten"
@@ -136,6 +136,14 @@ const MyNavbar = () => {
               yearMonth="2025-01"
             />
           }
+        />
+        <Route path="/mebyme/settings" 
+          element={ <Instellingen  
+            username    = {username}
+            apikey      = {apikey}
+            darkMode    = {darkMode}
+            toggleTheme = {toggleTheme}
+          />} 
         />
       </Routes>
     </>

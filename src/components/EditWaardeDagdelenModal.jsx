@@ -18,7 +18,6 @@ const  EditWaardeDagdelenModal = (props) => {
     // const [id, setId] =  useState(1);
     // const [title, setTitle] =  useState("this song");
 
-
     const [show, setShow] = useState(false);
     const fetchURL =   basic_API_url() + "php/mebyme.php"
     
@@ -33,11 +32,11 @@ const  EditWaardeDagdelenModal = (props) => {
 
     const [waarde, setWaarde] = useState(props.waarde);
     const [selectedValue, setSelectedValue] = useState(3)
-    const [dagdelenInvullen, setDagdelenInvullen] = useState("ja")
+    const [dagdelenInvullen, setDagdelenInvullen] = useState("")
     const [dagwaardeBerekening, setDagwaardeBerekening] = useState("max_weegt_iets_meer") // kan weg --> naar php 
     const [aspect_type, setAspect_type] = useState("welzijn") // standaard 
     const [opmerking, setOpmerking] = useState(props.opmerking);
-  
+
     const [dag_Aspect_data, setDag_Aspect_data] = useState([])
 
     const icons = {
@@ -96,35 +95,15 @@ const  EditWaardeDagdelenModal = (props) => {
         waarde: parseInt(newWaardeAsString[index], 10)
       }));
     }
-        
-    // function updateDagdelen(nieuweWaardes) {
-    //    // Controleer of nieuweWaardes precies 5 elementen bevat
-    //   if (nieuweWaardes.length == 5) {
-    
-    //     // Maak een nieuwe array gebaseerd op dagDelen, met bijgewerkte waardes
-    //     const bijgewerkteDagdelen = dagdelen.map((dagdeel, index) => ({
-    //       ...dagdeel,
-    //       waarde: nieuweWaardes[index] // Vervang de huidige waarde door de nieuwe
-    //     }));
-    //     // Werk de state bij
-    //     console.log('100: bijgewerkteDagdelen')
-    //     setDagdelen(bijgewerkteDagdelen);
-    //   }
-    // }
-
+       
     async function update_or_create_hgh_waarneming_via_API() { // dit zijn de aspect buttons, met een waarde
-        
-      const postData = new FormData();
-
-      console.log('139  ', createWaardeDagdelenString())   
-      postData.append('username'            , props.username);
-      postData.append('apikey'              , props.apikey);
-      postData.append('datum'               , props.datum);
-      postData.append('aspect'              , props.aspect);
-     
+      const postData = new FormData(); 
+      postData.append('username'      , props.username);
+      postData.append('apikey'        , props.apikey);
+      postData.append('datum'         , props.datum);
+      postData.append('aspect'        , props.aspect);
       postData.append('waardeDagdelen', createWaardeDagdelenString()); // like "23234"
-      postData.append('opmerking'           , opmerking);
-
+      postData.append('opmerking'     , opmerking ?? "");
       postData.append('action',  'update_or_create_hgh_waarneming_dagdelen');
   
       let requestOptions = {
@@ -137,8 +116,7 @@ const  EditWaardeDagdelenModal = (props) => {
     } 
 
     const slaop = () => { 
-      update_or_create_hgh_waarneming_via_API()
-      
+      update_or_create_hgh_waarneming_via_API()   
     }
 
     async function get_dag_Aspect_data_from_api() {
@@ -168,9 +146,12 @@ const  EditWaardeDagdelenModal = (props) => {
             setWaarde(res.data.waarde)
             setOpmerking(res.data.opmerking)
             setAspect_type(res.data.aspect_type)
-            console.log('169: waardeDagelen', res.data.waardeDagdelen)
+            console.log('149: waardeDagelen', res.data.waardeDagdelen)
             setDagdelen(createUpdatedDagdelen(res.data.waardeDagdelen || "00000"));
-            console.log('171: createUpdatedDagdelen: ', createUpdatedDagdelen(res.data.waardeDagdelen || "00000"))
+            setDagdelenInvullen(res.data.dagdelenInvullen)
+            console.log('152: setDagdelenInvullen: ', res.data.dagdelenInvullen)
+            console.log('153: createUpdatedDagdelen: ', createUpdatedDagdelen(res.data.waardeDagdelen || "00000"))
+            
           })
           .catch((error) => {
             console.error('Error fetching data:', error);
@@ -189,8 +170,7 @@ const  EditWaardeDagdelenModal = (props) => {
 
 
     const getIcon1 = (aspect_type, waarde, id) => {
-      console.log('190: aspect_type, waarde: ', aspect_type, waarde)
-      if (icons[aspect_type] && icons[aspect_type][waarde]) {
+        if (icons[aspect_type] && icons[aspect_type][waarde]) {
         return icons[aspect_type][waarde];
       } else {
         return  <span className="fg_color_0">X</span>

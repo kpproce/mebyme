@@ -1,1 +1,1 @@
-export const version =  "meByMe 2.01 edit vanuit kalender" 
+export const version =  "meByMe 2.1.01 kalender bijna af" 
