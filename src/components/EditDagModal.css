@@ -19,10 +19,35 @@
   background-color: rgba(255, 0, 0, 0.2);
 }
 
+.modal-body { 
+  padding:1px !important;
+}
+
 .noSpaceArround {
   padding: 0;
   border: 0;
   margin: 0;
+}
+
+.opmerkingContainer {
+  display: flex;
+  align-items: center; /* Centreert de span verticaal */
+  flex-direction: row;
+  margin-bottom;
+  border: solid 3px rgb(29, 100, 121) !important;
+  width: 100%;
+  padding-left: 4px;
+}
+
+
+.inputOpmerking {
+  margin-left: 4px;
+  width: 100%;
+  border: solid 3px rgb(17, 30, 67);
+  padding-left: 5px;
+  height: 2.4rem; /* Aangepaste hoogte */
+  resize: vertical; /* Sta gebruikers toe de hoogte aan te passen */
+  font-size:medium;
 }
 
 .editDagModal_container {
@@ -32,12 +57,25 @@
 }
 
 .editDagModel_menuLeft {
-  border: solid 2px rgb(218, 243, 223) !important;
+  border: solid 3px rgb(29, 100, 121) !important;
   width:15%;
 }
 
 .editDagModel_menuLeft .aspect-item {
   padding: 4px;
+}
+
+.drag-overlay {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0, 0, 0, 0.7);
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-size: 18px;
+  pointer-events: none;
 }
 
 .aspect-item {
@@ -50,7 +88,7 @@
   display: flex;
   flex-direction: row;
   flex-wrap: wrap; /* Zorgt dat extra items naar de volgende regel gaan */
-  border: solid 2px rgb(218, 243, 223) !important;
+  border: solid 3px rgb(29, 100, 121) !important;
   width:85%;
 }
 

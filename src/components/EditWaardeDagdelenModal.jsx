@@ -31,13 +31,11 @@ const  EditWaardeDagdelenModal = (props) => {
     
 
     const [waarde, setWaarde] = useState(props.waarde);
-    const [selectedValue, setSelectedValue] = useState(3)
     const [dagdelenInvullen, setDagdelenInvullen] = useState("")
-    const [dagwaardeBerekening, setDagwaardeBerekening] = useState("max_weegt_iets_meer") // kan weg --> naar php 
     const [aspect_type, setAspect_type] = useState("welzijn") // standaard 
     const [opmerking, setOpmerking] = useState(props.opmerking);
 
-    const [dag_Aspect_data, setDag_Aspect_data] = useState([])
+    // const [dag_Aspect_data, setDag_Aspect_data] = useState([])
 
     const icons = {
       welzijn: {
@@ -146,10 +144,10 @@ const  EditWaardeDagdelenModal = (props) => {
             setWaarde(res.data.waarde)
             setOpmerking(res.data.opmerking)
             setAspect_type(res.data.aspect_type)
-            console.log('149: waardeDagelen', res.data.waardeDagdelen)
+            console.log('149: waardeDagelen ophalen', res.data.waardeDagdelen)
             setDagdelen(createUpdatedDagdelen(res.data.waardeDagdelen || "00000"));
             setDagdelenInvullen(res.data.dagdelenInvullen)
-            console.log('152: setDagdelenInvullen: ', res.data.dagdelenInvullen)
+            console.log('152: setDagdelenInvullen : ', res.data.dagdelenInvullen)
             console.log('153: createUpdatedDagdelen: ', createUpdatedDagdelen(res.data.waardeDagdelen || "00000"))
             
           })
@@ -211,9 +209,23 @@ const  EditWaardeDagdelenModal = (props) => {
     };
 
     const callBack_handleChangeWaarde = useCallback((nieuweWaarde) => {
-      setDagdelen(createUpdatedDagdelen(String(nieuweWaarde).repeat(5)))
-      console.log('220: wijzig alle dagdeelwaardes naar ' +  nieuweWaarde + ' -> ' + (String(nieuweWaarde).repeat(5))) 
-    },[])
+      console.log(214, dagdelenInvullen.toLowerCase())
+      console.log(215, '-'+ String(nieuweWaarde) + '-')
+      if (dagdelenInvullen.toLowerCase().includes("nee") && dagdelenInvullen.includes("1")) {
+        setDagdelen(createUpdatedDagdelen('00'+ String(nieuweWaarde) + '00'))   
+        console.log(218, '1 dagdeel' )      
+      } else {
+        setDagdelen(createUpdatedDagdelen(String(nieuweWaarde).repeat(5)))
+        console.log(221, '5 dagdelen' )    
+      }
+    },[dagdelenInvullen])
+
+    useEffect(() => {
+      console.log('Dagdelen bijgewerkt:', createWaardeDagdelenString());
+      // werk kleur van  
+
+    }, [dagdelen]);
+    
 
     function getValueDagdeel(dagdeel) {//value={options.find(option => option.value === dagdeel.waarde)} // Vind het juiste object
       let value =  options.find(option => String(option.value) === String(dagdeel.waarde)) || { value: '', label: 'Geen keuze' }
@@ -229,7 +241,7 @@ const  EditWaardeDagdelenModal = (props) => {
     }, []) 
 
     return (
-      <>        
+      <>     
         <GetSliderButton 
           icon              = {getIcon1(aspect_type, waarde, 1 )} // Dynamically passing the icon
           waarde            = {waarde} 

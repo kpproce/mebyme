@@ -152,15 +152,18 @@ const  ChangeAspectInstellingModal = ({ username, apikey }) => {
                         aspectenData.aspectenLijst.map((item, index) => (
                           <tr key={index}>
                             <td>{index + 1}</td>
-                            <td>{item.aspect}</td>
+                            <td>{item.aspect.length > 15 ? item.aspect.substring(0, 15) + "..." : item.aspect}</td>
                             <td>
                               <Row className="align-items-center">
                                 <Col xs="auto">
-                                  <Form.Check
-                                    type="checkbox"
-                                    checked={item.dagdelenInvullen === "ja"}
-                                    onChange={(e) => handleChange(index, e.target.checked)}
-                                  />
+                                <Form.Select
+                                  value={item.dagdelenInvullen}
+                                  onChange={(e) => handleChange(index, e.target.value)}
+                                >
+                                  <option value="ja">Ja</option>
+                                  <option value="nee_vul_1_in">Nee, auto 1 dagdeel </option>
+                                  <option value="nee_vul_5_in">Nee, auto 5 dagdelen </option>
+                                </Form.Select>
                                 </Col>
                               </Row>
                             </td>

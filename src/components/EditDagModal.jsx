@@ -1,4 +1,5 @@
-// versie 5 werkend sleep met bestaat al.
+// dit component verzorgt de weergave van een dag in de kalender
+
 import { React, useState, useEffect, useCallback } from "react";
 import { Modal, Table, Button, Tabs, Tab } from "react-bootstrap";
 import { basic_API_url } from "./global_const.js";
@@ -10,8 +11,15 @@ import "./EditDagModal.css";
 const EditDagModal = (props) => {
   const [show, setShow] = useState(false);
   const [dayData, setDayData] = useState([]);
+  const [dagOpmerking, setDagOpmerking] = useState('test');
   const [aspectList, setAspectList] = useState([]);
   const imageHomeUrl = basic_API_url() + "php/images/mebyme_icons/";
+
+  const [draggedImageName, setDraggedImageName] = useState("");
+
+  const dagModalContainerClass = (dayData.resultData?.slice(0, 5).length || 0) <= 2 
+  ? "aspect_dagwaarde_container few-items" 
+  : "aspect_dagwaarde_container";
 
   // dagData opslaan
   async function saveDayData() {
@@ -21,6 +29,8 @@ const EditDagModal = (props) => {
     postData.append("apikey", props.apikey);
     postData.append("datum", props.datum);
     postData.append("dagData", JSON.stringify(dayData.resultData)); // Zet om naar JSON-string
+    postData.append("dagOpmerking", dagOpmerking); // Zet om naar JSON-string
+
     postData.append("action", "update_or_create_hgh_waarneming_dag");
 
     const requestOptions = {
@@ -65,6 +75,7 @@ const EditDagModal = (props) => {
       }));
 
       setDayData({ ...data, resultData: enrichedData });
+      setDagOpmerking(data?.opmerkingData?.opmerking ?? "");
 
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -161,11 +172,15 @@ const EditDagModal = (props) => {
     // Hier kunnen we alleen de id zetten voor het slepen, geen alert
     e.dataTransfer.setData("imageId", id);
     e.dataTransfer.setData("imageName", imageName); // Hier slaan we de afbeeldingsnaam op
+
+      // Naam zonder extensie opslaan
+    setDraggedImageName(imageName.split(".")[0]);
   };
 
 
   const handleDrop = (e) => {
     e.preventDefault();
+    setDraggedImageName(""); // Verwijder de naam na het droppen
     const id = e.dataTransfer.getData("imageId");
     const imgNaam = e.dataTransfer.getData("imageName");
     console.log(170, imgNaam); // Dit bevat de naam van de afbeelding met extensie, zonder pad
@@ -200,12 +215,14 @@ const EditDagModal = (props) => {
             aspect: id, // id is id van e image en dat is de naam van het aspect...
             imageLink: imgNaam, 
             last_calc_waarde: "2",
-            waardeDagdelen: "22222"
-
+            waardeDagdelen: "22222",
+            username: props.username
           }
         ]
       }));
     }
+
+    console.log(214, resultData)
   };
   
 
@@ -215,6 +232,7 @@ const EditDagModal = (props) => {
 
   return (
     <> 
+  
       <Button className="transparent-btn" variant="primary" onClick={handleShow}>
         {new Date(props.datum).getDate()}
       </Button>
@@ -231,13 +249,16 @@ const EditDagModal = (props) => {
             <Button  variant="primary" onClick={handleAnnuleer} > <X size={24} color="red" /> </Button>
             <Button  variant="primary" onClick={handleOpslaanEnSluit} > <Check size={24} color="lightgreen" /> </Button>
           </span>
-        
-          <Button variant="primary" onClick={handleAnnuleer}>
-            X
-          </Button>
+
         </Modal.Header>
         <Modal.Body className="noSpaceArround">
+          <div className='opmerkingContainer'> 
+            <span> Opm </span>
+            <textarea className='inputOpmerking' value={dagOpmerking}  onChange={(e) => setDagOpmerking(e.target.value)}></textarea>
+          </div>  
           <div className='editDagModal_container'>
+           
+          {draggedImageName && <div className="drag-overlay">{draggedImageName}</div>}
             <div className='editDagModel_menuLeft'>
               {aspectList.map((item, index) => (
                 <div
@@ -245,8 +266,13 @@ const EditDagModal = (props) => {
                   className="aspect-item"
                   draggable
                   onDragStart={(e) => handleDragStart(e, item.best_image, item.aspect)} // Zet de id in de drag event
+                  onDragEnd={() => setDraggedImageName("")} // Reset naam bij loslaten
                 >
-                  <img src={imageHomeUrl + item.best_image} id={item.aspect} style={{ width: "30px", height: "30px" }} />
+                  <img 
+                    src={imageHomeUrl + item.best_image} 
+                    id={item.aspect} 
+                    style={{ width: "clamp(40px, 11vw, 60px)" }}  
+                  />
                 </div>
               ))}
             </div>
@@ -256,7 +282,7 @@ const EditDagModal = (props) => {
               onDragOver={handleDragOver}
             >
               {dayData.resultData?.slice(0, 5).map((item, index) => (
-                <div className="aspect_dagwaarde_container">
+                <div className={dagModalContainerClass} key={index}>
                   <Aspect_dagwaarde
                     index={index} // om wijzigingen vanuit child te kunnen bijhouden
                     icon={imageHomeUrl + item.imageLink}

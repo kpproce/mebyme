@@ -11,7 +11,7 @@ const Kalender = ({ setActiveMenu, username, apikey, yearMonth }) => {
   const [days, setDays] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-
+  const [showLoading, setShowLoading] = useState(false);
   const [refresh, setRefresh] = useState(false);
 
   const dayNumberRef = useRef(null);  // Maak de ref voor de container = useRef(null); // Maak de ref in de parent
@@ -53,6 +53,8 @@ const Kalender = ({ setActiveMenu, username, apikey, yearMonth }) => {
 
 
   useEffect(() => {
+    const timeout = setTimeout(() => setShowLoading(true), 2000);  // Voegt 2 seconden vertraging toe
+  
     const fetchData = async () => {
       setLoading(true);
       setError(null);
@@ -64,31 +66,20 @@ const Kalender = ({ setActiveMenu, username, apikey, yearMonth }) => {
         setError("Failed to load data.");
       } finally {
         setLoading(false);
-       
+        setShowLoading(false); // Verberg de laadmelding wanneer de data klaar is
       }
     };
-
+  
     fetchData();
-   
-
+  
+    // Cleanup de timeout als de component wordt gedemonteerd
+    return () => clearTimeout(timeout);
   }, [username, apikey, yearMonth, refresh]);
+  
   
   function callBack_refresh() {
     setRefresh(true)
   } 
-
-
-
-  const adjustColor_V_oud = (value, baseColor) => {
-    const adjust = (value < 3) ? 50 : -50;
-    const [r, g, b] = baseColor.match(/\d+/g).map(Number);
-  
-    const newR = Math.min(255, Math.max(0, r + adjust));
-    const newG = Math.min(255, Math.max(0, g + adjust));
-    const newB = Math.min(255, Math.max(0, b + adjust));
-    console.log('65: ', baseColor, `rgb(${newR}, ${newG}, ${newB})`)
-    return `rgb(${newR}, ${newG}, ${newB})`;
-  };
   
   const adjustColor = (value, baseColor) => {
     // Remove the '#' and convert to RGB
@@ -110,9 +101,7 @@ const Kalender = ({ setActiveMenu, username, apikey, yearMonth }) => {
     return newColor;
   };
   
-  
-
-  // Verwerk kalenderData en werk days bij
+    // Verwerk kalenderData en werk days bij
   useEffect(() => {
     if (!kalenderData) return;
 
@@ -185,7 +174,7 @@ const Kalender = ({ setActiveMenu, username, apikey, yearMonth }) => {
       </div>
 
       {/* Loading state */}
-      {loading && <div className="loading">Laden...</div>}
+      {showLoading && loading && <div className="loading">Laden...</div>}
 
       {/* Error state */}
       {error && <div className="error-message">{error}</div>}

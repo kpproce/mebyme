@@ -16,7 +16,7 @@
     background-color: #f8f7f7;
     flex: 1;
     padding: 5px;
-    max-height: 100%; /* Zorgt ervoor dat het niet hoger wordt dan 160px */
+    max-height: 100%; 
     max-width: 85%;
     overflow: hidden; /* Zorgt ervoor dat de inhoud niet uit de container steekt */
     display: flex;
@@ -33,7 +33,7 @@
     color: black;
     border: solid 2px rgb(205, 194, 194);
     background-color: rgba(254, 254, 254, 1) !important;
-    font-size: clamp(15px, 3vw, 30px); /* Dynamische font-size */
+    font-size: clamp(10px, 2vw, 20px); /* Dynamische font-size */
     white-space: nowrap; /* Zorg dat de tekst op één regel blijft */
     overflow: hidden; /* Verberg overlopende tekst */
     text-overflow: ellipsis; /* Voeg "..." toe als de tekst te lang is */
@@ -49,8 +49,11 @@
     width: 45%;
     max-height: 50%;
     margin: 2%;
-    
-}
+  }
+
+  .few-items { /* aanvullend op .aspect_dagwaarde_container */
+    max-height: 55%;
+  }
   
   .dagAsp_contMain_right {
     border: solid 4px rgb(142, 139, 139);
