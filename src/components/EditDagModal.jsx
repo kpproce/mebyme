@@ -15,7 +15,9 @@ const EditDagModal = (props) => {
   const [aspectList, setAspectList] = useState([]);
   const imageHomeUrl = basic_API_url() + "php/images/mebyme_icons/";
 
-  const [draggedImageName, setDraggedImageName] = useState("");
+  const [draggedImageId, setDraggedImageId] = useState(""); // tonen welk aspect je dragt
+  const [aspectExtraAanduiding, setAspectExtraAanduiding] = useState("test"); // Als plaatje mist
+
 
   const dagModalContainerClass = (dayData.resultData?.slice(0, 5).length || 0) <= 2 
   ? "aspect_dagwaarde_container few-items" 
@@ -174,13 +176,14 @@ const EditDagModal = (props) => {
     e.dataTransfer.setData("imageName", imageName); // Hier slaan we de afbeeldingsnaam op
 
       // Naam zonder extensie opslaan
-    setDraggedImageName(imageName.split(".")[0]);
+    //setDraggedImageId(imageName.split(".")[0]);
+    setDraggedImageId(id);
   };
 
 
   const handleDrop = (e) => {
     e.preventDefault();
-    setDraggedImageName(""); // Verwijder de naam na het droppen
+    setDraggedImageId(""); // Verwijder de naam na het droppen
     const id = e.dataTransfer.getData("imageId");
     const imgNaam = e.dataTransfer.getData("imageName");
     console.log(170, imgNaam); // Dit bevat de naam van de afbeelding met extensie, zonder pad
@@ -232,7 +235,6 @@ const EditDagModal = (props) => {
 
   return (
     <> 
-  
       <Button className="transparent-btn" variant="primary" onClick={handleShow}>
         {new Date(props.datum).getDate()}
       </Button>
@@ -253,27 +255,32 @@ const EditDagModal = (props) => {
         </Modal.Header>
         <Modal.Body className="noSpaceArround">
           <div className='opmerkingContainer'> 
-            <span> Opm </span>
+            <span> Opm: </span>
             <textarea className='inputOpmerking' value={dagOpmerking}  onChange={(e) => setDagOpmerking(e.target.value)}></textarea>
           </div>  
           <div className='editDagModal_container'>
            
-          {draggedImageName && <div className="drag-overlay">{draggedImageName}</div>}
+          {draggedImageId && <div className="drag-overlay">{draggedImageId}</div>}
             <div className='editDagModel_menuLeft'>
               {aspectList.map((item, index) => (
+                
                 <div
                   key={index}
                   className="aspect-item"
                   draggable
                   onDragStart={(e) => handleDragStart(e, item.best_image, item.aspect)} // Zet de id in de drag event
-                  onDragEnd={() => setDraggedImageName("")} // Reset naam bij loslaten
+                  onDragEnd={() => setDraggedImageId("")} // Reset naam bij loslaten
                 >
-                  <img 
-                    src={imageHomeUrl + item.best_image} 
-                    id={item.aspect} 
-                    style={{ width: "clamp(40px, 11vw, 60px)" }}  
-                  />
+                  <div className="image-container">
+                    <img 
+                      src={imageHomeUrl + item.best_image} 
+                      id={item.aspect} 
+                      style={{ width: "clamp(40px, 11vw, 60px)" }}  
+                    />
+                    <span className="image-label">{item.aspect.substring(0, 10)}</span>
+                  </div>
                 </div>
+
               ))}
             </div>
             <div 

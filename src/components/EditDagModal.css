@@ -78,10 +78,25 @@
   pointer-events: none;
 }
 
-.aspect-item {
+.image-container {
+  position: relative; /* Hiermee kan de span zich binnen deze container positioneren */
   display: flex;
-  align-items: center; 
-  justify-content:center /* Plaatst de afbeelding helemaal rechts */
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 9px;;
+}
+
+.image-label {
+  position: absolute;
+  bottom: -14px;
+  left: 45%;
+  transform: translateX(-50%);
+  
+  color: rgb(195, 246, 250);
+  font-size: 0.8em;
+  padding: 0px 3px;
+  border-radius: 3px;
+  white-space: nowrap;
 }
 
 .editDagModel_right{
