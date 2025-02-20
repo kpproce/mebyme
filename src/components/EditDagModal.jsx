@@ -171,24 +171,17 @@ const EditDagModal = (props) => {
   const handleAnnuleer = () => setShow(false);
 
   const handleDragStart = (e, imageName, id) => {
-    // Hier kunnen we alleen de id zetten voor het slepen, geen alert
     e.dataTransfer.setData("imageId", id);
-    e.dataTransfer.setData("imageName", imageName); // Hier slaan we de afbeeldingsnaam op
-
-      // Naam zonder extensie opslaan
-    //setDraggedImageId(imageName.split(".")[0]);
+    e.dataTransfer.setData("imageName", imageName);
     setDraggedImageId(id);
   };
-
-  // Toegevoegd voor mobiel:
+  
   const handleTouchStart = (e, imageName, id) => {
     setDraggedImageId(id);
-    
-    // Sla de gegevens op in dataset, omdat dataTransfer niet werkt op mobiel
     e.target.dataset.imageId = id;
     e.target.dataset.imageName = imageName;
   };
-
+  
   const handleDrop = (e) => {
     e.preventDefault();
     setDraggedImageId("");
@@ -197,9 +190,9 @@ const EditDagModal = (props) => {
     const imgNaam = e.dataTransfer ? e.dataTransfer.getData("imageName") : e.target.dataset.imageName;
     
     console.log(170, imgNaam);
-  
+    
     const exists = dayData.resultData.some(item => item.aspect === id);
-  
+    
     if (exists) {
       const draggedElement = document.getElementById(id);
       if (draggedElement) {
@@ -238,11 +231,10 @@ const EditDagModal = (props) => {
     console.log(214, dayData.resultData);
   };
   
-  // Toegevoegd: Handmatig touch drop afhandelen
   const handleTouchEnd = (e) => {
     const touch = e.changedTouches[0];
     const target = document.elementFromPoint(touch.clientX, touch.clientY);
-    
+  
     if (target && target.classList.contains("editDagModel_right")) {
       handleDrop({
         preventDefault: () => {},
@@ -251,14 +243,14 @@ const EditDagModal = (props) => {
         }
       });
     }
-    
-    setDraggedImageId("");
-  };;
   
-
+    setDraggedImageId("");
+  };
+  
   const handleDragOver = (e) => {
     e.preventDefault(); // Dit zorgt ervoor dat de drop mogelijk is
   };
+  
 
   return (
     <> 
