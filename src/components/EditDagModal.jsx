@@ -289,6 +289,8 @@ const EditDagModal = (props) => {
                   draggable
                   onDragStart={(e) => handleDragStart(e, item.best_image, item.aspect)} // Zet de id in de drag event
                   onDragEnd={() => setDraggedImageId("")} // Reset naam bij loslaten
+                  onTouchStart={(e) => handleTouchStart(e, item.best_image, item.aspect)}
+                  onTouchEnd={handleTouchEnd} 
                 >
                   <div className="image-container">
                     <img 
