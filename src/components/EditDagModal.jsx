@@ -180,13 +180,23 @@ const EditDagModal = (props) => {
     setDraggedImageId(id);
   };
 
+  // Toegevoegd voor mobiel:
+  const handleTouchStart = (e, imageName, id) => {
+    setDraggedImageId(id);
+    
+    // Sla de gegevens op in dataset, omdat dataTransfer niet werkt op mobiel
+    e.target.dataset.imageId = id;
+    e.target.dataset.imageName = imageName;
+  };
 
   const handleDrop = (e) => {
     e.preventDefault();
-    setDraggedImageId(""); // Verwijder de naam na het droppen
-    const id = e.dataTransfer.getData("imageId");
-    const imgNaam = e.dataTransfer.getData("imageName");
-    console.log(170, imgNaam); // Dit bevat de naam van de afbeelding met extensie, zonder pad
+    setDraggedImageId("");
+    
+    const id = e.dataTransfer ? e.dataTransfer.getData("imageId") : e.target.dataset.imageId;
+    const imgNaam = e.dataTransfer ? e.dataTransfer.getData("imageName") : e.target.dataset.imageName;
+    
+    console.log(170, imgNaam);
   
     const exists = dayData.resultData.some(item => item.aspect === id);
   
@@ -214,8 +224,8 @@ const EditDagModal = (props) => {
           ...prevData.resultData,
           {
             ...prevData.resultData[0],
-            id: 0, // id van de waarneming is 0, ofwel er is geen id, de backend maakt dan een nieuwe waarneming en id.
-            aspect: id, // id is id van e image en dat is de naam van het aspect...
+            id: 0,
+            aspect: id,
             imageLink: imgNaam, 
             last_calc_waarde: "2",
             waardeDagdelen: "22222",
@@ -224,9 +234,26 @@ const EditDagModal = (props) => {
         ]
       }));
     }
-
-    console.log(214, resultData)
+  
+    console.log(214, dayData.resultData);
   };
+  
+  // Toegevoegd: Handmatig touch drop afhandelen
+  const handleTouchEnd = (e) => {
+    const touch = e.changedTouches[0];
+    const target = document.elementFromPoint(touch.clientX, touch.clientY);
+    
+    if (target && target.classList.contains("editDagModel_right")) {
+      handleDrop({
+        preventDefault: () => {},
+        dataTransfer: {
+          getData: (key) => e.target.dataset[key]
+        }
+      });
+    }
+    
+    setDraggedImageId("");
+  };;
   
 
   const handleDragOver = (e) => {
