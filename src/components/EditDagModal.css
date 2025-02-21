@@ -33,7 +33,7 @@
   display: flex;
   align-items: center; /* Centreert de span verticaal */
   flex-direction: row;
-  margin-bottom;
+  margin-bottom: 8px;
   border: solid 3px rgb(29, 100, 121) !important;
   width: 100%;
   padding-left: 4px;
@@ -90,8 +90,7 @@
   position: absolute;
   bottom: -14px;
   left: 45%;
-  transform: translateX(-50%);
-  
+  transform: translateX(-50%); 
   color: rgb(195, 246, 250);
   font-size: 0.8em;
   padding: 0px 3px;

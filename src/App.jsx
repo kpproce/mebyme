@@ -8,6 +8,24 @@ import { Container } from "react-bootstrap";
 import "./App.css";
 
 function App() {
+
+  // Sla de originele fetch op
+const originalFetch = window.fetch;
+
+// Overschrijf fetch om extra logging toe te voegen
+window.fetch = async (...args) => {
+  console.log('[Fetch Start]', ...args);
+  try {
+    const response = await originalFetch(...args);
+    console.log('[Fetch Success]', response);
+    return response;
+  } catch (error) {
+    console.error('[XXXXX Fetch Error  XXXXX ]', error);
+    throw error;
+  }
+};
+
+
   const [darkMode, setDarkMode] = useState(true);
   const toggleTheme = () => {
     setDarkMode(!darkMode);

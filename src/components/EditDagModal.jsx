@@ -250,7 +250,6 @@ const EditDagModal = (props) => {
   const handleDragOver = (e) => {
     e.preventDefault(); // Dit zorgt ervoor dat de drop mogelijk is
   };
-  
 
   return (
     <> 
@@ -274,7 +273,7 @@ const EditDagModal = (props) => {
         </Modal.Header>
         <Modal.Body className="noSpaceArround">
           <div className='opmerkingContainer'> 
-            <span> Opm: </span>
+            <span> Opm </span>
             <textarea className='inputOpmerking' value={dagOpmerking}  onChange={(e) => setDagOpmerking(e.target.value)}></textarea>
           </div>  
           <div className='editDagModal_container'>
@@ -309,7 +308,7 @@ const EditDagModal = (props) => {
               onDrop={handleDrop} 
               onDragOver={handleDragOver}
             >
-              {dayData.resultData?.slice(0, 5).map((item, index) => (
+              {dayData.resultData?.slice(0, 10).map((item, index) => (
                 <div className={dagModalContainerClass} key={index}>
                   <Aspect_dagwaarde
                     index={index} // om wijzigingen vanuit child te kunnen bijhouden
