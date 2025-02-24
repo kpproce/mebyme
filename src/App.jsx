@@ -13,7 +13,7 @@ function App() {
 const originalFetch = window.fetch;
 
 // Overschrijf fetch om extra logging toe te voegen
-window.fetch = async (...args) => {
+/* window.fetch = async (...args) => {
   console.log('[Fetch Start]', ...args);
   try {
     const response = await originalFetch(...args);
@@ -23,7 +23,7 @@ window.fetch = async (...args) => {
     console.error('[XXXXX Fetch Error  XXXXX ]', error);
     throw error;
   }
-};
+}; */
 
 
   const [darkMode, setDarkMode] = useState(true);

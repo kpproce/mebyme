@@ -445,7 +445,7 @@ const Slider = (props) => { // the component starts here
     postData.append('endDate', sliderEndDate_asTxt);
     postData.append('wekenTerug', metaWekenTerug());
     
-    postData.append('action', 'get_HGH_period');
+    postData.append('action', 'get_hgh_period');
 
     let requestOptions = {
       method: 'POST',

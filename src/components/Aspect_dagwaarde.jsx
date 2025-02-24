@@ -1,3 +1,6 @@
+// dit component geeft van een specifieke dag 1 aspect weer. 
+// opties: waarde veranderen en verwijderen
+
 import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import "./Aspect_dagwaarde.css";

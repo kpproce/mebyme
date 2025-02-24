@@ -1,4 +1,6 @@
-// dit component verzorgt de weergave van een dag in de kalender
+// dit component 
+// -- verzorgt de weergave van een (1) dag in de kalender, 
+// -- roept Aspect_dagwaarde aan om de waarde te editten
 
 import { React, useState, useEffect, useCallback } from "react";
 import { Modal, Table, Button, Tabs, Tab } from "react-bootstrap";
@@ -131,22 +133,33 @@ const EditDagModal = (props) => {
   }, [dayData]);
 
   const callBack_handleChangeDagWaarde = useCallback((index, last_calc_waarde) => {
-    console.log("53: Wijzig waarde: van index", index);
+    console.log("136: Wijzig waarde: van index", index);
+
+    
+    setDayData((prevData) => {
+      const updatedData = {
+        ...prevData,
+        resultData: prevData.resultData.map((item, i) =>
+          i === index
+            ? {
+                ...item,
+                last_calc_waarde,
+                waardeDagdelen:
+                item.aantalDagdelenBijAutoInvullen === 5
+                  ? String(last_calc_waarde).repeat(5)
+                  : `00${last_calc_waarde}00`,
+              }
+            : item
+        ),
+      };
+    
+      console.log("153 Updated Data:", updatedData);
+      return updatedData;
+    });
   
-    setDayData((prevData) => ({
-      ...prevData,
-      resultData: prevData.resultData.map((item, i) =>
-        i === index 
-          ? { 
-              ...item, 
-              last_calc_waarde, 
-              waardeDagdelen: String(last_calc_waarde).repeat(5) // Vijf keer het getal als string
-            } 
-          : item
-      ),
-    }));
-  
-    console.log("Wijzig last_calc_waarde:", last_calc_waarde, "voor item", index);
+    console.log("152: Wijzig last_calc_waarde:", last_calc_waarde, "voor item", index);
+    console.log(JSON.stringify(dayData))
+    console.log(dayData);
   }, []);
 
   const callBack_handleDeleteRequest = useCallback((index, deleteRequest) => {
@@ -158,7 +171,7 @@ const EditDagModal = (props) => {
       ),
     }), dayData.resultData);
     console.log("Wijzig delete request:", deleteRequest, "voor item", index);
-    console.log ('63:', dayData.resultData)
+    console.log ('164:', dayData.resultData)
   }, [dayData.resultData]);
 
   const handleShow = () => setShow(true);
@@ -189,7 +202,7 @@ const EditDagModal = (props) => {
     const id = e.dataTransfer ? e.dataTransfer.getData("imageId") : e.target.dataset.imageId;
     const imgNaam = e.dataTransfer ? e.dataTransfer.getData("imageName") : e.target.dataset.imageName;
     
-    console.log(170, imgNaam);
+    console.log(195, imgNaam);
     
     const exists = dayData.resultData.some(item => item.aspect === id);
     
@@ -221,14 +234,14 @@ const EditDagModal = (props) => {
             aspect: id,
             imageLink: imgNaam, 
             last_calc_waarde: "2",
-            waardeDagdelen: "22222",
+            //waardeDagdelen: "22222",
             username: props.username
           }
         ]
       }));
     }
   
-    console.log(214, dayData.resultData);
+    console.log(234, dayData.resultData);
   };
   
   const handleTouchEnd = (e) => {

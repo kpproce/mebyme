@@ -52,7 +52,7 @@ const HGH_periode = (props) => {
     postData.append ('username', username);
     postData.append('apikey', apikey);
 
-    postData.append('action', 'get_HGH_periode');
+    postData.append('action', 'get_hgh_period');
 
     let requestOptions = {
       method: 'POST',

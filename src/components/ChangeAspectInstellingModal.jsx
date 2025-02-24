@@ -75,9 +75,16 @@ const  ChangeAspectInstellingModal = ({ username, apikey }) => {
       fetchData();
     }, [username, apikey]);
 
-    const handleChange = (index, checked) => {
+    const handleJaNeeChange = (index, newValue) => {
       const newData = [...aspectenData.aspectenLijst];
-      newData[index].dagdelenInvullen = checked ? "ja" : "nee";
+      newData[index].dagdelenInvullen = newValue;
+      setAspectenData({ ...aspectenData, aspectenLijst: newData });
+    };
+
+    const handleAantalChange = (index, newValue) => {
+      const newData = [...aspectenData.aspectenLijst];
+      console.log(86,newValue)
+      newData[index].aantalDagdelenBijAutoInvullen	 = newValue;
       setAspectenData({ ...aspectenData, aspectenLijst: newData });
     };
 
@@ -97,19 +104,6 @@ const  ChangeAspectInstellingModal = ({ username, apikey }) => {
       setOpslaan(true)
       setClose(true)
     };
-
-
-    /*   const handleSaveAndClose = () => { 
-      handleSave();
-      handleClose(); 
-    }; */
-
-    const handleSelectChange = (aspect, dagdelenInvullen) => {
-      // update_aspect_dagwaardeBerekening_via_API(aspect, dagwaardeBerekening) 
-      
-      // props.callBack_changeSliderVisibility(true);
-    };
-
 
     return (
       <>
@@ -145,6 +139,7 @@ const  ChangeAspectInstellingModal = ({ username, apikey }) => {
                         <th>#</th>
                         <th>Aspect</th>
                         <th>Alle dagdelen invullen?</th>
+                        <th>aantal Bij auto?</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -156,15 +151,29 @@ const  ChangeAspectInstellingModal = ({ username, apikey }) => {
                             <td>
                               <Row className="align-items-center">
                                 <Col xs="auto">
-                                <Form.Select
-                                  value={item.dagdelenInvullen}
-                                  onChange={(e) => handleChange(index, e.target.value)}
-                                >
-                                  <option value="ja">Ja</option>
-                                  <option value="nee_vul_1_in">Nee, auto 1 dagdeel </option>
-                                  <option value="nee_vul_5_in">Nee, auto 5 dagdelen </option>
-                                </Form.Select>
+                                  <Form.Select
+                                    value={item.dagdelenInvullen}
+                                    onChange={(e) => handleJaNeeChange(index, e.target.value)}
+                                  >
+                                    <option value="ja">Ja</option>
+                                    <option value="nee">Nee </option>
+                                  </Form.Select>
                                 </Col>
+                                
+                              </Row>
+                            </td>
+                            <td>
+                              <Row className="align-items-center">
+                                <Col xs="auto">
+                                  <Form.Select
+                                    value={item.aantalDagdelenBijAutoInvullen}
+                                    onChange={(e) => handleAantalChange(index, e.target.value)}
+                                  >
+                                    <option value="1">1 </option>
+                                    <option value="5">5 </option>
+                                  </Form.Select>
+                                </Col>
+                                
                               </Row>
                             </td>
                           </tr>

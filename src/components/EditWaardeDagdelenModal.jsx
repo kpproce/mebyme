@@ -31,7 +31,9 @@ const  EditWaardeDagdelenModal = (props) => {
     
 
     const [waarde, setWaarde] = useState(props.waarde);
-    const [dagdelenInvullen, setDagdelenInvullen] = useState("")
+    const [dagdelenInvullen, setDagdelenInvullen] = useState("--")
+    const [aantalDagdelenBijAutoInvullen, setAantalDagDelenBijAutoInvullen] = useState(0)
+
     const [aspect_type, setAspect_type] = useState("welzijn") // standaard 
     const [opmerking, setOpmerking] = useState(props.opmerking);
 
@@ -144,10 +146,14 @@ const  EditWaardeDagdelenModal = (props) => {
             setWaarde(res.data.waarde)
             setOpmerking(res.data.opmerking)
             setAspect_type(res.data.aspect_type)
-            console.log('149: waardeDagelen ophalen', res.data.waardeDagdelen)
+            console.log('149: waardeDagdelen ophalen')
+            console.log(res.data)
+            
             setDagdelen(createUpdatedDagdelen(res.data.waardeDagdelen || "00000"));
             setDagdelenInvullen(res.data.dagdelenInvullen)
-            console.log('152: setDagdelenInvullen : ', res.data.dagdelenInvullen)
+            setAantalDagDelenBijAutoInvullen(res.data.aantalDagdelenBijAutoInvullen)
+            console.log('152: setDagdelenInvullen : ', res.data.dagdelenInvullen 
+              + ' aantalDagdelenBijAutoInvullen: ', res.data.aantalDagdelenBijAutoInvullen + ' -- ' + aantalDagdelenBijAutoInvullen)
             console.log('153: createUpdatedDagdelen: ', createUpdatedDagdelen(res.data.waardeDagdelen || "00000"))
             
           })
@@ -166,9 +172,12 @@ const  EditWaardeDagdelenModal = (props) => {
       }));
     }, [icons, aspect_type]);
 
+    useEffect(() => {
+      console.log(176, "Nieuwe waarde:", waarde);
+    }, [waarde]); // Wordt uitgevoerd als 'waarde' verandert
 
     const getIcon1 = (aspect_type, waarde, id) => {
-        if (icons[aspect_type] && icons[aspect_type][waarde]) {
+      if (icons[aspect_type] && icons[aspect_type][waarde]) {
         return icons[aspect_type][waarde];
       } else {
         return  <span className="fg_color_0">X</span>
@@ -204,24 +213,25 @@ const  EditWaardeDagdelenModal = (props) => {
       setDagdelen(prevDagdelen => 
         prevDagdelen.map((dagdeel, i) => i === selectedDagdeelIndex ? { ...dagdeel, waarde: newValue } : dagdeel)
       );
-
-
     };
 
     const callBack_handleChangeWaarde = useCallback((nieuweWaarde) => {
       console.log(214, dagdelenInvullen.toLowerCase())
-      console.log(215, '-'+ String(nieuweWaarde) + '-')
-      if (dagdelenInvullen.toLowerCase().includes("nee") && dagdelenInvullen.includes("1")) {
-        setDagdelen(createUpdatedDagdelen('00'+ String(nieuweWaarde) + '00'))   
-        console.log(218, '1 dagdeel' )      
-      } else {
-        setDagdelen(createUpdatedDagdelen(String(nieuweWaarde).repeat(5)))
-        console.log(221, '5 dagdelen' )    
+      console.log(215, '-'+ String(nieuweWaarde) + '-' + ' dagdelenInvullen: ' + dagdelenInvullen + ', aantalDagdelenBijAutoInvullen: ' + aantalDagdelenBijAutoInvullen)
+      if (dagdelenInvullen.toLowerCase().includes("nee")) {
+        setWaarde(nieuweWaarde)
+        if (aantalDagdelenBijAutoInvullen==1) {
+          setDagdelen(createUpdatedDagdelen('00'+ String(nieuweWaarde) + '00'))   
+          console.log(218, '1 dagdeel' )      
+        } else {
+          setDagdelen(createUpdatedDagdelen(String(nieuweWaarde).repeat(5)))
+          console.log(221, '5 dagdelen' )
+        }    
       }
     },[dagdelenInvullen])
 
     useEffect(() => {
-      console.log('Dagdelen bijgewerkt:', createWaardeDagdelenString());
+      // console.log('Dagdelen bijgewerkt:', createWaardeDagdelenString());
       // werk kleur van  
 
     }, [dagdelen]);
@@ -230,9 +240,7 @@ const  EditWaardeDagdelenModal = (props) => {
     function getValueDagdeel(dagdeel) {//value={options.find(option => option.value === dagdeel.waarde)} // Vind het juiste object
       let value =  options.find(option => String(option.value) === String(dagdeel.waarde)) || { value: '', label: 'Geen keuze' }
       //console.log('228')
-
       //console.log(dagdeel)
-
       return value
     }
     
@@ -244,7 +252,7 @@ const  EditWaardeDagdelenModal = (props) => {
       <>     
         <GetSliderButton 
           icon              = {getIcon1(aspect_type, waarde, 1 )} // Dynamically passing the icon
-          waarde            = {waarde} 
+          waarde            = {waarde || 0} 
           size              = {'x-large'} 
           callBack          = {callBack_handleShow}
           test              = {aspect_type + ' ' +  waarde}
@@ -276,8 +284,7 @@ const  EditWaardeDagdelenModal = (props) => {
               <span className='space'></span>  
               {createWaardeDagdelenString(dagdelen) }
             </p> 
-          
-          
+
             <table size="sm" className='full-width-table'>
               <thead>
                 <tr key={'waardeDagdeel_edit_row_header'}>
@@ -330,7 +337,7 @@ const  EditWaardeDagdelenModal = (props) => {
             {/* het onderste deel met 1 klik alle 5 de dagwaardes vullen. */}
 
           <div className="x-small"> 
-            Dagdelen Invullen: {dagdelenInvullen}
+            Dagdelen Invullen: {dagdelenInvullen} aantal: {aantalDagdelenBijAutoInvullen}
           </div>
           <br/>
           

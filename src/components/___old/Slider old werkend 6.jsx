@@ -163,7 +163,7 @@ const Slider = (props) => {
     postData.append('apikey', apikey);
     postData.append('startDate', sliderStartDate_asTxt);
     postData.append('endDate', sliderEndDate_asTxt);
-    postData.append('action', 'get_HGH_periode');
+    postData.append('action', 'get_hgh_periode');
 
     let requestOptions = {
       method: 'POST',
