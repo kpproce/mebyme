@@ -4,7 +4,7 @@ import { HashRouter } from "react-router-dom"; // Voeg HashRouter toe
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Container } from "react-bootstrap";
-
+import WeatherHistory from "./WeatherHistory.jsx"; // Nieuw toegevoegd feb 2025
 import "./App.css";
 
 function App() {

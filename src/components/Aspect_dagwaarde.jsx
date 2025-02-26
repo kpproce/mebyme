@@ -1,5 +1,6 @@
 // dit component geeft van een specifieke dag 1 aspect weer. 
 // opties: waarde veranderen en verwijderen
+// wordt onder andere aangeroepen vanuit EditDagModal
 
 import { useState, useEffect } from "react";
 import PropTypes from "prop-types";

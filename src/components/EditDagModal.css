@@ -29,6 +29,13 @@
   margin: 0;
 }
 
+.weatherInfo {
+  background-color: #1c1b1b;
+  width: 3rem;
+  margin-left: 1rem;
+  font-size: x-small;
+}
+
 .opmerkingContainer {
   display: flex;
   align-items: center; /* Centreert de span verticaal */

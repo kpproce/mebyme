@@ -8,6 +8,7 @@ import { basic_API_url } from "./global_const.js";
 import Aspect_dagwaarde from "./Aspect_dagwaarde.jsx";
 import propTypes from "prop-types";
 import { Check, X } from "lucide-react";
+import WeerOpDag from './WeerOpDag.jsx';
 import "./EditDagModal.css";
 
 const EditDagModal = (props) => {
@@ -269,6 +270,7 @@ const EditDagModal = (props) => {
       <Button className="transparent-btn" variant="primary" onClick={handleShow}>
         {new Date(props.datum).getDate()}
       </Button>
+    
       <Modal
         contentClassName="modalBody"
         show={show}
@@ -277,7 +279,17 @@ const EditDagModal = (props) => {
         backdrop={false}
       >
         <Modal.Header className="d-flex justify-content-between">
-          <Modal.Title>{props.datum || "N/A"}</Modal.Title>
+          <Modal.Title>
+            {props.datum || "N/A"}
+            <span className = "weatherInfo">
+              <WeerOpDag
+                datum = {props.datum}
+              />
+            </span>
+          </Modal.Title>
+          
+
+
          <span className = "buttonRight">
             <Button  variant="primary" onClick={handleAnnuleer} > <X size={24} color="red" /> </Button>
             <Button  variant="primary" onClick={handleOpslaanEnSluit} > <Check size={24} color="lightgreen" /> </Button>
