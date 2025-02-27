@@ -33,7 +33,7 @@
   background-color: #1c1b1b;
   width: 3rem;
   margin-left: 1rem;
-  font-size: x-small;
+  font-size: small;
 }
 
 .opmerkingContainer {
@@ -46,6 +46,12 @@
   padding-left: 4px;
 }
 
+.dagdelenEdit_tabelStyle {
+  width: 100%;
+  border: solid 3px lightblue;
+  color: rgba(0, 0, 0, 0.337);
+  font-size: small
+}
 
 .inputOpmerking {
   margin-left: 4px;

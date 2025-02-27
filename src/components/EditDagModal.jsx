@@ -343,6 +343,7 @@ const EditDagModal = (props) => {
                     aspect={item.aspect}
                     aspect_type={item.aspect_type}
                     dagWaarde={item.last_calc_waarde}
+                    dagdeelWaardes={item.waardeDagdelen}
                     callBack_handleChangeDagWaarde={callBack_handleChangeDagWaarde}
                     callBack_handleDeleteRequest={callBack_handleDeleteRequest}
                   />

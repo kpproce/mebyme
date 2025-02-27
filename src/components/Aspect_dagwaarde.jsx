@@ -7,6 +7,7 @@ import PropTypes from "prop-types";
 import "./Aspect_dagwaarde.css";
 import { FaTrash} from 'react-icons/fa';
 import { FaTimes, FaRegTimesCircle } from "react-icons/fa";
+import DagdelenEdit from './DagdelenEdit.jsx';
 
 const Aspect_dagwaarde = (props) => {
   // const [waarde, setWaarde] = useState(props.dagWaarde); // Dynamische waarde
@@ -96,7 +97,10 @@ const Aspect_dagwaarde = (props) => {
                 }}
                 style={{marginTop:"20px"}} 
               /> 
-            : <img src={props.icon} alt="icon"/>   
+            : <>      
+                <img src={props.icon} alt="icon"/>
+                <DagdelenEdit dagdeelWaardes = {props.dagdeelWaardes}/>
+              </>   
           }
         </div>
           

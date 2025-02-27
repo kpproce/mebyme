@@ -218,7 +218,7 @@ const  EditWaardeDagdelenModal = (props) => {
     const callBack_handleChangeWaarde = useCallback((nieuweWaarde) => {
       console.log(214, dagdelenInvullen.toLowerCase())
       console.log(215, '-'+ String(nieuweWaarde) + '-' + ' dagdelenInvullen: ' + dagdelenInvullen + ', aantalDagdelenBijAutoInvullen: ' + aantalDagdelenBijAutoInvullen)
-      if (dagdelenInvullen.toLowerCase().includes("nee")) {
+      if (dagdelenInvullen.toLowerCase().includes("ja")) {
         setWaarde(nieuweWaarde)
         if (aantalDagdelenBijAutoInvullen==1) {
           setDagdelen(createUpdatedDagdelen('00'+ String(nieuweWaarde) + '00'))   
