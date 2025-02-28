@@ -186,12 +186,12 @@ const  EditWaardeDagdelenModal = (props) => {
 
     const handleClose = () => { 
       slaop()
-      props.callBack_set_hgh_details() 
+      props.callBack_resetDataToRender() 
       setShow(false)
     }
     
     const handleAnnuleer = () => { 
-      props.callBack_set_hgh_details()
+      props.callBack_resetDataToRender()
       // console.log('66: waarde voor..: ' + waarde)
       // setWaarde(oldWaarde)
       // setOpmerking(oldOpmerking)
@@ -218,7 +218,7 @@ const  EditWaardeDagdelenModal = (props) => {
     const callBack_handleChangeWaarde = useCallback((nieuweWaarde) => {
       console.log(214, dagdelenInvullen.toLowerCase())
       console.log(215, '-'+ String(nieuweWaarde) + '-' + ' dagdelenInvullen: ' + dagdelenInvullen + ', aantalDagdelenBijAutoInvullen: ' + aantalDagdelenBijAutoInvullen)
-      if (dagdelenInvullen.toLowerCase().includes("ja")) {
+        
         setWaarde(nieuweWaarde)
         if (aantalDagdelenBijAutoInvullen==1) {
           setDagdelen(createUpdatedDagdelen('00'+ String(nieuweWaarde) + '00'))   
@@ -227,8 +227,7 @@ const  EditWaardeDagdelenModal = (props) => {
           setDagdelen(createUpdatedDagdelen(String(nieuweWaarde).repeat(5)))
           console.log(221, '5 dagdelen' )
         }    
-      }
-    },[dagdelenInvullen])
+    },[aantalDagdelenBijAutoInvullen, dagdelenInvullen])
 
     useEffect(() => {
       // console.log('Dagdelen bijgewerkt:', createWaardeDagdelenString());
@@ -387,8 +386,7 @@ const  EditWaardeDagdelenModal = (props) => {
   }
 
   EditWaardeDagdelenModal.propTypes = {
-    //callBackWaarde: propTypes.number.isRequired
-    callBack_set_hgh_details: propTypes.func,    
+    callBack_resetDataToRender: propTypes.func,    
     username              : propTypes.string, 
     apikey 	              : propTypes.string, 
     aspect                : propTypes.string, 

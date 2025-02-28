@@ -509,7 +509,7 @@ const Slider = (props) => { // the component starts here
     };
   }, []);
 
-  const callBack_set_hgh_details  = useCallback(() => {
+  const callBack_resetDataToRender  = useCallback(() => {
       setHasToReloadData(true) 
   },[])
 
@@ -577,16 +577,16 @@ const Slider = (props) => { // the component starts here
       <div> width: {width} height: {height} period: {period} </div>
        {metaWeek.length>0 &&  (
           <SliderMonthsColored 
-            username                 = { username }
-            apikey                   = { apikey }           
-            metaWeek                 = { metaWeek } 
-            aspect                   = { 'benauwd' }          // het aspect waarop de kleuren zijn gebaseerd in de eerste rij
-            hghAspecten              = { hghAspecten }
-            aspect_meta_bron         = { aspect_meta_bron?aspect_meta_bron:''} // het aspect waarop de letter in 2e rij is gebaseerd
-            aspect_meta_symbool      = { aspect_meta_symbool?aspect_meta_symbool:''} // het aspect waarop de letter in 2e rij is gebaseerd
-            callBack_changePeriod    = { callBack_changePeriod }
-            callBack_set_hgh_details = { callBack_set_hgh_details }
-            fetchURL                 = { fetchURL }
+            username                   = { username }
+            apikey                     = { apikey }           
+            metaWeek                   = { metaWeek } 
+            aspect                     = { 'benauwd' }          // het aspect waarop de kleuren zijn gebaseerd in de eerste rij
+            hghAspecten                = { hghAspecten }
+            aspect_meta_bron           = { aspect_meta_bron?aspect_meta_bron:''} // het aspect waarop de letter in 2e rij is gebaseerd
+            aspect_meta_symbool        = { aspect_meta_symbool?aspect_meta_symbool:''} // het aspect waarop de letter in 2e rij is gebaseerd
+            callBack_changePeriod      = { callBack_changePeriod }
+            callBack_resetDataToRender = { callBack_resetDataToRender }
+            fetchURL                   = { fetchURL }
           />
         )}
  
@@ -662,7 +662,7 @@ const Slider = (props) => { // the component starts here
                     aspect                   = { "opmerking" }
                     opmerking                = { "" } 
                     fetchURL                 = { fetchURL }
-                    callBack_set_hgh_details = { callBack_set_hgh_details}
+                    callBack_resetDataToRender = { callBack_resetDataToRender}
                   />
                 </div>               
               </div>
@@ -826,9 +826,9 @@ const Slider = (props) => { // the component starts here
                                   apikey                    = { apikey }                      
                                   datum                     = { dagData.datum  } 
                                   aspect                    = { dagData.aspect }
-                                  waarde                    = { dagData.waarde }
+                                  waarde                    = { dagData.waarde } // nodig voor weergave voordat je erop hebt geklikt om modal te openen. 
                                   opmerking                 = { dagData.opmerking }
-                                  callBack_set_hgh_details  = { callBack_set_hgh_details }
+                                  callBack_resetDataToRender  = { callBack_resetDataToRender }
                                 />
                                 </>                              
                               : 
