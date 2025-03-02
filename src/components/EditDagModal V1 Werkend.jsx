@@ -44,7 +44,7 @@ const EditDagModal = (props) => {
 
   const handleShow = () => setShow(true);
   const handleClose = () => {
-    props.callBack_set_hgh_details();
+    props.callBack_resetDataToRender();
     setShow(false);
   };
   const handleAnnuleer = () => setShow(false);
@@ -139,7 +139,7 @@ EditDagModal.propTypes = {
   username: propTypes.string,
   apikey: propTypes.string,
   datum: propTypes.string,
-  callBack_set_hgh_details: propTypes.func,
+  callBack_resetDataToRender: propTypes.func,
 };
 
 export default EditDagModal;

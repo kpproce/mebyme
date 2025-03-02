@@ -66,7 +66,7 @@ const  EditOpmerkingModal = (props) => {
     const handleSaveAndClose = () => { setShow(true)
       update_or_create_opmerking_via_API(opmerking)
       console.log ('51: '+ opmerking + ' aangepast')
-      props.callBack_set_hgh_details()
+      props.callBack_resetDataToRender()
       setShow(false); 
     }
 
@@ -146,7 +146,7 @@ const  EditOpmerkingModal = (props) => {
 
   EditOpmerkingModal.propTypes = {
     //callBackOpmerking: propTypes.number.isRequired
-    callBack_set_hgh_details: propTypes.func,    
+    callBack_resetDataToRender: propTypes.func,    
     username       : propTypes.string, 
     apikey 	       : propTypes.string, 
     aspect         : propTypes.string, 

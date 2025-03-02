@@ -60,14 +60,14 @@ const  SliderMonthsSettings = (props) => {
       // if (!opmerking.localeCompare(props.opmerking)==0) {
     
       slaop()
-      //props.callBack_set_hgh_details() 
+      //props.callBack_resetDataToRender() 
       setShow(false);
        
       //props.callBackWaarde(2); // de naam van de geuploade file
     }
     
     const handleAnnuleer = () => { 
-      // props.callBack_set_hgh_details()
+      // props.callBack_resetDataToRender()
       // console.log('66: waarde voor..: ' + waarde)
       // setWaarde(oldWaarde)
       // setOpmerking(oldOpmerking)

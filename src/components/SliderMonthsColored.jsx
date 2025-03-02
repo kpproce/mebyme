@@ -149,14 +149,14 @@ const handle_selected_aspect_meta_symbool = (event) => {
   const newValue = event.target.value;
   setSelected_aspect_meta_symbool(newValue); // Update state with the selected option
   set_meta_symbool_API(newValue); // Call the API function with the new value
-  props.callBack_set_hgh_details()
+  props.callBack_resetDataToRender()
 };
 
 const handle_selected_aspect_meta_bron = (event) => {
   const newValue = event.target.value;
   setSelected_aspect_meta_bron(newValue); // Update state with the selected option
   set_meta_bron_API(newValue); // Call the API function with the new value
-  props.callBack_set_hgh_details()
+  props.callBack_resetDataToRender()
 };
 
 const handle_weekSliderChange_averagingMethod = (e) => {
@@ -380,7 +380,7 @@ SliderMonthsColored.propTypes = {
   hghAspecten              : PropTypes.array,
   fetchURL                 : PropTypes.string,
   callBack_changePeriod    : PropTypes.func.isRequired,
-  callBack_set_hgh_details : PropTypes.func.isRequired
+  callBack_resetDataToRender : PropTypes.func.isRequired
 }  
 
 export default SliderMonthsColored;

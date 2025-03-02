@@ -1,1 +1,1 @@
-export const version =  "meByMe 2.5.1 kalender edit dagdelen versie simpel 1"
+export const version =  "meByMe 2.5.2 kalender edit dagdelen versie simpel fix-2"

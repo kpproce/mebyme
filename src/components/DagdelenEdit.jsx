@@ -1,42 +1,26 @@
-// gecreeerd door chatGPT 28 feb 2025
-// toont de 5 dagdelen in de volledige breedte van de parent.
-// in dagdelenString bijv: "02410"
 import React, { useState, useEffect } from "react";
 import propTypes from "prop-types";
 
 const DagdelenEdit = ({ dagdeelWaardes }) => {
   const [waarden, setWaarden] = useState(dagdeelWaardes.split("").map(Number));
-  const [actieveIndex, setActieveIndex] = useState(null);
-  const [tijdelijkeWaarde, setTijdelijkeWaarde] = useState(null);
+  const [tijdelijkeWaarden, setTijdelijkeWaarden] = useState([...waarden]);
+  const [actief, setActief] = useState(false);
 
   useEffect(() => {
     setWaarden(dagdeelWaardes.split("").map(Number));
+    setTijdelijkeWaarden(dagdeelWaardes.split("").map(Number));
   }, [dagdeelWaardes]);
 
   const namen = ["Nacht", "Opstaan", "Ochtend", "Middag", "Avond"];
 
-  const startBewerken = (index) => {
-    setActieveIndex(index);
-    setTijdelijkeWaarde(waarden[index]); // Startwaarde vastzetten
+  const bevestigWijzigingen = () => {
+    setWaarden([...tijdelijkeWaarden]);
+    setActief(false);
   };
 
-  const bevestigWijziging = () => {
-    const nieuweWaarden = [...waarden];
-    nieuweWaarden[actieveIndex] = tijdelijkeWaarde;
-    setWaarden(nieuweWaarden);
-    setActieveIndex(null);
-  };
-
-  const annuleerWijziging = () => {
-    setTijdelijkeWaarde(null);
-    setActieveIndex(null);
-  };
-
-  const switchIndex = (nieuweIndex) => {
-    if (nieuweIndex >= 0 && nieuweIndex <= 4) {
-      bevestigWijziging(); // Eerst opslaan voordat we wisselen
-      startBewerken(nieuweIndex);
-    }
+  const annuleerWijzigingen = () => {
+    setTijdelijkeWaarden([...waarden]);
+    setActief(false);
   };
 
   return (
@@ -44,13 +28,15 @@ const DagdelenEdit = ({ dagdeelWaardes }) => {
       <table className="dagdelenEdit_tabelStyle">
         <thead>
           <tr>
-            <th>N</th><th>O</th><th>M</th><th>M</th><th>N</th>
+            {namen.map((naam, index) => (
+              <th key={index}>{naam.charAt(0)}</th>
+            ))}
           </tr>
         </thead>
         <tbody>
           <tr>
             {waarden.map((waarde, index) => (
-              <td key={index} onClick={() => startBewerken(index)}>
+              <td key={index} onClick={() => setActief(true)}>
                 {waarde}
               </td>
             ))}
@@ -58,7 +44,7 @@ const DagdelenEdit = ({ dagdeelWaardes }) => {
         </tbody>
       </table>
 
-      {actieveIndex !== null && (
+      {actief && (
         <div
           style={{
             position: "fixed",
@@ -70,36 +56,39 @@ const DagdelenEdit = ({ dagdeelWaardes }) => {
             border: "1px solid #ccc",
             zIndex: 1000,
             boxShadow: "0 4px 10px rgba(0,0,0,0.2)",
-            width: "300px",
+            width: "350px",
             textAlign: "center",
           }}
           onClick={(e) => e.stopPropagation()}
         >
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-            <button onClick={() => switchIndex(actieveIndex - 1)} disabled={actieveIndex === 0}>&lt;</button>
-            <h4>{namen[actieveIndex]} ({waarden[actieveIndex]})</h4>
-            <button onClick={() => switchIndex(actieveIndex + 1)} disabled={actieveIndex === 4}>&gt;</button>
-          </div>
-
-          <input
-            type="range"
-            min="0"
-            max="5"
-            value={tijdelijkeWaarde}
-            onChange={(e) => setTijdelijkeWaarde(Number(e.target.value))}
-          />
-          <p style={{ color: 'black', fontSize: "x-large"  }}><strong>{tijdelijkeWaarde}</strong></p>
+          <h4>Pas waardes aan</h4>
+          {namen.map((naam, index) => (
+            <div key={index} style={{ marginBottom: "10px" }}>
+              <label>{naam} ({tijdelijkeWaarden[index]})</label>
+              <input
+                type="range"
+                min="0"
+                max="5"
+                value={tijdelijkeWaarden[index]}
+                onChange={(e) => {
+                  const nieuweWaarden = [...tijdelijkeWaarden];
+                  nieuweWaarden[index] = Number(e.target.value);
+                  setTijdelijkeWaarden(nieuweWaarden);
+                }}
+              />
+            </div>
+          ))}
 
           <div style={{ display: "flex", justifyContent: "center", gap: "10px", marginTop: "10px" }}>
-            <button onClick={bevestigWijziging} style={{ background: "green", color: "white", padding: "5px 10px" }}>✔</button>
-            <button onClick={annuleerWijziging} style={{ background: "red", color: "white", padding: "5px 10px" }}>❌</button>
+            <button onClick={bevestigWijzigingen} style={{ background: "green", color: "white", padding: "5px 10px" }}>✔</button>
+            <button onClick={annuleerWijzigingen} style={{ background: "red", color: "white", padding: "5px 10px" }}>❌</button>
           </div>
         </div>
       )}
 
-      {actieveIndex !== null && (
+      {actief && (
         <div
-          onClick={annuleerWijziging}
+          onClick={annuleerWijzigingen}
           style={{
             position: "fixed",
             top: 0,
