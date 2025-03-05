@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
 import propTypes from "prop-types";
 import "./DagdelenEdit.css";
-import { callback } from "chart.js/helpers";
 
-const DagdelenEdit = ({ dagdeelWaardes, aspect, callbackGewijzigdeWaardes }) => {
+const DagdelenEdit = ({ dagdeelWaardes }) => {
   const [waarden, setWaarden] = useState(dagdeelWaardes.split("").map(Number));
   const [tijdelijkeWaarden, setTijdelijkeWaarden] = useState([...waarden]);
   const [actief, setActief] = useState(false);
@@ -16,11 +15,7 @@ const DagdelenEdit = ({ dagdeelWaardes, aspect, callbackGewijzigdeWaardes }) => 
   const namen = ["Nacht", "Opstaan", "Ochtend", "Middag", "Avond"];
 
   const bevestigWijzigingen = () => {
-    setWaarden(prevWaarden => {
-      const nieuweWaarden = [...tijdelijkeWaarden] 
-      callbackGewijzigdeWaardes(Object.values(nieuweWaarden).join("")) // Callback aanroepen met de nieuwste waardes als een string (is een object) 
-      return nieuweWaarden
-    });
+    setWaarden([...tijdelijkeWaarden]);
     setActief(false);
   };
 
@@ -28,7 +23,6 @@ const DagdelenEdit = ({ dagdeelWaardes, aspect, callbackGewijzigdeWaardes }) => 
     setTijdelijkeWaarden([...waarden]);
     setActief(false);
   };
-  
 
   return (
     <>
@@ -53,31 +47,26 @@ const DagdelenEdit = ({ dagdeelWaardes, aspect, callbackGewijzigdeWaardes }) => 
 
       {actief && (
         <div className="dagdelenEdit_modal" onClick={(e) => e.stopPropagation()}>
-          <h4>wijzig {aspect} {waarden} </h4>
-           <table>
-            <tbody>
-              {namen.map((naam, index) => (
-                <tr key={index}>
-                  <td>{naam}</td>
-                  <td>
-                    <input
-                      type="range"
-                      min="0"
-                      max="5"
-                      value={tijdelijkeWaarden[index]}
-                      onChange={(e) => {
-                        const nieuweWaarden = [...tijdelijkeWaarden];
-                        nieuweWaarden[index] = Number(e.target.value);
-                        setTijdelijkeWaarden(nieuweWaarden);
-                      }}
-                    />
-                  </td>
-                  <td>({tijdelijkeWaarden[index]})</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-  
+          <h4>Pas waardes aan</h4>
+          {namen.map((naam, index) => (
+            <div key={index} className="dagdelenEdit_sliderContainer">
+              <label>
+                {naam} ({tijdelijkeWaarden[index]})
+              </label>
+              <input
+                type="range"
+                min="0"
+                max="5"
+                value={tijdelijkeWaarden[index]}
+                onChange={(e) => {
+                  const nieuweWaarden = [...tijdelijkeWaarden];
+                  nieuweWaarden[index] = Number(e.target.value);
+                  setTijdelijkeWaarden(nieuweWaarden);
+                }}
+              />
+            </div>
+          ))}
+
           <div className="dagdelenEdit_buttons">
             <button onClick={bevestigWijzigingen} className="dagdelenEdit_button dagdelenEdit_button--confirm">
               ✔

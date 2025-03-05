@@ -2,7 +2,7 @@
 // opties: waarde veranderen en verwijderen
 // wordt onder andere aangeroepen vanuit EditDagModal
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import PropTypes from "prop-types";
 import "./Aspect_dagwaarde.css";
 import { FaTrash} from 'react-icons/fa';
@@ -63,6 +63,14 @@ const Aspect_dagwaarde = (props) => {
     }
   };
 
+
+  const callbackGewijzigdeWaardes = useCallback((updated_dagdeelWaardes) => {
+    // sla op in de database, krijg de nieuwe dagwaarde terug en geef die terug aan de parent.   
+    // alert('callbackGewijzigdeWaardes aangeroepen: ' + updated_dagdeelWaardes)
+
+    props.callBack_handleChangeDagWaardes(props.index, String(updated_dagdeelWaardes))
+  })
+
   return (
     <div className="dagAsp_contMain">
      
@@ -83,7 +91,6 @@ const Aspect_dagwaarde = (props) => {
           <div className="dagAsp_cont_text">  
             {props.aspect} 
           </div>
-        
         </div>    
         {/* <div className="dagAsp_cont_text">{props.dagWaarde} </div> */}
         <div className="dagAsp_cont_icon">
@@ -99,7 +106,11 @@ const Aspect_dagwaarde = (props) => {
               /> 
             : <>    
                 <img src={props.icon} alt="icon"/>
-                <DagdelenEdit dagdeelWaardes={props.dagdeelWaardes || "22222"} />
+                <DagdelenEdit 
+                  dagdeelWaardes = {props.dagdeelWaardes || "22222"} 
+                  aspect = {props.aspect} 
+                  callbackGewijzigdeWaardes = {callbackGewijzigdeWaardes}
+                />
               </>   
           }
         </div>
@@ -118,7 +129,8 @@ const Aspect_dagwaarde = (props) => {
               }}
               onClick={() => {
                 //setDagWaarde(5 - waardeIndex)
-                props.callBack_handleChangeDagWaarde(props.index, (5-waardeIndex))
+                //props.callBack_handleChangeDagWaarde(props.index, (5-waardeIndex))
+                props.callBack_handleChangeDagWaardes(props.index, (String(5 - waardeIndex).repeat(5)))
               }}
             >
               {maxWaarde - waardeIndex} {/* Waarde weergeven in de slider rechts om de nieuwe waarde voor de gehele dag te kiezen*/}
@@ -137,6 +149,7 @@ Aspect_dagwaarde.propTypes = {
   aspect_type: PropTypes.string.isRequired, // Dynamische aspect type
   aspect : PropTypes.string.isRequired, // Dynamische aspect
   callBack_handleChangeDagWaarde: PropTypes.func.isRequired, // Callback functie
+  callBack_handleChangeDagWaardes: PropTypes.func.isRequired, // Callback functie
   callBack_handleDeleteRequest: PropTypes.func.isRequired, // Callback functie
 
 };

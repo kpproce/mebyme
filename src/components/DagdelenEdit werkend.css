@@ -1,0 +1,66 @@
+.dagdelenEdit_tabelStyle {
+  border-collapse: collapse;
+  width: auto; /* Voorkomt dat de tabel breder wordt dan nodig */
+  margin: auto;
+  text-align: center;
+  table-layout: fixed; /* Zorgt voor vaste kolombreedtes */
+}
+
+.dagdelenEdit_tabelStyle th,
+.dagdelenEdit_tabelStyle td {
+  border: 1px solid #ccc;
+  padding: 5px; /* Minder padding om de tabel compacter te maken */
+  max-width: 50px;
+  overflow: hidden;
+  text-overflow: ellipsis; /* Voorkomt dat tekst buiten de cellen valt */
+  white-space: nowrap;
+}
+.dagdelenEdit_modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  padding: 20px;
+  border: 1px solid #ccc;
+  z-index: 1000;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  width: 350px;
+  text-align: center;
+}
+
+.dagdelenEdit_sliderContainer {
+  margin-bottom: 10px;
+}
+
+.dagdelenEdit_buttons {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.dagdelenEdit_button {
+  padding: 5px 10px;
+  border: none;
+  color: white;
+  cursor: pointer;
+}
+
+.dagdelenEdit_button--confirm {
+  background: green;
+}
+
+.dagdelenEdit_button--cancel {
+  background: red;
+}
+
+.dagdelenEdit_overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+}

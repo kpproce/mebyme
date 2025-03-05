@@ -136,7 +136,7 @@ const EditDagModal = (props) => {
   const callBack_handleChangeDagWaarde = useCallback((index, last_calc_waarde) => {
     console.log("136: Wijzig waarde: van index", index);
 
-    
+
     setDayData((prevData) => {
       const updatedData = {
         ...prevData,
@@ -161,6 +161,43 @@ const EditDagModal = (props) => {
     console.log("152: Wijzig last_calc_waarde:", last_calc_waarde, "voor item", index);
     console.log(JSON.stringify(dayData))
     console.log(dayData);
+  }, []);
+
+  const calculate_waarde_from_waardeDagdelen_userAspect = async (waardeDagdelen) => {
+    const postData = new FormData();
+    const fetchURL = basic_API_url() + "php/mebyme.php";
+
+    postData.append("username", props.username);
+    postData.append("aspect", props.aspect);
+    postData.append("waardeDagdelen", waardeDagdelen);
+    postData.append("action", "calculate_waarde_from_waardeDagdelen_userAspect");
+
+
+    const requestOptions = { method: "POST", body: postData };
+    try {
+      const res = await fetch(fetchURL, requestOptions);
+      if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
+      return (await res.json()).dagWaarde;
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      throw error;
+    }
+  };
+
+  const callBack_handleChangeDagWaardes = useCallback(async (index, dagdeelWaardes) => {
+    try {
+      const last_calc_waarde = await calculate_waarde_from_waardeDagdelen_userAspect(dagdeelWaardes);
+      setDayData(prevData => ({
+        ...prevData,
+        resultData: prevData.resultData.map((item, i) =>
+          i === index
+            ? { ...item, last_calc_waarde, waardeDagdelen: dagdeelWaardes }
+            : item
+        )
+      }));
+    } catch (error) {
+      console.error("Error fetching calculated value:", error);
+    }
   }, []);
 
   const callBack_handleDeleteRequest = useCallback((index, deleteRequest) => {
@@ -235,7 +272,7 @@ const EditDagModal = (props) => {
             aspect: id,
             imageLink: imgNaam, 
             last_calc_waarde: "2",
-            //waardeDagdelen: "22222",
+            waardeDagdelen: "22222",
             username: props.username
           }
         ]
@@ -288,8 +325,6 @@ const EditDagModal = (props) => {
             </span>
           </Modal.Title>
           
-
-
          <span className = "buttonRight">
             <Button  variant="primary" onClick={handleAnnuleer} > <X size={24} color="red" /> </Button>
             <Button  variant="primary" onClick={handleOpslaanEnSluit} > <Check size={24} color="lightgreen" /> </Button>
@@ -333,18 +368,21 @@ const EditDagModal = (props) => {
               onDrop={handleDrop} 
               onDragOver={handleDragOver}
             >
+
+              
               {dayData.resultData?.slice(0, 10).map((item, index) => (
                 <div className={dagModalContainerClass} key={index}>
                   <Aspect_dagwaarde
-                    index={index} // om wijzigingen vanuit child te kunnen bijhouden
-                    icon={imageHomeUrl + item.imageLink}
-                    imageLink={imageHomeUrl + item.imageLink}
-                    deleteRequest={false} // onthoud of de gebruiker deze wil deletend
-                    aspect={item.aspect}
-                    aspect_type={item.aspect_type}
-                    dagWaarde={item.last_calc_waarde}
-                    dagdeelWaardes={item.waardeDagdelen}
+                    index          = {index} // om wijzigingen vanuit child te kunnen bijhouden
+                    icon           = {imageHomeUrl + item.imageLink}
+                    imageLink      = {imageHomeUrl + item.imageLink}
+                    deleteRequest  = {false} // onthoud of de gebruiker deze wil deletend
+                    aspect         = {item.aspect}
+                    aspect_type    = {item.aspect_type}
+                    dagWaarde      = {item.last_calc_waarde}
+                    dagdeelWaardes = {item.waardeDagdelen}
                     callBack_handleChangeDagWaarde={callBack_handleChangeDagWaarde}
+                    callBack_handleChangeDagWaardes={callBack_handleChangeDagWaardes}
                     callBack_handleDeleteRequest={callBack_handleDeleteRequest}
                   />
                 </div>
