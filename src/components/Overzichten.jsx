@@ -182,7 +182,8 @@ const callBack_changeMonth = useCallback((direction) => {
     } else if (activeTab === "weer") {
       return (
         <WeatherHistory
-          aantalDagen={31}
+          // aantalDagen={31}
+          yearMonth={selectedMonthYear}
         />
       );
     } else {

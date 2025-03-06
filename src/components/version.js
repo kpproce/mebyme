@@ -1,1 +1,1 @@
-export const version =  "meByMe 2.5.6 kalender swipe en dagdelenEdit fix-6"
+export const version =  "meByMe 2.6.1 kalender en weerkalender"
