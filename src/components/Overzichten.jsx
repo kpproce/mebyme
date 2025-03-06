@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import PropTypes from "prop-types";
 import Kalender from "./Kalender"; // Zorg ervoor dat je Kalender importeert
 import WeatherHistory from "./WeatherHistory"; // Zorg ervoor dat je WeatherHistory component importeert
@@ -6,14 +6,17 @@ import { basic_API_url } from './global_const.js'
 
 function Overzichten({ setActiveMenu, username, apikey, yearMonth }) {
   const [selectedMonthYear, setSelectedMonthYear] = useState(() => {
+   
     const today = new Date();
     const currentYear = today.getFullYear();
     const currentMonth = today.getMonth(); // 0-indexed (Jan = 0)
     if (today.getDate() > 13) {
       // Huidige maand
+      console.log('9: setSelectedMonthYear aangeroepen 1')
       return `${currentYear}-${String(currentMonth + 1).padStart(2, "0")}`;
     } else {
       // Vorige maand
+      console.log('9: setSelectedMonthYear aangeroepen 2')
       const previousMonth = currentMonth === 0 ? 11 : currentMonth - 1;
       const year = currentMonth === 0 ? currentYear - 1 : currentYear;
       return `${year}-${String(previousMonth + 1).padStart(2, "0")}`;
@@ -38,7 +41,12 @@ function Overzichten({ setActiveMenu, username, apikey, yearMonth }) {
     const newDate = new Date(year, month - 1 + direction, 1);
     const newYearMonth = `${newDate.getFullYear()}-${String(newDate.getMonth() + 1).padStart(2, "0")}`;
     setSelectedMonthYear(newYearMonth);
+    console.log('41: updateMonth aangeroepen met direction ' + direction + ' newYearMonth ' + newYearMonth)
   };
+
+  useEffect(() => {
+    console.log('45: selectedMonthYear: ' + selectedMonthYear);
+  }, [selectedMonthYear]);
 
   const selectStyle = {
     width: '8rem',
@@ -134,6 +142,12 @@ function Overzichten({ setActiveMenu, username, apikey, yearMonth }) {
     return new Intl.DateTimeFormat('nl-NL', { month: 'long' }).format(date);
   };
 
+    // Door selectedMonthYear als dependency mee te geven, zorg je dat de callback altijd de actuele waarde gebruikt.
+const callBack_changeMonth = useCallback((direction) => {
+  updateMonth(direction);
+}, [selectedMonthYear]);
+
+
   const getMonthNameWithYear = (yearMonth) => {
     const date = new Date(yearMonth + "-01");
     const monthName = new Intl.DateTimeFormat('nl-NL', { month: 'long' }).format(date);
@@ -152,7 +166,7 @@ function Overzichten({ setActiveMenu, username, apikey, yearMonth }) {
   if (error) {
     return <div>Error: {error}</div>;
   }
-
+ 
   const renderTabContent = () => {
     if (activeTab === "kalender") {
       return (
@@ -162,6 +176,7 @@ function Overzichten({ setActiveMenu, username, apikey, yearMonth }) {
           apikey={apikey}
           yearMonth={selectedMonthYear}
           aspect_type={selectedAspect.aspect}
+          callBack_changeMonth={callBack_changeMonth}
         />
       );
     } else if (activeTab === "weer") {
