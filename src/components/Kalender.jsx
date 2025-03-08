@@ -173,8 +173,13 @@ const Kalender = ({ setActiveMenu, username, apikey, yearMonth, callBack_changeM
     touchStartXRef.current = null;
   };
 
+  // Voeg touchmove handler toe om standaardactie te voorkomen
+  const handleTouchMove = (e) => {
+    e.preventDefault();
+  };
+
   return (
-    <div className="calendar" onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}>
+    <div className="calendar" onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd} onTouchMove={handleTouchMove}>
       <div className="calendar-header">
         {['Ma', 'Di', 'Wo', 'Do', 'Vr', 'Za', 'Zo'].map((day) => (
           <div key={day} className="calendar-day-header">
