@@ -17,12 +17,17 @@ const WeatherCalendar = ({ yearMonth }) => {
   // Voor modal met details van een dag
   const [selectedDayData, setSelectedDayData] = useState(null);
 
-  // Bepaal de start- en einddatum van de maand
-  const startDate = `${yearMonth}-01`;
+  // Bepaal de start- en einddatum van de maand,
   const endDateObj = new Date(yearMonth + "-01");
   endDateObj.setMonth(endDateObj.getMonth() + 1);
   endDateObj.setDate(endDateObj.getDate() - 1);
-  const endDate = endDateObj.toISOString().split("T")[0];
+
+  const yesterday = new Date();
+  yesterday.setDate(yesterday.getDate() - 1);
+
+  const adjustedEndDate = endDateObj > yesterday ? yesterday : endDateObj; // de einddatum moet voor vandaag liggen, ivm ophalen weergegevens
+  const startDate = `${yearMonth}-01`;
+  const endDate = adjustedEndDate.toISOString().split("T")[0];
 
   // Als er een city is maar nog geen coords, haal dan de coördinaten op
   useEffect(() => {
