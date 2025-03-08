@@ -1,3 +1,7 @@
+// dit component 
+// -- verzorgt de weergave van een (1) dag in de kalender, 
+// -- roept Aspect_dagwaarde aan om de waarde te editten
+
 import { React, useState, useEffect, useCallback } from "react";
 import { Modal, Table, Button, Tabs, Tab } from "react-bootstrap";
 import { basic_API_url } from "./global_const.js";
@@ -16,6 +20,7 @@ const EditDagModal = (props) => {
 
   const [draggedImageId, setDraggedImageId] = useState(""); // tonen welk aspect je dragt
   const [aspectExtraAanduiding, setAspectExtraAanduiding] = useState("test"); // Als plaatje mist
+
 
   const dagModalContainerClass = (dayData.resultData?.slice(0, 5).length || 0) <= 2 
   ? "aspect_dagwaarde_container few-items" 
@@ -223,7 +228,6 @@ const EditDagModal = (props) => {
   };
   
   const handleTouchStart = (e, imageName, id) => {
-    e.stopPropagation(); // Voorkom dat de gebeurtenis naar de parent bubbelt
     setDraggedImageId(id);
     e.target.dataset.imageId = id;
     e.target.dataset.imageName = imageName;
@@ -279,7 +283,6 @@ const EditDagModal = (props) => {
   };
   
   const handleTouchEnd = (e) => {
-    e.stopPropagation(); // Voorkom dat de gebeurtenis naar de parent bubbelt
     const touch = e.changedTouches[0];
     const target = document.elementFromPoint(touch.clientX, touch.clientY);
   
