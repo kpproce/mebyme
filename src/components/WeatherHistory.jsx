@@ -170,16 +170,34 @@ const WeatherCalendar = ({ yearMonth }) => {
             {day}
           </div>
         ))}
-        {calendarCells.map((cell, index) => {
+       {calendarCells.map((cell, index) => {
           if (cell === null) {
             return <div key={index} style={{ border: "1px solid #ccc", minHeight: "50px" }} />;
           } else {
-            // De API geeft data in volgorde: index 0 = 1e dag, dus weatherData[cell - 1]
             const weather = weatherData[cell - 1];
+            const temperature = weather ? weather.temperature : null;
+            
+            // Bereken de kleur van blauw (-10) naar rood (+40), met 65% transparantie
+            const minTemp = -10;
+            const maxTemp = 40;
+            const normalizedTemp = Math.max(0, Math.min(1, (temperature - minTemp) / (maxTemp - minTemp)));
+            const red = Math.round(255 * normalizedTemp);
+            const blue = Math.round(255 * (1 - normalizedTemp));
+            const backgroundColor = `rgba(${red}, 0, ${blue}, 0.65)`;
+            
             return (
               <div
                 key={index}
-                style={{ border: "1px solid #ccc", minHeight: "50px", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", cursor: "pointer" }}
+                style={{
+                  border: "1px solid #ccc",
+                  minHeight: "50px",
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  cursor: "pointer",
+                  backgroundColor,
+                }}
                 onClick={() => handleDayClick(cell)}
               >
                 <div>{cell}</div>
@@ -188,6 +206,7 @@ const WeatherCalendar = ({ yearMonth }) => {
             );
           }
         })}
+
       </div>
       {/* Modal of popup met details voor een geselecteerde dag */}
       {selectedDayData && (
