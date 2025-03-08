@@ -78,7 +78,6 @@ const WeatherCalendar = ({ yearMonth }) => {
 
     try {
       const response = await fetch(url);
-
       if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
       const data = await response.json();
 
@@ -106,24 +105,24 @@ const WeatherCalendar = ({ yearMonth }) => {
   // Retourneer een weericoon op basis van de temperatuur
   const getTemperatureSymbol = (temperature) => {
     if (typeof temperature !== "number") return "";
-    if (temperature < 1) return "❄️";
-    if (temperature < 10) return "☁️";
-    if (temperature < 15) return "⛅";
+    if (temperature < 1) return "☃️";
+    if (temperature < 10) return "❄️";
+    if (temperature < 15) return "☁️";
     if (temperature < 22) return "🌞";
     if (temperature < 29) return "🌞🌞";
     return "🔥";
   };
 
-  // Helper: bepaal de achtergrondkleur op basis van de temperatuur
-  const getBackgroundColorForTemperature = (temperature) => {
-    if (temperature < -7) return "#00BFFF80"; // Helderblauw (zeer koud)
-    if (temperature >= -7 && temperature < 0) return "#1E90FF80"; // Blauw (koud)
-    if (temperature >= 0  && temperature < 7) return "#87CEFA80"; // Lichtblauw (koel)
-    if (temperature >= 7  && temperature < 14) return "#90EE9080"; // Lichtgroen (mild)
-    if (temperature >= 14 && temperature < 21) return "#FFD70080"; // Geel (zacht warm)
-    if (temperature >= 21 && temperature < 28) return "#FFA500"; // Oranje (warm)
-    if (temperature >= 28 && temperature < 35) return "#FF4500"; // Rood-oranje (heet)
-    return "#FF0000"; // Rood (zeer heet)
+  const getTemperatureColor = (temperature) => {
+    if (typeof temperature !== "number") return "";
+    if (temperature < -7) return "#42d4f5";
+    if (temperature >= -7 && temperature < 0)  return "#42f5c5";
+    if (temperature >= 0  && temperature < 7)  return "#b8d65e";
+    if (temperature >= 7  && temperature < 14) return "#e0cb63";
+    if (temperature >= 14 && temperature < 21) return "#a8e053";
+    if (temperature >= 21 && temperature < 28) return "#e0bf53";
+    if (temperature >= 28 && temperature < 35) return "#e09c53";
+    return "🔥";
   };
 
   // Kalenderweergave: bereken offset voor de eerste dag (maandag als start)
@@ -175,22 +174,31 @@ const WeatherCalendar = ({ yearMonth }) => {
         </div>
       )}
       {loading && <p>Gegevens laden...</p>}
-      {error && <p style={{ color: "red" }}>{error}</p>}
+      {error && <p style={{ color: "yellow" }}>{error}</p>}
       {/* Kalender met 7 kolommen (Ma t/m Zo) */}
       <div style={{ display: "grid", gridTemplateColumns: "repeat(7, 1fr)", gap: "2px" }}>
         {["Ma", "Di", "Wo", "Do", "Vr", "Za", "Zo"].map((day) => (
-          <div key={day} style={{ textAlign: "center", fontWeight: "bold", borderBottom: "1px solid #000" }}>
+          <div 
+            key={day} 
+            style={{ textAlign: "center", fontWeight: "bold", borderBottom: "1px solid #000" }}>
             {day}
           </div>
         ))}
-        {calendarCells.map((cell, index) => {
+       {calendarCells.map((cell, index) => {
           if (cell === null) {
             return <div key={index} style={{ border: "1px solid #ccc", minHeight: "50px" }} />;
           } else {
             const weather = weatherData[cell - 1];
-            const backgroundColor = weather
-              ? getBackgroundColorForTemperature(weather.temperature)
-              : undefined;
+            const temperature = weather ? weather.temperature : null;
+            
+            // Bereken de kleur van blauw (-10) naar rood (+40), met 65% transparantie
+            const minTemp = -10;
+            const maxTemp = 40;
+            const normalizedTemp = Math.max(0, Math.min(1, (temperature - minTemp) / (maxTemp - minTemp)));
+            const red = Math.round(255 * normalizedTemp);
+            const blue = Math.round(255 * (1 - normalizedTemp));
+            const backgroundColor = `rgba(${red}, 0, ${blue}, 0.65)`;
+            
             return (
               <div
                 key={index}
@@ -207,41 +215,30 @@ const WeatherCalendar = ({ yearMonth }) => {
                 onClick={() => handleDayClick(cell)}
               >
                 <div>{cell}</div>
-                <div>
-                  {weather
-                    ? getTemperatureSymbol(weather.temperature) +
-                      " (" +
-                      Math.round(weather.temperature) +
-                      ") "
-                    : ""}
-                </div>
+                <div>{weather ? getTemperatureSymbol(weather.temperature) + ' (' + Math.round(weather.temperature) + ') ' : ""}</div>
               </div>
             );
           }
         })}
+
       </div>
       {/* Modal of popup met details voor een geselecteerde dag */}
       {selectedDayData && (
-        <div
-          style={{
-            color: "black",
-            position: "fixed",
-            top: 0,
-            left: 0,
-            width: "100vw",
-            height: "100vh",
-            backgroundColor: "rgba(0,0,0,0.5)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
+        <div style={{
+          color: "black",
+          position: "fixed",
+          top: 0,
+          left: 0,
+          width: "100vw",
+          height: "100vh",
+          backgroundColor: "rgba(0,0,0,0.5)",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center"
+        }}>
           <div style={{ backgroundColor: "#fff", padding: "20px", borderRadius: "5px", minWidth: "300px" }}>
             <h3>Weergegevens voor {selectedDayData.date}</h3>
-            <p>
-              Temperatuur: {selectedDayData.temperature}°C{" "}
-              {getTemperatureSymbol(selectedDayData.temperature)}
-            </p>
+            <p>Temperatuur: {selectedDayData.temperature}°C {getTemperatureSymbol(selectedDayData.temperature)}</p>
             <p>Vochtigheid: {selectedDayData.humidity}%</p>
             <p>Regen: {selectedDayData.precipitation} mm</p>
             <button onClick={closeModal}>Sluiten</button>
