@@ -262,7 +262,7 @@ const callBack_changeMonth = useCallback((direction) => {
       {/* Navigatie voor maand */}
       <div style={{ display: "flex", alignItems: "center", margin: "20px 10px", justifyContent: "space-between" }}>
         <button onClick={() => updateMonth(-1)}>&lt;</button>
-        <span style={{ margin: "5px 10px" }}>{getMonthNameWithYear(selectedMonthYear)}</span>
+        <span style={{ margin: "5px 10px", fontSize: "x-large"}}>{getMonthNameWithYear(selectedMonthYear)}</span>
         <button onClick={() => updateMonth(1)}>&gt;</button>
       </div>
 
