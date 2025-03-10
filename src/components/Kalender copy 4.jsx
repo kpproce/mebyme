@@ -115,38 +115,60 @@ const Kalender = ({ setActiveMenu, username, apikey, yearMonth, callBack_changeM
   // Verwerk kalenderData en voeg offset dagen toe zodat de eerste kolom (maandag) de juiste datum toont
   useEffect(() => {
     if (!kalenderData) return;
-  
-    const currentMonthDays = kalenderData.map((item) => {
-      if (!item || !item.datum) return null;
-  
-      const hoofd_aspect_data = item.hoofd_aspect;
-      const hoofd_aspect_waarde = parseInt(hoofd_aspect_data?.waarde, 10) || 0;
-  
-      const bij_aspect1_data = item.bij_aspect1 || {};
-      const bijAspect1Value = parseInt(bij_aspect1_data.waarde, 10) || 0;
-      const bijAspect1Letter = bijAspect1Value > 0 ? bij_aspect1_data.letter?.toLowerCase() || "" : "";
-      const bijAspect1Kleur = bijAspect1Value > 0
-        ? adjustColor(bijAspect1Value, bij_aspect1_data.kleur || "rgb(0, 255, 0)")
-        : "";
-  
-      const bij_aspect2_data = item.bij_aspect2 || {};
-      const bijAspect2Value = parseInt(bij_aspect2_data.waarde, 10) || 0;
-      const bijAspect2Letter = bijAspect2Value > 0 ? bij_aspect2_data.letter?.toLowerCase() || "" : "";
-      const bijAspect2Kleur = bijAspect1Value > 0
-        ? adjustColor(bijAspect1Value, bij_aspect1_data.kleur || "rgb(0, 255, 0)")
-        : "";
-  
-      return {
-        datum: item.datum,
-        hoofd_aspect_waarde,
-        bijAspect1Letter,
-        bijAspect1Kleur,
-        bijAspect2Letter,
-        bijAspect2Kleur,
+
+    const firstOfMonth = new Date(yearMonth + "-01");
+    // Pas getDay() aan zodat maandag index 0 is
+    const offset = (firstOfMonth.getDay() + 6) % 7;
+
+    const offsetDays = [];
+    for (let i = 0; i < offset; i++) {
+      const date = new Date(firstOfMonth);
+      date.setDate(firstOfMonth.getDate() - offset + i);
+      const datum = date.toISOString().substring(0, 10);
+      const dayData = kalenderData.find(item => item.datum === datum) || {
+        datum,
+        hoofd_aspect_waarde: 0,
+        bijAspect1Letter: "",
+        bijAspect1Kleur: "",
+        bijAspect2Letter: "",
+        bijAspect2Kleur: ""
       };
-    }).filter((day) => day !== null);
-  
-    setDays(currentMonthDays);
+      offsetDays.push(dayData);
+    }
+
+    const currentMonthDays = kalenderData
+      .map((item) => {
+        if (!item || !item.datum) return null;
+
+        const hoofd_aspect_data = item.hoofd_aspect;
+        const hoofd_aspect_waarde = parseInt(hoofd_aspect_data?.waarde, 10) || 0;
+
+        const bij_aspect1_data = item.bij_aspect1 || {};
+        const bijAspect1Value = parseInt(bij_aspect1_data.waarde, 10) || 0;
+        const bijAspect1Letter = bijAspect1Value > 0 ? bij_aspect1_data.letter?.toLowerCase() || "" : "";
+        const bijAspect1Kleur = bijAspect1Value > 0
+          ? adjustColor(bijAspect1Value, bij_aspect1_data.kleur || "rgb(0, 255, 0)")
+          : "";
+
+        const bij_aspect2_data = item.bij_aspect2 || {};
+        const bijAspect2Value = parseInt(bij_aspect2_data.waarde, 10) || 0;
+        const bijAspect2Letter = bijAspect2Value > 0 ? bij_aspect2_data.letter?.toLowerCase() || "" : "";
+        const bijAspect2Kleur = bijAspect1Value > 0
+          ? adjustColor(bijAspect1Value, bij_aspect1_data.kleur || "rgb(0, 255, 0)")
+          : "";
+
+        return {
+          datum: item.datum,
+          hoofd_aspect_waarde,
+          bijAspect1Letter,
+          bijAspect1Kleur,
+          bijAspect2Letter,
+          bijAspect2Kleur,
+        };
+      })
+      .filter((day) => day !== null);
+
+    setDays([...offsetDays, ...currentMonthDays]);
   }, [kalenderData, yearMonth]);
 
   const formatWeekday = (datum) =>
