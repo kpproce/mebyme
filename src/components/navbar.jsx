@@ -119,7 +119,7 @@ const MyNavbar = () => {
       </div>
 
       <Routes>
-        <Route path="/" element={<Navigate to="/mebyme/slider" replace />} />
+        <Route path="/" element={<Navigate to="/mebyme/overzichten" replace />} />
         <Route
           path="/mebyme/slider"
           element={

@@ -10,7 +10,7 @@ function Overzichten({ setActiveMenu, username, apikey, yearMonth }) {
     const today = new Date();
     const currentYear = today.getFullYear();
     const currentMonth = today.getMonth(); // 0-indexed (Jan = 0)
-    if (today.getDate() > 13) {
+    if (today.getDate() > 1) {
       // Huidige maand
       console.log('9: setSelectedMonthYear aangeroepen 1')
       return `${currentYear}-${String(currentMonth + 1).padStart(2, "0")}`;
