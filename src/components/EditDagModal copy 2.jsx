@@ -369,8 +369,7 @@ const EditDagModal = (props) => {
               onDrop={handleDrop} 
               onDragOver={handleDragOver}
             >
-
-              
+       
               {dayData.resultData?.slice(0, 10).map((item, index) => (
                 <div className={dagModalContainerClass} key={index}>
                   <Aspect_dagwaarde

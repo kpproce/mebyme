@@ -1,0 +1,12 @@
+.LOROsquare {
+  width: 20px;
+  height: 20x;
+  display: inline-block;
+  margin-right: 10px;
+  border: 2px solid black;
+  font-size: small;
+  color: white;
+  border-radius: 3px;
+  background-color: #645d5d;
+}
+

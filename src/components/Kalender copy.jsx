@@ -16,6 +16,9 @@ const Kalender = ({ setActiveMenu, username, apikey, yearMonth, callBack_changeM
 
   const dayNumberRef = useRef(null);
 
+  // Voeg een ref toe voor swipe-detectie
+  const touchStartXRef = useRef(null);
+
   const handleChange = (event) => {
     alert('aanpassen van de dagwaarde');
   };
@@ -26,13 +29,15 @@ const Kalender = ({ setActiveMenu, username, apikey, yearMonth, callBack_changeM
     return `bk_strong_color_${Math.min(numericValue ?? 0, 5)}`;
   };
 
-  const getData = async (username, apikey, yearMonth) => {
+  const getData = async (username, apikey, yearMonth, startDate, endDate) => {
     const postData = new FormData();
     const fetchURL = basic_API_url() + "php/mebyme.php";
 
     postData.append("username", username);
     postData.append("apikey", apikey);
     postData.append("yearMonth", yearMonth);
+    postData.append("startDate", startDate);
+    postData.append("endDate", endDate);
     postData.append("action", "get_rapport_data");
 
     const requestOptions = { method: "POST", body: postData };
@@ -56,7 +61,26 @@ const Kalender = ({ setActiveMenu, username, apikey, yearMonth, callBack_changeM
       setLoading(true);
       setError(null);
       try {
-        const data = await getData(username, apikey, yearMonth);
+        const firstOfMonth = new Date(yearMonth + "-01");
+        const lastOfMonth = new Date(firstOfMonth.getFullYear(), firstOfMonth.getMonth() + 1, 0);
+
+        // Bepaal de startDate
+        let startDate = new Date(firstOfMonth);
+        if (firstOfMonth.getDay() !== 1) { // Als de 1e van de maand geen maandag is
+          startDate.setDate(firstOfMonth.getDate() - ((firstOfMonth.getDay() + 6) % 7));
+        }
+        startDate = startDate.toISOString().substring(0, 10);
+
+        // Bepaal de endDate
+        let endDate = new Date(lastOfMonth);
+        if (lastOfMonth.getDay() !== 0) { // Als de laatste van de maand geen zondag is
+          endDate.setDate(lastOfMonth.getDate() + (8 - lastOfMonth.getDay()));
+        } else {
+          endDate.setDate(lastOfMonth.getDate() + 1); // Voeg een dag toe als het al zondag is
+        }
+        endDate = endDate.toISOString().substring(0, 10);
+
+        const data = await getData(username, apikey, yearMonth, startDate, endDate);
         setKalenderData(data.kalender_data || []);
         setRefresh(false);
       } catch (err) {
@@ -83,7 +107,7 @@ const Kalender = ({ setActiveMenu, username, apikey, yearMonth, callBack_changeM
     const newR = Math.min(255, Math.max(0, r + adjust));
     const newG = Math.min(255, Math.max(0, g + adjust));
     const newB = Math.min(255, Math.max(0, b + adjust));
-    let newColor = `#${((1 << 24) | (newR << 16) | (newG << 8) | newB).toString(16).slice(1).toUpperCase()}`;
+    let newColor = `#${((1 << 24) | (newR << 16) | (newG << 8) | (newB)).toString(16).slice(1).toUpperCase()}`;
     console.log('85: ', value, baseColor, newColor);
     return newColor;
   };
@@ -93,56 +117,43 @@ const Kalender = ({ setActiveMenu, username, apikey, yearMonth, callBack_changeM
     if (!kalenderData) return;
 
     const firstOfMonth = new Date(yearMonth + "-01");
-    // Pas getDay() aan zodat maandag index 0 is
-    const offset = (firstOfMonth.getDay() + 6) % 7;
+    const lastOfMonth = new Date(firstOfMonth.getFullYear(), firstOfMonth.getMonth() + 1, 0);
 
-    const offsetDays = [];
-    for (let i = 0; i < offset; i++) {
-      const date = new Date(firstOfMonth);
-      date.setDate(firstOfMonth.getDate() - offset + i);
-      offsetDays.push({
-        datum: date.toISOString().substring(0, 10),
-        hoofd_aspect_waarde: 0,
-        bijAspect1Letter: "",
-        bijAspect1Kleur: "",
-        bijAspect2Letter: "",
-        bijAspect2Kleur: ""
-      });
-    }
+    const currentMonthDays = kalenderData.map((item) => {
+      if (!item || !item.datum) return null;
 
-    const currentMonthDays = kalenderData
-      .map((item) => {
-        if (!item || !item.datum) return null;
+      const datum = new Date(item.datum);
+      const isOutsideCurrentMonth = datum < firstOfMonth || datum > lastOfMonth;
 
-        const hoofd_aspect_data = item.hoofd_aspect;
-        const hoofd_aspect_waarde = parseInt(hoofd_aspect_data?.waarde, 10) || 0;
+      const hoofd_aspect_data = item.hoofd_aspect;
+      const hoofd_aspect_waarde = parseInt(hoofd_aspect_data?.waarde, 10) || 0;
 
-        const bij_aspect1_data = item.bij_aspect1 || {};
-        const bijAspect1Value = parseInt(bij_aspect1_data.waarde, 10) || 0;
-        const bijAspect1Letter = bijAspect1Value > 0 ? bij_aspect1_data.letter?.toLowerCase() || "" : "";
-        const bijAspect1Kleur = bijAspect1Value > 0
-          ? adjustColor(bijAspect1Value, bij_aspect1_data.kleur || "rgb(0, 255, 0)")
-          : "";
-        
-        const bij_aspect2_data = item.bij_aspect2 || {};
-        const bijAspect2Value = parseInt(bij_aspect2_data.waarde, 10) || 0;
-        const bijAspect2Letter = bijAspect2Value > 0 ? bij_aspect2_data.letter?.toLowerCase() || "" : "";
-        const bijAspect2Kleur = bijAspect1Value > 0
-          ? adjustColor(bijAspect1Value, bij_aspect1_data.kleur || "rgb(0, 255, 0)")
-          : "";
-        
-        return {
-          datum: item.datum,
-          hoofd_aspect_waarde,
-          bijAspect1Letter,
-          bijAspect1Kleur,
-          bijAspect2Letter,
-          bijAspect2Kleur,
-        };
-      })
-      .filter((day) => day !== null);
+      const bij_aspect1_data = item.bij_aspect1 || {};
+      const bijAspect1Value = parseInt(bij_aspect1_data.waarde, 10) || 0;
+      const bijAspect1Letter = bijAspect1Value > 0 ? bij_aspect1_data.letter?.toLowerCase() || "" : "";
+      const bijAspect1Kleur = bijAspect1Value > 0
+        ? adjustColor(bijAspect1Value, bij_aspect1_data.kleur || "rgb(0, 255, 0)")
+        : "";
 
-    setDays([...offsetDays, ...currentMonthDays]);
+      const bij_aspect2_data = item.bij_aspect2 || {};
+      const bijAspect2Value = parseInt(bij_aspect2_data.waarde, 10) || 0;
+      const bijAspect2Letter = bijAspect2Value > 0 ? bij_aspect2_data.letter?.toLowerCase() || "" : "";
+      const bijAspect2Kleur = bijAspect1Value > 0
+        ? adjustColor(bijAspect1Value, bij_aspect1_data.kleur || "rgb(0, 255, 0)")
+        : "";
+
+      return {
+        datum: item.datum,
+        hoofd_aspect_waarde,
+        bijAspect1Letter,
+        bijAspect1Kleur,
+        bijAspect2Letter,
+        bijAspect2Kleur,
+        isOutsideCurrentMonth,
+      };
+    }).filter((day) => day !== null);
+
+    setDays(currentMonthDays);
   }, [kalenderData, yearMonth]);
 
   const formatWeekday = (datum) =>
@@ -150,8 +161,33 @@ const Kalender = ({ setActiveMenu, username, apikey, yearMonth, callBack_changeM
 
   const getDayOfMonth = (datum) => new Date(datum).getDate();
 
+  // Swipe event handlers
+  const handleTouchStart = (e) => {
+    touchStartXRef.current = e.touches[0].clientX;
+  };
+
+  const handleTouchEnd = (e) => {
+    if (touchStartXRef.current === null) return;
+    const touchEndX = e.changedTouches[0].clientX;
+    const deltaX = touchStartXRef.current - touchEndX;
+    const swipeThreshold = 50; // pixels
+    if (deltaX > swipeThreshold) {
+      // Swipe naar links -> volgende maand
+      callBack_changeMonth(1);
+    } else if (deltaX < -swipeThreshold) {
+      // Swipe naar rechts -> vorige maand
+      callBack_changeMonth(-1);
+    }
+    touchStartXRef.current = null;
+  };
+
+  // Voeg touchmove handler toe om standaardactie te voorkomen
+  const handleTouchMove = (e) => {
+    e.preventDefault();
+  };
+
   return (
-    <div className="calendar">
+    <div className="calendar" onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd} onTouchMove={handleTouchMove}>
       <div className="calendar-header">
         {['Ma', 'Di', 'Wo', 'Do', 'Vr', 'Za', 'Zo'].map((day) => (
           <div key={day} className="calendar-day-header">
@@ -165,7 +201,7 @@ const Kalender = ({ setActiveMenu, username, apikey, yearMonth, callBack_changeM
         {days.map((day) => (
           <div
             key={day.datum}
-            className={`calendar-day ${getBackgroundColorClass(day.hoofd_aspect_waarde)}`}
+            className={`calendar-day ${getBackgroundColorClass(day.hoofd_aspect_waarde)} ${day.isOutsideCurrentMonth ? 'outside-month' : ''}`}
           >
             <div className="day-number">
               <EditDagModal 

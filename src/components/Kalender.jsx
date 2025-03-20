@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { basic_API_url } from "./global_const.js";
+import { basic_API_url, imageUrl} from "./global_const.js";
 import propTypes from "prop-types";
 import './Kalender.css';
 import { useNavigate } from "react-router-dom";
@@ -23,10 +23,14 @@ const Kalender = ({ setActiveMenu, username, apikey, yearMonth, callBack_changeM
     alert('aanpassen van de dagwaarde');
   };
 
-  const getBackgroundColorClass = (value) => {
+  const getBackgroundColorClass = (value, outsideMonth) => {
     const numericValue =
       (typeof value === 'number' && value >= 0 && value <= 5) || value === null ? value : 0;
-    return `bk_strong_color_${Math.min(numericValue ?? 0, 5)}`;
+
+    if (outsideMonth) 
+      return `bk_faded_color_${Math.min(numericValue ?? 0, 5)}`
+    else 
+      return `bk_strong_color_${Math.min(numericValue ?? 0, 5)}`
   };
 
   const getData = async (username, apikey, yearMonth, startDate, endDate) => {
@@ -115,37 +119,57 @@ const Kalender = ({ setActiveMenu, username, apikey, yearMonth, callBack_changeM
   // Verwerk kalenderData en voeg offset dagen toe zodat de eerste kolom (maandag) de juiste datum toont
   useEffect(() => {
     if (!kalenderData) return;
-  
+
+    const firstOfMonth = new Date(yearMonth + "-01");
+    const lastOfMonth = new Date(firstOfMonth.getFullYear(), firstOfMonth.getMonth() + 1, 0);
+
     const currentMonthDays = kalenderData.map((item) => {
       if (!item || !item.datum) return null;
-  
+
+      const datum = new Date(item.datum);
+      const isOutsideCurrentMonth = datum < firstOfMonth || datum > lastOfMonth;
+
+      if (isOutsideCurrentMonth) {
+        console.log(`${datum.toISOString().substring(0, 10)} ligt buiten de maand ${yearMonth}`);
+      } else {
+        console.log(`${datum.toISOString().substring(0, 10)} ligt BINNEN de maand ${yearMonth}`);
+      }
+
       const hoofd_aspect_data = item.hoofd_aspect;
       const hoofd_aspect_waarde = parseInt(hoofd_aspect_data?.waarde, 10) || 0;
-  
-      const bij_aspect1_data = item.bij_aspect1 || {};
+      const bijAspect1 = item.bijAspect1
+      const bij_aspect1_data = item.bij_aspect1   || {};
       const bijAspect1Value = parseInt(bij_aspect1_data.waarde, 10) || 0;
       const bijAspect1Letter = bijAspect1Value > 0 ? bij_aspect1_data.letter?.toLowerCase() || "" : "";
       const bijAspect1Kleur = bijAspect1Value > 0
         ? adjustColor(bijAspect1Value, bij_aspect1_data.kleur || "rgb(0, 255, 0)")
         : "";
-  
+
+      const bijAspect2 = item.bijAspect2
       const bij_aspect2_data = item.bij_aspect2 || {};
       const bijAspect2Value = parseInt(bij_aspect2_data.waarde, 10) || 0;
       const bijAspect2Letter = bijAspect2Value > 0 ? bij_aspect2_data.letter?.toLowerCase() || "" : "";
       const bijAspect2Kleur = bijAspect1Value > 0
         ? adjustColor(bijAspect1Value, bij_aspect1_data.kleur || "rgb(0, 255, 0)")
         : "";
-  
+      const opmerking = item.opmerking
+      console.log('156: opmerking: ', opmerking);
       return {
         datum: item.datum,
         hoofd_aspect_waarde,
+        bijAspect1,
         bijAspect1Letter,
         bijAspect1Kleur,
+        bijAspect1Value,
+        bijAspect2,
         bijAspect2Letter,
         bijAspect2Kleur,
+        bijAspect2Value,
+        isOutsideCurrentMonth,
+        opmerking,
       };
     }).filter((day) => day !== null);
-  
+
     setDays(currentMonthDays);
   }, [kalenderData, yearMonth]);
 
@@ -176,7 +200,7 @@ const Kalender = ({ setActiveMenu, username, apikey, yearMonth, callBack_changeM
 
   // Voeg touchmove handler toe om standaardactie te voorkomen
   const handleTouchMove = (e) => {
-    e.preventDefault();
+   // e.preventDefault();
   };
 
   return (
@@ -192,39 +216,59 @@ const Kalender = ({ setActiveMenu, username, apikey, yearMonth, callBack_changeM
       {error && <div className="error-message">{error}</div>}
       <div className="calendar-grid">
         {days.map((day) => (
-          <div
-            key={day.datum}
-            className={`calendar-day ${getBackgroundColorClass(day.hoofd_aspect_waarde)}`}
-          >
+          <div style={{ display: 'flex ', flexDirection: 'column' }}>
+            <div
+              key={day.datum}
+              className={`outside-month calendar-day ${getBackgroundColorClass(day.hoofd_aspect_waarde, day.isOutsideCurrentMonth)}`}
+            >
             <div className="day-number">
               <EditDagModal 
                 username={username}
-                apikey={apikey}
-                datum={day.datum}
-                containerRef={dayNumberRef} 
-                callBack_refresh={callBack_refresh}
+                apikey            = {apikey}
+                datum             = {day.datum}
+                dateOutSideMonth  = {day.dateOutSideMonth}
+                containerRef      = {dayNumberRef} 
+                callBack_refresh  = {callBack_refresh}
               />
+              </div>
+            
+              {day.bijAspect1Letter && (
+                <div className="bij-aspect-1-container">
+                  <div
+                    className="bij-aspect-1-square"
+                    style={{ backgroundColor: day.bijAspect1Kleur }}
+                  >
+                    {day.bijAspect1Value ? day.bijAspect1Letter + day.bijAspect1Value : ""}
+                  </div>
+                </div>
+              )}
+
+              {day.bijAspect2Letter && (
+                <div className="bij-aspect-2-container">
+                  <div
+                    className="bij-aspect-2-square"
+                    style={{ backgroundColor: day.bijAspect2Kleur }}
+                  >
+                  {day.bijAspect2Value 
+                    ? (
+                        <>
+                          {/* <img src={imageUrl() + "mebyme_icons/" + day.bijAspect2 + ".png"} alt="" /> */}
+                          {day.bijAspect2Value ? day.bijAspect2Letter + day.bijAspect1Value : ""}
+                        </>
+                      ) 
+                    : ""
+                  }
+                  </div>
+
+                </div>
+
+              )}
+              
             </div>
-            {day.bijAspect1Letter && (
-              <div className="bij-aspect-1-container">
-                <div
-                  className="bij-aspect-1-square"
-                  style={{ backgroundColor: day.bijAspect1Kleur }}
-                >
-                  {day.bijAspect1Letter}
-                </div>
-              </div>
-            )}
-            {day.bijAspect2Letter && (
-              <div className="bij-aspect-2-container">
-                <div
-                  className="bij-aspect-2-square"
-                  style={{ backgroundColor: day.bijAspect2Kleur }}
-                >
-                  {day.bijAspect2Letter}
-                </div>
-              </div>
-            )}
+
+            <div style={{ fontSize:"x-small", marginBottom: "10px" }}>
+              {day.opmerking ? day.opmerking.substring(0, 9) : ""}
+            </div>
           </div>
         ))}
       </div>

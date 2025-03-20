@@ -411,6 +411,14 @@
 .bk_strong_color_4 { background-color: rgb(255, 132, 1)   !important }  
 .bk_strong_color_5 { background-color: rgb(192, 10, 10)   !important }  
 
+/* background colors for normal range low - high */
+.bk_faded_color_0 { background-color: rgba(99, 97, 97, 0.5)   !important }  
+.bk_faded_color_1 { background-color: rgba(68, 242, 94, 0.5)  !important }   
+.bk_faded_color_2 { background-color: rgba(160, 198, 4, 0.5)  !important }  
+.bk_faded_color_3 { background-color: rgba(236, 233, 84, 0.5 )!important }  
+.bk_faded_color_4 { background-color: rgba(255, 132, 1, 0.5)  !important }  
+.bk_faded_color_5 { background-color: rgba(192, 10, 10, 0.5)  !important } 
+
 /* colors for normal range low - high */
 .fg_color_0 { color: rgb(99, 97, 97)    !important }  
 .fg_color_1 { color: rgb(55, 255, 0)    !important }   

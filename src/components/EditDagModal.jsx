@@ -216,17 +216,43 @@ const EditDagModal = (props) => {
 
   const handleAnnuleer = () => setShow(false);
 
-  const handleDragStart = (e, imageName, id) => {
+  const handleDragStart = (e, imageName, id) => 
+  {  
+    console.log(221, "handleDragStart", imageName)
     e.dataTransfer.setData("imageId", id);
     e.dataTransfer.setData("imageName", imageName);
     setDraggedImageId(id);
   };
   
   const handleTouchStart = (e, imageName, id) => {
-    e.stopPropagation(); // Voorkom dat de gebeurtenis naar de parent bubbelt
+    console.log("Touch start:", imageName);
+    e.stopPropagation();
     setDraggedImageId(id);
+  
+    // Voeg data toe aan het target-element
     e.target.dataset.imageId = id;
     e.target.dataset.imageName = imageName;
+  
+    // Voeg een touchmove-eventlistener toe om de afbeelding te verplaatsen
+    const touchMoveHandler = (event) => {
+      event.preventDefault(); // Voorkom scrollen van de achterliggende pagina
+      const touch = event.touches[0];
+      const dragOverlay = document.querySelector(".drag-overlay");
+      if (dragOverlay) {
+        dragOverlay.style.left = `${touch.clientX}px`;
+        dragOverlay.style.top = `${touch.clientY}px`;
+      }
+    };
+  
+    document.addEventListener("touchmove", touchMoveHandler, { passive: false }); // Zorg ervoor dat preventDefault werkt
+  
+    // Verwijder de touchmove-eventlistener bij touchend
+    const touchEndHandler = () => {
+      document.removeEventListener("touchmove", touchMoveHandler);
+      document.removeEventListener("touchend", touchEndHandler);
+    };
+  
+    document.addEventListener("touchend", touchEndHandler);
   };
   
   const handleDrop = (e) => {
@@ -283,13 +309,18 @@ const EditDagModal = (props) => {
     const touch = e.changedTouches[0];
     const target = document.elementFromPoint(touch.clientX, touch.clientY);
   
-    if (target && target.classList.contains("editDagModel_right")) {
+    // Controleer of de touch losgelaten is binnen de dropzone of een child ervan
+    if (target && target.closest(".editDagModel_right")) {
+      console.log("Dropped inside dropzone");
+  
       handleDrop({
         preventDefault: () => {},
         dataTransfer: {
-          getData: (key) => e.target.dataset[key]
-        }
+          getData: (key) => e.target.dataset[key],
+        },
       });
+    } else {
+      console.log("Dropped outside dropzone");
     }
   
     setDraggedImageId("");
@@ -301,7 +332,11 @@ const EditDagModal = (props) => {
 
   return (
     <> 
-      <Button className="transparent-btn" variant="primary" onClick={handleShow}>
+      <Button 
+        className="transparent-btn"  
+        variant={props.dateOutSideMonth ? "primary" : "secondary"}
+        onClick={handleShow}
+      >
         {new Date(props.datum).getDate()}
       </Button>
     
@@ -338,11 +373,10 @@ const EditDagModal = (props) => {
           {draggedImageId && <div className="drag-overlay">{draggedImageId}</div>}
             <div className='editDagModel_menuLeft'>
               {aspectList.map((item, index) => (
-                
                 <div
                   key={index}
                   className="aspect-item"
-                  draggable
+                  draggable={true}
                   onDragStart={(e) => handleDragStart(e, item.best_image, item.aspect)} // Zet de id in de drag event
                   onDragEnd={() => setDraggedImageId("")} // Reset naam bij loslaten
                   onTouchStart={(e) => handleTouchStart(e, item.best_image, item.aspect)}
@@ -365,8 +399,7 @@ const EditDagModal = (props) => {
               onDrop={handleDrop} 
               onDragOver={handleDragOver}
             >
-
-              
+       
               {dayData.resultData?.slice(0, 10).map((item, index) => (
                 <div className={dagModalContainerClass} key={index}>
                   <Aspect_dagwaarde
@@ -404,6 +437,7 @@ EditDagModal.propTypes = {
   username         : propTypes.string,
   apikey           : propTypes.string,
   datum            : propTypes.string,
+  dateOutSideMonth : propTypes.bool,
   callBack_refresh : propTypes.func,
 };
 

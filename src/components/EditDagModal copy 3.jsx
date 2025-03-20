@@ -216,7 +216,9 @@ const EditDagModal = (props) => {
 
   const handleAnnuleer = () => setShow(false);
 
-  const handleDragStart = (e, imageName, id) => {
+  const handleDragStart = (e, imageName, id) => 
+  {  
+    console.log(221, "handleDragStart", imageName)
     e.dataTransfer.setData("imageId", id);
     e.dataTransfer.setData("imageName", imageName);
     setDraggedImageId(id);
@@ -342,11 +344,10 @@ const EditDagModal = (props) => {
           {draggedImageId && <div className="drag-overlay">{draggedImageId}</div>}
             <div className='editDagModel_menuLeft'>
               {aspectList.map((item, index) => (
-                
                 <div
                   key={index}
                   className="aspect-item"
-                  draggable
+                  draggable={true}
                   onDragStart={(e) => handleDragStart(e, item.best_image, item.aspect)} // Zet de id in de drag event
                   onDragEnd={() => setDraggedImageId("")} // Reset naam bij loslaten
                   onTouchStart={(e) => handleTouchStart(e, item.best_image, item.aspect)}
@@ -366,11 +367,10 @@ const EditDagModal = (props) => {
             </div>
             <div 
               className='editDagModel_right' 
-              onDrop={handleDrop} 
+                onDrop={handleDrop} 
               onDragOver={handleDragOver}
             >
-
-              
+       
               {dayData.resultData?.slice(0, 10).map((item, index) => (
                 <div className={dagModalContainerClass} key={index}>
                   <Aspect_dagwaarde
