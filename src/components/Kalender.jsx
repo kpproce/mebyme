@@ -253,7 +253,7 @@ const Kalender = ({ setActiveMenu, username, apikey, yearMonth, callBack_changeM
                     ? (
                         <>
                           {/* <img src={imageUrl() + "mebyme_icons/" + day.bijAspect2 + ".png"} alt="" /> */}
-                          {day.bijAspect2Value ? day.bijAspect2Letter + day.bijAspect1Value : ""}
+                          {day.bijAspect2Value ? day.bijAspect2Letter + day.bijAspect2Value : ""}
                         </>
                       ) 
                     : ""
@@ -266,8 +266,8 @@ const Kalender = ({ setActiveMenu, username, apikey, yearMonth, callBack_changeM
               
             </div>
 
-            <div style={{ fontSize:"x-small", marginBottom: "10px" }}>
-              {day.opmerking ? day.opmerking.substring(0, 9) : ""}
+            <div style={{ fontSize:"x-small", marginBottom: "2px",minHeight: "1rem" }}>
+              {day.opmerking ? day.opmerking.substring(0, 9) : ' '}
             </div>
           </div>
         ))}
