@@ -1,2 +1,2 @@
 export const version =  
-        "meByMe 2.9.2 opmaak opmerkingen en fix linksonder waarde"
+        "meByMe 2.10 stabel version kleuren niet af"

@@ -103,31 +103,16 @@ const Kalender = ({ setActiveMenu, username, apikey, yearMonth, callBack_changeM
   }
 
   const adjustColor = (value, baseColor) => {
-    if (value === 0) {
-      return "#D3D3D3"; // Lichtgrijs voor value 0
-    }
-  
-    const hex = baseColor.replace("#", "");
+    const hex = baseColor.replace('#', '');
     const r = parseInt(hex.substring(0, 2), 16);
     const g = parseInt(hex.substring(2, 4), 16);
     const b = parseInt(hex.substring(4, 6), 16);
-  
-    // Bepaal de aanpassing op basis van de waarde
-    let adjust = 0;
-    if (value === 1) adjust = 80; // Twee tinten lichter
-    if (value === 2) adjust = 40; // Eén tint lichter
-    if (value === 3) adjust = 0;  // Geen aanpassing
-    if (value === 4) adjust = -40; // Eén tint donkerder
-    if (value === 5) adjust = -80; // Twee tinten donkerder
-  
-    // Pas de RGB-waarden aan
+    const adjust = (value < 3) ? 50 : -50;
     const newR = Math.min(255, Math.max(0, r + adjust));
     const newG = Math.min(255, Math.max(0, g + adjust));
     const newB = Math.min(255, Math.max(0, b + adjust));
-  
-    // Converteer terug naar een hex-kleur
-    const newColor = `#${((1 << 24) | (newR << 16) | (newG << 8) | (newB)).toString(16).slice(1).toUpperCase()}`;
-    console.log("Adjusted Color:", { value, baseColor, newColor });
+    let newColor = `#${((1 << 24) | (newR << 16) | (newG << 8) | (newB)).toString(16).slice(1).toUpperCase()}`;
+    console.log('85: ', value, baseColor, newColor);
     return newColor;
   };
 
