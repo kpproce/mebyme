@@ -7,6 +7,7 @@ import PropTypes from "prop-types";
 import "./Aspect_dagwaarde.css";
 import { FaTrash} from 'react-icons/fa';
 import { FaTimes, FaRegTimesCircle } from "react-icons/fa";
+import computeDagwaarde from '../hooks/computeDagwaarde';
 import DagdelenEdit from './DagdelenEdit.jsx';
 
 const Aspect_dagwaarde = (props) => {
@@ -63,17 +64,26 @@ const Aspect_dagwaarde = (props) => {
     }
   };
 
-
   const callbackGewijzigdeWaardes = useCallback((updated_dagdeelWaardes) => {
-    // sla op in de database, krijg de nieuwe dagwaarde terug en geef die terug aan de parent.   
-    // alert('callbackGewijzigdeWaardes aangeroepen: ' + updated_dagdeelWaardes)
-
-    props.callBack_handleChangeDagWaardes(props.index, String(updated_dagdeelWaardes))
+    const dagdeelWaardes_asString = String(updated_dagdeelWaardes)
+    
+    const dagWaardeBerekend = computeDagwaarde(
+      dagdeelWaardes_asString, 
+      props.dagwaardeBerekening_type, 
+      props.dagwaardeBerekening_maxFactor,
+      [0,1,0,0,0]
+    )
+    props.callBack_handleChangeDagWaardes(
+      dagdeelWaardes_asString, 
+      dagWaardeBerekend, 
+      props.index, 
+      props.dagwaardeBerekening_type, 
+      props.dagwaardeBerekening_maxFactor) 
+    //waardeDagdelen, index, dagwaardeBerekening_type, dagwaardeBerekening_maxFactor)
   })
 
   return (
     <div className="dagAsp_contMain">
-     
       {/* Linkerdeel */}
       <div className="dagAsp_contMain_left" style={{ border: `6px solid ${borderColor || "rgb(200, 200, 200)"}` }}>
         {/* Bovenin */}
@@ -107,7 +117,7 @@ const Aspect_dagwaarde = (props) => {
             : <>    
                 <img src={props.icon} alt="icon"/>
                 <DagdelenEdit 
-                  dagdeelWaardes = {props.dagdeelWaardes || "22222"} 
+                  waardeDagdelen = {props.waardeDagdelen || "22222"} 
                   aspect = {props.aspect} 
                   callbackGewijzigdeWaardes = {callbackGewijzigdeWaardes}
                 />
@@ -130,16 +140,31 @@ const Aspect_dagwaarde = (props) => {
               onClick={() => {
                 //setDagWaarde(5 - waardeIndex)
                 //props.callBack_handleChangeDagWaarde(props.index, (5-waardeIndex))
-                props.callBack_handleChangeDagWaardes(props.index, (String(5 - waardeIndex).repeat(5)))
+                console.log('137: props.aantalDagdelenBijAutoInvullen: ', props.aantalDagdelenBijAutoInvullen)
+                let waardeDagdelen = String(5 - waardeIndex).repeat(5);
+                if (props.aantalDagdelenBijAutoInvullen==1) 
+                  waardeDagdelen = `00${5 - waardeIndex}00`;
+               
+                const dagWaardeBerekend = computeDagwaarde(
+                  waardeDagdelen, 
+                  props.dagwaardeBerekening_type, 
+                  props.dagwaardeBerekening_maxFactor,
+                  [0,1,0,0,0]
+                )
+                props.callBack_handleChangeDagWaardes(
+                  waardeDagdelen, 
+                  dagWaardeBerekend, 
+                  props.index, 
+                  props.dagwaardeBerekening_type, 
+                  props.dagwaardeBerekening_maxFactor
+                ) 
               }}
             >
               {maxWaarde - waardeIndex} {/* Waarde weergeven in de slider rechts om de nieuwe waarde voor de gehele dag te kiezen*/}
             </div> 
           ))
         }
-        
       </div>
-
     </div>
   );
 };
@@ -147,6 +172,7 @@ const Aspect_dagwaarde = (props) => {
 Aspect_dagwaarde.propTypes = {
   dagWaarde: PropTypes.number.isRequired, // Tussen 0 en 5
   aspect_type: PropTypes.string.isRequired, // Dynamische aspect type
+  aantalDagdelenBijAutoInvullen: PropTypes.number.isRequired, // Aantal dagdelen bij auto invullen 
   aspect : PropTypes.string.isRequired, // Dynamische aspect
   callBack_handleChangeDagWaarde: PropTypes.func.isRequired, // Callback functie
   callBack_handleChangeDagWaardes: PropTypes.func.isRequired, // Callback functie

@@ -1,11 +1,11 @@
-import { React, useState, useEffect, useCallback } from "react";
+import { React, useMemo, useState, useEffect, useCallback } from "react";
 import { Modal, Table, Button, Tabs, Tab } from "react-bootstrap";
 import { basic_API_url } from "./global_const.js";
 import Aspect_dagwaarde from "./Aspect_dagwaarde.jsx";
 import propTypes from "prop-types";
 import { Check, X } from "lucide-react";
 import WeerOpDag from './WeerOpDag.jsx';
-// import computeDagwaarde from '../hooks/computeDagwaarde';
+import computeDagwaarde from '../hooks/computeDagwaarde';
 import "./EditDagModal.css";
 
 const EditDagModal = (props) => {
@@ -74,7 +74,6 @@ const EditDagModal = (props) => {
         ...item,
         deleteRequest: false
       }));
-      console.log("77: enrichedData: ", enrichedData)
 
       setDayData({ ...data, resultData: enrichedData });
       setDagOpmerking(data?.opmerkingData?.opmerking ?? "");
@@ -133,6 +132,7 @@ const EditDagModal = (props) => {
   const callBack_handleChangeDagWaarde = useCallback((index, last_calc_waarde) => {
     console.log("136: Wijzig waarde: van index", index);
 
+
     setDayData((prevData) => {
       const updatedData = {
         ...prevData,
@@ -159,27 +159,53 @@ const EditDagModal = (props) => {
     console.log(dayData);
   }, []);
 
-  
-  const callBack_handleChangeDagWaardes = useCallback((waardeDagdelen, dagwaardeBerekend, index, dagwaardeBerekening_type, dagwaardeBerekening_maxFactor) => {
+  const ____old_calculate_waarde_from_waardeDagdelen_userAspect = async (waardeDagdelen) => {
+    const postData = new FormData();
+    const fetchURL = basic_API_url() + "php/mebyme.php";
+
+    postData.append("username", props.username);
+    postData.append("aspect", props.aspect);
+    postData.append("waardeDagdelen", waardeDagdelen);
+    postData.append("action", "calculate_waarde_from_waardeDagdelen_userAspect");
+
+    const requestOptions = { method: "POST", body: postData };
     try {
-      console.log("164: callBack_handleChangeDagWaardes", waardeDagdelen, dagwaardeBerekend, index,)
+      const res = await fetch(fetchURL, requestOptions);
+      if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
+      return (await res.json()).dagWaarde;
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      throw error;
+    }
+  };
+
+  const callBack_handleChangeDagWaardes = useCallback((waardeDagdelen, index, dagwaardeBerekening_type, dagwaardeBerekening_maxFactor) => {
+    try {
+      //const last_calc_waarde =  computeDagwaarde(waardeDagdelen, dagwaardeBerekening_type, dagwaardeBerekening_maxFactor)
+      //const last_calc_waarde =  
+      //computeDagwaarde(waardeDagdelen, 'gem', dagwaardeBerekening_maxFactor)
+      //computeDagwaarde(waardeDagdelen, som_gem = gem, maxFactor = 100, dagdeelFilter = [1,1,1,1,1] )
+      
+      const last_calc_waarde = useMemo(() => {
+        return computeDagwaarde(waardeDagdelen, 'gem', dagwaardeBerekening_maxFactor);
+      }, [waardeDagdelen, dagwaardeBerekening_maxFactor]);
+
+      
       setDayData(prevData => ({
         ...prevData,
         resultData: prevData.resultData.map((item, i) =>
           i === index
-            ? { ...item, waardeDagdelen, last_calc_waarde: dagwaardeBerekend }
-            : item 
+            ? { ...item, last_calc_waarde, waardeDagdelen: waardeDagdelen }
+            : item
         )
-      }))
-      console.log("175", dayData);
-      ;
+      }));
     } catch (error) {
       console.error("Error fetching calculated value:", error);
     }
   }, []);
 
   const callBack_handleDeleteRequest = useCallback((index, deleteRequest) => {
-    console.log("199: Wijzig waarde: van index", index);
+    console.log("Wijzig waarde: van index", index);
     setDayData((prevData) => ({
       ...prevData,
       resultData: prevData.resultData.map((item, i) =>
@@ -187,7 +213,7 @@ const EditDagModal = (props) => {
       ),
     }), dayData.resultData);
     console.log("Wijzig delete request:", deleteRequest, "voor item", index);
-    console.log ('187:', dayData.resultData)
+    console.log ('164:', dayData.resultData)
   }, [dayData.resultData]);
 
   const handleShow = () => setShow(true);
@@ -201,7 +227,7 @@ const EditDagModal = (props) => {
 
   const handleDragStart = (e, imageName, id) => 
   {  
-    console.log(201, "handleDragStart", imageName)
+    console.log(221, "handleDragStart", imageName)
     e.dataTransfer.setData("imageId", id);
     e.dataTransfer.setData("imageName", imageName);
     setDraggedImageId(id);
@@ -386,15 +412,14 @@ const EditDagModal = (props) => {
               {dayData.resultData?.slice(0, 10).map((item, index) => (
                 <div className={dagModalContainerClass} key={index}>
                   <Aspect_dagwaarde
-                    index                           = {index} // om wijzigingen vanuit child te kunnen bijhouden
-                    icon                            = {imageHomeUrl + item.imageLink}
-                    imageLink                       = {imageHomeUrl + item.imageLink}
-                    deleteRequest                   = {false} // onthoud of de gebruiker deze wil deletend
-                    aspect                          = {item.aspect}
-                    aspect_type                     = {item.aspect_type}
-                    aantalDagdelenBijAutoInvullen   = {item.aantalDagdelenBijAutoInvullen}
-                    dagWaarde                       = {item.last_calc_waarde}
-                    waardeDagdelen                  = {item.waardeDagdelen}
+                    index                       = {index} // om wijzigingen vanuit child te kunnen bijhouden
+                    icon                        = {imageHomeUrl + item.imageLink}
+                    imageLink                   = {imageHomeUrl + item.imageLink}
+                    deleteRequest               = {false} // onthoud of de gebruiker deze wil deletend
+                    aspect                      = {item.aspect}
+                    aspect_type                 = {item.aspect_type}
+                    dagWaarde                   = {item.last_calc_waarde}
+                    waardeDagdelen              = {item.waardeDagdelen}
                     dagwaardeBerekening_type        = {item.dagwaardeBerekening_type}
                     dagwaardeBerekening_maxFactor   = {item.dagwaardeBerekening_maxFactor}
                     callBack_handleChangeDagWaarde  = {callBack_handleChangeDagWaarde}

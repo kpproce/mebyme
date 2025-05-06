@@ -3,15 +3,15 @@ import propTypes from "prop-types";
 import "./DagdelenEdit.css";
 import { callback } from "chart.js/helpers";
 
-const DagdelenEdit = ({ dagdeelWaardes, aspect, callbackGewijzigdeWaardes }) => {
-  const [waarden, setWaarden] = useState(dagdeelWaardes.split("").map(Number));
+const DagdelenEdit = ({ waardeDagdelen, aspect, callbackGewijzigdeWaardes }) => {
+  const [waarden, setWaarden] = useState(waardeDagdelen.split("").map(Number));
   const [tijdelijkeWaarden, setTijdelijkeWaarden] = useState([...waarden]);
   const [actief, setActief] = useState(false);
 
   useEffect(() => {
-    setWaarden(dagdeelWaardes.split("").map(Number));
-    setTijdelijkeWaarden(dagdeelWaardes.split("").map(Number));
-  }, [dagdeelWaardes]);
+    setWaarden(waardeDagdelen.split("").map(Number));
+    setTijdelijkeWaarden(waardeDagdelen.split("").map(Number));
+  }, [waardeDagdelen]);
 
   const namen = ["Nacht", "Opstaan", "Ochtend", "Middag", "Avond"];
 
@@ -31,7 +31,15 @@ const DagdelenEdit = ({ dagdeelWaardes, aspect, callbackGewijzigdeWaardes }) => 
   
 
   return (
-    <>
+    <div
+      className="dagdelenEdit_container"
+      onTouchStart={(e) => {
+        e.stopPropagation(); // Voorkom bubbling naar de parent/grandparent
+      }}
+      onTouchMove={(e) => {
+        e.stopPropagation(); // Voorkom bubbling naar de parent/grandparent
+      }}
+    >
       <table className="dagdelenEdit_tabelStyle">
         <thead>
           <tr>
@@ -89,13 +97,15 @@ const DagdelenEdit = ({ dagdeelWaardes, aspect, callbackGewijzigdeWaardes }) => 
         </div>
       )}
 
-      {actief && <div className="dagdelenEdit_overlay" onClick={annuleerWijzigingen} />}
-    </>
+      {actief && <div className="dagdelenEdit_overlay" 
+        onClick={annuleerWijzigingen} />
+      }
+    </div>
   );
 };
 
 DagdelenEdit.propTypes = {
-  dagdeelWaardes: propTypes.string,
+  waardeDagdelen: propTypes.string,
 };
 
 export default DagdelenEdit;

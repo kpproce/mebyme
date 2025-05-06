@@ -4,13 +4,47 @@ import propTypes from 'prop-types'; // ES6
 import { v4 as uuidv4 } from 'uuid';
 import { IoIosAdd } from "react-icons/io";
 
-const  newAspectModal = (props) => {
+const  NewAspectModal = (props) => {
+ /*
+      TABLE `aspecten` (
+        ->`aspect` varchar(64) NOT NULL,
+          `icon` varchar(32) NOT NULL DEFAULT 'basis',
+        ->`aspect_type` varchar(16) NOT NULL DEFAULT 'welzijn',
+          `kleurInApp` varchar(16) NOT NULL DEFAULT '#236783',
+          `basisKleur` varchar(32) NOT NULL DEFAULT 'aspect_type',
+          `dagdelenInvullen` varchar(16) NOT NULL DEFAULT 'ja',
+        ->`aantalDagdelenBijAutoInvullen` tinyint(11) NOT NULL DEFAULT 1,
+          `basis_dagwaardeBerekening` varchar(32) NOT NULL DEFAULT 'gem_max_iets_zwaarder',
+          `dagwaardeBerekening_type` varchar(16) NOT NULL DEFAULT 'gem',
+        ->`dagwaardeBerekening_maxFactor` decimal(8,0) NOT NULL DEFAULT 1,
+          `basicOrder` smallint(6) NOT NULL DEFAULT 100,
+          `status` varchar(32) NOT NULL DEFAULT 'actueel'
+      )
+      Van belang om in te vullen:
+        aspect, 
+        kiezen uit aspecttype (dat zijn er 3 ...), 
+        kiezen uit 1 of 5 aantalDagdelenBijAutoInvullen, 
+        let op maxfactor --> die moet 90 100 of 110 zijn,
 
+      TABLE `aspect_settings_per_user` (
+          `id` int(11) NOT NULL,
+        ->`username` varchar(32) NOT NULL DEFAULT 'guest',
+        ->`aspect` varchar(32) NOT NULL,
+          `sliderRij` int(11) NOT NULL DEFAULT 0,
+          `sliderWeergave` varchar(32) NOT NULL DEFAULT 'iconRange_colorRange',
+          bijInvoerTonen` varchar(16) NOT NULL DEFAULT 'kan',
+          `rapport_order` int(11) NOT NULL DEFAULT 0,
+         `dagwaardeBerekening` varchar(32) NOT NULL DEFAULT 'gem_max_iets_zwaarder	',
+          `__inOverzichtTonen` varchar(16) NOT NULL DEFAULT 'ja',
+        ->`orderInList` int(11) NOT NULL
+      )
+    
+    */
     // --------------------------------------
     // een 
     const [show, setShow] = useState(false);
     const [newAspect, setNewAspect] = useState("");
-    const [dagwaardeBerekening, setDagwaardeBerekening] = useState(props.berekenmethodes[0].id);
+    const [aspectType, setAspectType] = useState("");
     const [dagdelenInvullen, setDagdelenInvullen] = useState("ja");
     const [mainMessage, setMainMessage] = useState("");
     const [error, setError] = useState('');
@@ -36,9 +70,6 @@ const  newAspectModal = (props) => {
       postData.append('apikey',    props.apikey);
       postData.append('newAspect', newAspect); 
       postData.append('aspect_type', props.aspectType); 
-      postData.append('dagdelenInvullen',    dagdelenInvullen); 
-      postData.append('dagwaardeBerekening', dagwaardeBerekening); 
-      
       postData.append('action', 'insert_aspect');
   
       let requestOptions = {
@@ -79,6 +110,13 @@ const  newAspectModal = (props) => {
       setError('');
       return
     }
+    const onAspectInputTypeChange = (value) => { // validation en onthouden newApect
+      setNewAspect(value);
+      setError('');
+      return
+    }
+
+
 
     return (
       <>
@@ -86,7 +124,7 @@ const  newAspectModal = (props) => {
   
         <span className = "x-small"  onClick={handleShow}>
           <span className='space'></span>
-          <Button className = "plusButton smallPaddingHeight " > < IoIosAdd /> </Button>
+          <Button className = "plusButton smallPaddingHeight " > nieuw aspect < IoIosAdd /> </Button>
         </span>
       
         <Modal contentClassName='modalBody' show={show} onHide={handleClose} active="true" centered backdrop={false}>
@@ -106,8 +144,19 @@ const  newAspectModal = (props) => {
               onChange    = {(event) => {onAspectInputChange (event.target.value)}}
             >
             </input> 
-
      
+          aspectType: <span className='space'/>
+          <select
+            className='invoerBC'
+            value={aspectType}
+            onChange={(event) => setAspectType(event.target.value)}
+            style={{ marginLeft: '5px', padding: '5px' }}
+          >
+            <option value="welzijn">Welzijn</option>
+            <option value="gedaan">Gedaan</option>
+            <option value="medicatie">Medicatie</option>
+          </select>
+
             <br/><br/>Bij invoer tonen? <span className='x-small'>nog niet gebouwd</span>
             <span className='space'/>
             ja (default), nee, alsData
@@ -133,33 +182,9 @@ const  newAspectModal = (props) => {
               Moet bij dit aspect de 5 dagdelen ingevuld worden (vinkje)? of 1 waarde voor de hele dag invullen (geen vinkje)
             </div>
         
-            <br/><br/>Kies dagwaardeBerekening:
-            <select 
-              className = "form-control invoerBC" 
-              id        = {"newAspectSelectDagwaardeBerekening"}
-              value     = {dagwaardeBerekening}
-              onChange  = {
-                //() => handleClick_visibilityChange_button(aspectDetails.aspect, aspectDetails.bijInvoerTonen, 'update') 
-                (event) => { 
-                    console.log('160')
-                    {setDagwaardeBerekening(event.target.value)}
-                  }
-              }
-              
-            >
-            {props.berekenmethodes.map((item, index) => (
-              <option key={index} 
-              value={item.id}>
-                {item.id}
-              </option>
-            ))}
-            </select>
-            <div className='x-small'>
-              Selecteer een methode om vanuit 5 dagdelen de waarde voor de gehele dag te berekenen
-            </div>
-            dagwaardeBerekening: 
-            {dagwaardeBerekening}
-          
+            <br/><br/>Kies manier om dagwaarde te berekenen:
+
+                                
             {error && <p style={{ color: 'red' }}>{error}</p>}          
 
           </Modal.Body>
@@ -176,14 +201,12 @@ const  newAspectModal = (props) => {
     )
   }
 
-  newAspectModal.propTypes = {
+  NewAspectModal.propTypes = {
     //callBackOpmerking: propTypes.number.isRequired
-    callBack_changeSliderVisibility: propTypes.func,    
-    username          : propTypes.string, 
-    apikey 	          : propTypes.string, 
-    berekenMethodes   : propTypes.array,
-    aspectType        : propTypes.string,
-    fetchURL          : propTypes.string 
+    callBack_aspects_changed  : propTypes.func,    
+    username                  : propTypes.string, 
+    apikey 	                  : propTypes.string, 
+    fetchURL                  : propTypes.string 
   }
   
-  export default newAspectModal; 
+  export default NewAspectModal; 

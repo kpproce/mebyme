@@ -3,6 +3,7 @@ import { basic_API_url } from "./global_const.js";
 import propTypes from "prop-types";
 import {  Modal, Form, Table, Row, Col, Button } from "react-bootstrap";
 import { Check, X } from "lucide-react";
+import NewAspectModal from "./NewAspectModal";
 
 const  ChangeAspectInstellingModal = ({ username, apikey }) => {
     // const [id, setId] =  useState(1);
@@ -21,8 +22,6 @@ const  ChangeAspectInstellingModal = ({ username, apikey }) => {
       }
     }, [close]);
   
-
-
     const [aspectenData, setAspectenData] = useState([]);
 
     const updateAspectenData = async (username, apikey) => {
@@ -47,7 +46,6 @@ const  ChangeAspectInstellingModal = ({ username, apikey }) => {
       }
     };
 
-
     const getAspectenData = async (username, apikey) => {
       const postData = new FormData();
       const fetchURL = basic_API_url() + "php/mebyme.php";
@@ -65,7 +63,6 @@ const  ChangeAspectInstellingModal = ({ username, apikey }) => {
         throw error;
       }
     };
-
   
     useEffect(() => {
       const fetchData = async () => {
@@ -88,6 +85,12 @@ const  ChangeAspectInstellingModal = ({ username, apikey }) => {
       setAspectenData({ ...aspectenData, aspectenLijst: newData });
     };
 
+    const handleRapport_orderChange = (index, newValue) => {
+      const newData = [...aspectenData.aspectenLijst];
+      console.log("90: handleRapport_orderChange: " + newValue)
+      newData[index].rapport_order	 = newValue;
+      setAspectenData({ ...aspectenData, aspectenLijst: newData });
+    };
     
     const handleShow  = () => { setShow(true); setClose(false) }
     const handleClose = () => { setShow(false) }
@@ -140,6 +143,8 @@ const  ChangeAspectInstellingModal = ({ username, apikey }) => {
                         <th>Aspect</th>
                         <th>Alle dagdelen invullen?</th>
                         <th>aantal Bij auto?</th>
+                        <th>volgorde kalender ?</th>
+
                       </tr>
                     </thead>
                     <tbody>
@@ -176,6 +181,24 @@ const  ChangeAspectInstellingModal = ({ username, apikey }) => {
                                 
                               </Row>
                             </td>
+
+                            <td>
+                              <Row className="align-items-center">
+                                <Col xs="auto">
+                                  <input 
+                                    className = "small"
+                                    style={{
+                                      width: window.innerWidth < window.innerHeight ? "50px" : "70px", // 50px voor portret, 70px voor landschap
+                                    }}
+                                    type = "number"
+                                    value={item.rapport_order}
+                                    onChange={(e) => handleRapport_orderChange(index, e.target.value)}
+                                   /> 
+                                </Col>
+                                
+                              </Row>
+                            </td>
+
                           </tr>
                         ))
                       ) : (
@@ -187,7 +210,11 @@ const  ChangeAspectInstellingModal = ({ username, apikey }) => {
                   </Table>
                 </div>
             }
-          
+          <NewAspectModal
+             username={username}
+             apikey={apikey}
+             dagdelenInvullen={'ja'}
+          />
           </Modal.Body>
           <Modal.Footer>     
             {close 

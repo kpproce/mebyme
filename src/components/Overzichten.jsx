@@ -51,7 +51,7 @@ function Overzichten({ setActiveMenu, username, apikey, yearMonth }) {
   }, [selectedMonthYear]);
 
   const selectStyle = {
-    width: '8rem',
+    width: 'rem',
     border: '1px solid #ddd',
     padding: '0.25rem',
     marginLeft: '6px'
@@ -73,13 +73,7 @@ function Overzichten({ setActiveMenu, username, apikey, yearMonth }) {
     backgroundColor: '#117085'
   }
 
-  const bovenDivStyle = {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '0.5rem',
-    backgroundColor: '#09505f',
-    padding: '10px 0'
-  };
+  
 
   const get_userAspects_data = async () => {
     setLoading(true);
@@ -148,7 +142,7 @@ function Overzichten({ setActiveMenu, username, apikey, yearMonth }) {
     }
   };
 
-  const getMonthName = (yearMonth) => {
+  const ____kanweg_getMonthName = (yearMonth) => {
     const date = new Date(yearMonth + "-01");
     return new Intl.DateTimeFormat('nl-NL', { month: 'long' }).format(date);
   };
@@ -182,62 +176,12 @@ const callBack_changeMonth = useCallback((direction) => {
     if (activeTab === "kalender") {
       return (
         <>
-          {/* Titel + Pijltje --> Dit hoort in kalender component...*/} 
-          <div 
-            style={closedStyle}
-            onClick={() => setInstellingenDiv_zichtbaar(!instellingenDiv_zichtbaar)}
-          >
-            <table style={{ borderCollapse: "collapse", width: "100%" }}>
-              <tr>
-                <td colSpan='2' style={{ border: "1px solid black", padding: "8px" }}>
-                  kleur: &nbsp; {hoofdAspect}
-                </td>
-              </tr>
-              <tr>
-                <td style={{ border: "1px solid black", padding: "2px" }}>
-                  <div className="LOROsquare">LO:</div>
-                  <span>{bijAspect2}</span>
-                </td>
-                <td style={{ border: "1px solid black", padding: "2px" }}>
-                  <div className="LOROsquare">RO:</div>
-                  <span>{bijAspect1}</span>
-                </td>
-              </tr>
-            </table>
-            <span style={{ marginLeft: '8px', fontSize: 'x-large' }}>
-              {instellingenDiv_zichtbaar 
-                ? 'X' 
-                :  <FaEdit size={20} />
-              }
-            </span>
-          </div>
-
-               {/* Uitklapbare sectie */}
-          {instellingenDiv_zichtbaar && (
-            <div style={bovenDivStyle}>
-              <div style={{ display: 'flex', alignItems: 'center' }}>
-                <label style={labelStyle}>Hoofd Aspect (kleur):</label>
-                <select
-                  style={selectStyle}
-                  value={hoofdAspect}
-                  onChange={(e) => {
-                    setHoofdAspect(e.target.value);
-                    set_userAspects_data(e.target.value, bijAspect1, bijAspect2);
-                  }}
-                >
-                  {aspectenLijst.map((item, index) => (
-                    <option key={index} value={item.aspect}>
-                      {item.aspect}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              <div style={{ display: 'flex' }}>
+            <div className='kalenderBovenDivStyle'>
+              <div style={{ display: 'flex', alignItems: 'center' }}>   
                 <div>
-                  <label>Links onder:</label>
+                <div className="LOROsquare">LO:</div>
                   <select
-                    style={selectStyle}
+                    className="selectOnopvallend"
                     value={bijAspect2}
                     onChange={(e) => {
                       setBijAspect2(e.target.value);
@@ -251,10 +195,27 @@ const callBack_changeMonth = useCallback((direction) => {
                     ))}
                   </select>
                 </div>
+
+                <span className="regenboogStyle"> </span>
+                <select
+                  className="selectOnopvallend"
+                  value={hoofdAspect}
+                  onChange={(e) => {
+                    setHoofdAspect(e.target.value);
+                    set_userAspects_data(e.target.value, bijAspect1, bijAspect2);
+                  }}
+                  >
+                  {aspectenLijst.map((item, index) => (
+                    <option key={index} value={item.aspect}>
+                      {item.aspect}
+                    </option>
+                  ))}
+                </select>
+
                 <div style={{ marginLeft: '8px' }}>
-                  <label>Rechts onder:</label>
+                <div className="LOROsquare">RO:</div>
                   <select
-                    style={selectStyle}
+                   className="selectOnopvallend"
                     value={bijAspect1}
                     onChange={(e) => {
                       setBijAspect1(e.target.value);
@@ -270,7 +231,7 @@ const callBack_changeMonth = useCallback((direction) => {
                 </div>
               </div>
             </div>
-          )}
+          
         
           <Kalender
             setActiveMenu={setActiveMenu}

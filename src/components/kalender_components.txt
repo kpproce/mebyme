@@ -1,0 +1,4 @@
+<Kalender/> alle dagen
+  <EditDagModal/> alle aspecten op 1 dag.
+    <Aspect_dagwaarde/> geeft 1 aspect weer.
+      <DagdelenEdit/> bijv: Wijzig benauwd 24134
